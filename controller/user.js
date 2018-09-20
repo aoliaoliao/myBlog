@@ -1,7 +1,5 @@
-const user_db = require( '../dao' ).User
+const user_db = require( "../Dao" ).User;
 
 module.exports = {
-  addUser( req, res, next ) {
-    
-  }
-}
+  addUser( req, res, next ) {},
+};

@@ -1,3 +1,3 @@
-const articles_db = require( '../dao' ).articles
+const articles_db = require("../Dao").articles;
 
-module.exports = {}
+module.exports = {};
