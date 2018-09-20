@@ -40,7 +40,7 @@ module.exports = {
           cd: 0,
           msg: '数据插入失败'
         } )
-        throw err
+        console.log( err )
       } )
   }
 }
