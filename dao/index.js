@@ -24,7 +24,6 @@ fs.readdirSync( __dirname )
   } )
   .forEach( file => {
     const model = sequelize[ 'import' ]( path.join( __dirname, file ) )
-    model = model( sequelize )
     database[ model.name ] = model
   } )
 
@@ -38,16 +37,3 @@ database.sequelize = sequelize
 database.Sequelize = Sequelize
 
 module.exports = database
-
-
-
-// user.sync().then( () => {
-//   console.log( '数据库已经同步成功' )
-//   user.create( {
-//     id: 1,
-//     name: '张三',
-//     age: 23
-//   } ).then( () => {
-//     user.findAll().then( res => console.log( res ) )
-//   } )
-// } )

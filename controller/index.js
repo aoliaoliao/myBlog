@@ -1,7 +1,7 @@
 const fs = require( 'fs' )
 const path = require( 'path' )
 const basename = path.basename( __filename )
-const config = {}
+const controller = {}
 
 
 fs.readdirSync( __dirname )
@@ -9,7 +9,7 @@ fs.readdirSync( __dirname )
   .forEach( file => {
     const model = require( path.join( __dirname, file ) )
     const name = file.slice( 0, -3 )
-    config[ name ] = model
+    controller[ name ] = model
   } )
 
-module.exports = config
+module.exports = controller

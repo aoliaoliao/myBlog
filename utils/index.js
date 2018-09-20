@@ -1,3 +1,3 @@
-export let jsonWrite = function(){
-  
+module.exports = {
+
 }
