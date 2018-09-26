@@ -8,25 +8,45 @@ module.exports = ( sequelize, DataTypes ) => {
       comment: '用户ID，主键',
       primaryKey: true
     },
+    linkedEMail: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      uniqueOne: {
+        type: Sequelize.STRING,
+        uniqueOne: true
+      },
+      validate: {
+        isEmail: {
+          msg: '请输入正确的邮箱格式'
+        }
+      },
+      comment: '关联邮箱'
+    },
     nickName: {
       type: DataTypes.STRING( 50 ),
+      allowNull: false,
+      uniqueOne: {
+        type: Sequelize.STRING,
+        unique: true
+      },
       validate: {
         len: {
           args: [ 2, 10 ],
-          msg: '用户名称在2到10位字符之间'
+          msg: '用户昵称在2到10位字符之间'
         }
       },
       comment: '用户姓名'
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         is: {
           args: /^.*(?=.{9,})(?=.*\d)(?=.*[a-z]).*$/,
           msg: '密码长度不少于9位，必须包含字母和数字'
-        },
-        comment: '密码'
-      }
+        }
+      },
+      comment: '密码'
     },
     avatar: {
       type: DataTypes.STRING,
@@ -55,14 +75,7 @@ module.exports = ( sequelize, DataTypes ) => {
     isLoginIn: {
       type: DataTypes.BOOLEAN,
       comment: '是否注册过'
-    },
-    linkedEMail: {
-      type: DataTypes.STRING,
-      validate: {
-        isEmail: true
-      },
-      comment: '关联邮箱'
-    },
+    }
 
   } )
 

@@ -1,3 +1,5 @@
+const crypto = require( 'crypto' )
+
 module.exports = {
   /* 
    *   生成响应的数据格式
@@ -22,5 +24,16 @@ module.exports = {
       ...response,
       ...other
     }
+  },
+
+  /* 
+   * 对密码进行加密处理
+   * 
+   * */
+  cryptoPasswordByMD5( password ) {
+    let hash = crypto.createHash( 'md5' )
+      .update( password )
+      .digest( 'hex' );
+    return hash
   }
 }
