@@ -9,11 +9,9 @@ import http from './API/http'
 Vue.prototype.$http = http
 
 /* eslint-disable no-new */
-new Vue( {
+new Vue({
   el: '#app',
   router,
-  components: {
-    App
-  },
+  components: { App },
   template: '<App/>'
-} )
+})

@@ -1,7 +1,5 @@
 import axios from 'axios'
-import {
-  Notification
-} from 'element-ui'
+import { Notification } from 'element-ui'
 
 let curCancel
 let cancelObj = {}
@@ -11,42 +9,42 @@ const CancelToken = axios.CancelToken
 axios.defaults.headers = {}
 axios.defaults.timeout = 10000
 
-axios.interceptors.request.use( config => {
-  // console.log( this )
-  if ( cancelObj[ config.url ] ) {
-    cancelObj[ config.url ]( 'request cancel' )
-  }
-  cancelObj[ config.url ] = curCancel
-  const protocol = config.url.split( '://' )[ 0 ]
+axios.interceptors.request.use(
+  config => {
+    // console.log( this )
+    if (cancelObj[config.url]) {
+      cancelObj[config.url]('request cancel')
+    }
+    cancelObj[config.url] = curCancel
+    const protocol = config.url.split('://')[0]
 
-  if ( ![ 'http', 'https' ].includes( protocol ) ) {
-    config.url = baseURL + config.url
-  }
+    if (!['http', 'https'].includes(protocol)) {
+      config.url = baseURL + config.url
+    }
 
-  return config
-}, error => {
-  return Promise.reject( error )
-} )
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 
 axios.interceptors.response.use(
-  ( response ) => {
-    let {
-      data,
-      status
-    } = response
-    if ( data.cd ) {
+  response => {
+    let { data } = response
+    if (data.cd) {
       return response
     } else {
-      Notification( {
+      Notification({
         type: 'warning',
         message: data.msg || '请检查并重试'
-      } )
-      return Promise.reject( response )
+      })
+      return Promise.reject(response)
     }
   },
   error => {
-    if ( error && error.response ) {
-      switch ( error.response.status ) {
+    if (error && error.response) {
+      switch (error.response.status) {
         case 400:
           error.message = '错误请求'
           break
@@ -87,39 +85,43 @@ axios.interceptors.response.use(
     } else {
       error.message = '连接到服务器失败'
     }
-    Notification( {
+    Notification({
       type: 'warning',
       message: error.message || '网络请求失败'
-    } )
-    return Promise.reject( error.response )
+    })
+    return Promise.reject(error.response)
   }
 )
 
-
-
 export default {
-  get: ( url, params ) => {
-    return axios.get( url, {
-      params: params,
-      cancelToken: new CancelToken( c => {
-        curCancel = c
-      } )
-    } ).then( res => {
-      return res
-    } )
+  get: (url, params) => {
+    return axios
+      .get(url, {
+        params: params,
+        cancelToken: new CancelToken(c => {
+          curCancel = c
+        })
+      })
+      .then(res => {
+        return res
+      })
   },
-  post: ( url, params, config ) => {
-    return axios.post( url, {
-      ...params
-    }, {
-      ...config,
-      cancelToken: new CancelToken( c => {
-        curCancel = c
-      } )
-    } ).then( ( {
-      data
-    } ) => {
-      return data
-    } )
+  post: (url, params, config) => {
+    return axios
+      .post(
+        url,
+        {
+          ...params
+        },
+        {
+          ...config,
+          cancelToken: new CancelToken(c => {
+            curCancel = c
+          })
+        }
+      )
+      .then(({ data }) => {
+        return data
+      })
   }
 }
