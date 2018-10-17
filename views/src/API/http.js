@@ -11,26 +11,31 @@ const CancelToken = axios.CancelToken
 axios.defaults.headers = {}
 axios.defaults.timeout = 10000
 
-axios.interceptors.request.use( config => {
-  // console.log( this )
-  if ( cancelObj[ config.url ] ) {
-    cancelObj[ config.url ]( 'request cancel' )
-  }
-  cancelObj[ config.url ] = curCancel
-  const protocol = config.url.split( '://' )[ 0 ]
+axios.interceptors.request.use(
+  config => {
+    // console.log( this )
+    if ( cancelObj[ config.url ] ) {
+      cancelObj[ config.url ]( 'request cancel' )
+    }
+    cancelObj[ config.url ] = curCancel
+    const protocol = config.url.split( '://' )[ 0 ]
 
-  if ( ![ 'http', 'https' ].includes( protocol ) ) {
-    config.url = baseURL + config.url
-  }
+    if ( ![ 'http', 'https' ].includes( protocol ) ) {
+      config.url = baseURL + config.url
+    }
 
-  return config
-}, error => {
-  return Promise.reject( error )
-} )
+    return config
+  },
+  error => {
+    return Promise.reject( error )
+  }
+)
 
 axios.interceptors.response.use(
   response => {
-    let { data, status } = response
+    let {
+      data
+    } = response
     if ( data.cd ) {
       return response
     } else {
@@ -94,27 +99,33 @@ axios.interceptors.response.use(
 
 export default {
   get: ( url, params ) => {
-    return axios.get( url, {
-      params: params,
-      cancelToken: new CancelToken( c => {
-        curCancel = c
+    return axios
+      .get( url, {
+        params: params,
+        cancelToken: new CancelToken( c => {
+          curCancel = c
+        } )
       } )
-    } ).then( res => {
-      return res
-    } )
+      .then( res => {
+        return res
+      } )
   },
   post: ( url, params, config ) => {
-    return axios.post( url, {
-      ...params
-    }, {
-      ...config,
-      cancelToken: new CancelToken( c => {
-        curCancel = c
+    return axios
+      .post(
+        url, {
+          ...params
+        }, {
+          ...config,
+          cancelToken: new CancelToken( c => {
+            curCancel = c
+          } )
+        }
+      )
+      .then( ( {
+        data
+      } ) => {
+        return data
       } )
-    } ).then( ( {
-      data
-    } ) => {
-      return data
-    } )
   }
 }

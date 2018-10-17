@@ -7,7 +7,6 @@ import {
   Form,
   FormItem,
   Notification
-
 } from 'element-ui'
 
 Vue.use( Row )
