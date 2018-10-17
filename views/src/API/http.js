@@ -29,11 +29,8 @@ axios.interceptors.request.use( config => {
 } )
 
 axios.interceptors.response.use(
-  ( response ) => {
-    let {
-      data,
-      status
-    } = response
+  response => {
+    let { data, status } = response
     if ( data.cd ) {
       return response
     } else {
@@ -94,8 +91,6 @@ axios.interceptors.response.use(
     return Promise.reject( error.response )
   }
 )
-
-
 
 export default {
   get: ( url, params ) => {
