@@ -1,15 +1,15 @@
 <template>
   <div class="login-wrap">
-    <login></login>
+    <app-login></app-login>
   </div>
 </template>
 
 <script>
-import Login from './login'
+import AppLogin from './AppLogin'
 export default {
   name: 'login-wrap',
   components: {
-    Login
+    AppLogin
   }
 }
 </script>

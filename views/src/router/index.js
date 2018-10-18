@@ -18,13 +18,13 @@ export default new Router({
     path: '/login',
     name: 'login',
     component: () =>
-        import('../pages/login/login')
+        import('../pages/login/AppLogin')
   },
   {
     path: '/register',
     name: 'register',
     component: () =>
-        import('../pages/login/register')
+        import('../pages/login/AppRegister')
   },
   {
     path: '*',

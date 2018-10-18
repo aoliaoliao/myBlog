@@ -1,8 +1,6 @@
 <template>
   <div class="home">
-    <div class="user-wrap">
-      <user-info></user-info>
-    </div>
+    <user-info></user-info>
     <el-tabs v-model="currPanes" @tab-click="chanagePane">
       <el-tab-pane v-for="item in tabPanes" :key="item.name" :label="item.label" :name="item.name">
         <component :is="item.name"></component>
@@ -12,9 +10,9 @@
 </template>
 
 <script>
-import userInfo from '@/components/userInfo'
-import articleList from '@/components/articleList'
-import statusList from '@/components/articleList'
+import UserInfo from '@/components/UserInfo'
+import ArticleList from '@/components/ArticleList'
+import StatusList from '@/components/StatusList'
 import { tabPanes } from './const'
 
 export default {
@@ -27,9 +25,9 @@ export default {
     }
   },
   components: {
-    statusList,
-    articleList,
-    userInfo
+    StatusList,
+    ArticleList,
+    UserInfo
   },
   created() {
     this.currPanes = this.tabPanes[ 0 ].name
