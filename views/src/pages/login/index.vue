@@ -6,6 +6,7 @@
 
 <script>
 import AppLogin from './AppLogin'
+
 export default {
   name: 'login-wrap',
   components: {

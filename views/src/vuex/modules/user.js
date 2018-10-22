@@ -8,7 +8,7 @@ let state = {
 
 let mutations = {
   setUserAvatar(state, avatar = '') {
-    state.avatar = avatar
+    state.avatar = avatar || '@/assets/user_avatar.jpg'
   },
   setUserNickname(state, nickname = '') {
     state.nickname = nickname
@@ -25,7 +25,6 @@ let actions = {
       commit('setUserAvatar', rt.avatar)
       commit('setUserNickname', rt.nickname)
       commit('setUserSignature', rt.signature)
-
     })
   }
 }

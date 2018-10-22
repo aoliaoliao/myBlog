@@ -5,9 +5,11 @@ import vueLazy from 'vue-lazyload'
 import App from './App'
 import router from './router'
 import './libs/elementUI'
+import 'mint-ui/lib/style.css'
 import http from './API/http'
 import store from './vuex'
-
+import '@/assets/font/iconfont.js'
+import '@/assets/styles/globalStyles.styl'
 
 Vue.prototype.$http = http
 Vue.use(vueLazy)
