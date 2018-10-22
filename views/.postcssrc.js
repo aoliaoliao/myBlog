@@ -18,7 +18,13 @@ module.exports = {
       minPixelValue: 1,
       mediaQuery: false
     },
-    'postcss-viewport-units': {},
+    'postcss-viewport-units': {
+      filterRule: rule =>
+        rule.selector.indexOf('::after') === -1 &&
+        rule.selector.indexOf('::before') === -1 &&
+        rule.selector.indexOf(':after') === -1 &&
+        rule.selector.indexOf(':before') === -1
+    },
     cssnano: {
       preset: 'advanced',
       autoprefixer: false,

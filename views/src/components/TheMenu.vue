@@ -4,14 +4,10 @@
     <svg class="icon menu" aria-hidden="true" @click.stop="changeItems">
       <use xlink:href="#icon-menu"></use>
     </svg>
-    <mt-cell title="标题文字"></mt-cell>
-    <div v-show="isShowItems" class="items">
-      <!-- <li></li> -->
-      <mt-cell v-for="item in menus" :key="item.name">
-        <slot>
-          <router-link :to="item.path">{{item.name}}</router-link>
-        </slot>
-      </mt-cell>
+    <div v-show="isShowItems" class="items" @click.stop="showItems">
+      <li v-for="item in menus" :key="item.name">
+        <router-link class="hrefClass" :to="item.path">{{item.name}}</router-link>
+      </li>
     </div>
   </div>
 </template>
@@ -30,9 +26,18 @@ export default {
       ]
     }
   },
+  created () {
+    let self = this
+    document.addEventListener('click', (e) => {
+      self.isShowItems = false
+    })
+  },
   methods: {
     changeItems () {
       this.isShowItems = !this.isShowItems
+    },
+    showItems () {
+      this.isShowItems = true
     }
   }
 }
@@ -47,8 +52,14 @@ export default {
     height w
     color #ffffff
 .items
-  width 100px
-  height 150px
   background #ffffff
-  box-shadow 0px 0px 1px #ffffff
+  box-shadow 0px 0px 2px #ffffff
+  border-radius 5px
+  li
+    list-style-type none
+    font-size 16px
+    padding 5px 20px
+  .hrefClass
+    font-size 16px
+    color #666666
 </style>
