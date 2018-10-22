@@ -13,7 +13,9 @@ import {
   Notification
 } from 'element-ui'
 
-import { Cell } from 'mint-ui'
+import {
+ Cell, Navbar, TabItem, TabContainer, TabContainerItem 
+} from 'mint-ui'
 
 Vue.use(Row)
 Vue.use(Col)
@@ -26,3 +28,7 @@ Vue.use(TabPane)
 Vue.prototype.$notify = Notification
 
 Vue.component(Cell.name, Cell)
+Vue.component(Navbar.name, Navbar)
+Vue.component(TabItem.name, TabItem)
+Vue.component(TabContainer.name, TabContainer)
+Vue.component(TabContainerItem.name, TabContainerItem)
