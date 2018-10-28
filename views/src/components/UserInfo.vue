@@ -1,5 +1,5 @@
 <template>
-  <div aspectratio w-375-300>
+  <div aspectratio w-375-375>
     <div aspectratio-content class="user-wrap">
       <div class="avatar">
         <img v-lazy="avatar">
@@ -10,7 +10,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -37,14 +36,14 @@ export default {
     this.getUserInfo()
   },
   methods: {
-    ...mapActions([ 'getUserInfo' ])
+    ...mapActions(['getUserInfo'])
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-[w-375-300]
-  aspect-ratio '375:300'
+[w-375-375]
+  aspect-ratio '375:375'
 .user-wrap
   text-align center
   background-color rgba(126, 126, 126, 0.5)

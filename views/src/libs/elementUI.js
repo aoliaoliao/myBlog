@@ -14,7 +14,12 @@ import {
 } from 'element-ui'
 
 import {
- Cell, Navbar, TabItem, TabContainer, TabContainerItem 
+  Cell,
+  Navbar,
+  TabItem,
+  TabContainer,
+  TabContainerItem,
+  Loadmore
 } from 'mint-ui'
 
 Vue.use(Row)
@@ -23,8 +28,8 @@ Vue.use(Button)
 Vue.use(Input)
 Vue.use(Form)
 Vue.use(FormItem)
-Vue.use(Tabs)
-Vue.use(TabPane)
+// Vue.use(Tabs)
+// Vue.use(TabPane)
 Vue.prototype.$notify = Notification
 
 Vue.component(Cell.name, Cell)
@@ -32,3 +37,4 @@ Vue.component(Navbar.name, Navbar)
 Vue.component(TabItem.name, TabItem)
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
+Vue.component(Loadmore.name, Loadmore)

@@ -8,7 +8,7 @@
 
 <script>
 import { getArticleList } from '@/API'
-import ArticleItem from './articles/articleItem'
+import ArticleItem from './articleItem'
 
 export default {
   name: 'article-list',
@@ -26,7 +26,11 @@ export default {
     ArticleItem
   },
   created () {
-    this.getData({ num: 10, start: 0 })
+    console.log('getArticleList', getArticleList)
+    this.getData({
+      num: 10,
+      start: 0
+    })
   },
   methods: {
     loadTop (id) {
@@ -56,7 +60,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.article-list
-  height 600px
-  overflow-y auto
 </style>
