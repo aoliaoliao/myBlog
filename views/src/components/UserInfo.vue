@@ -36,7 +36,7 @@ export default {
     this.getUserInfo()
   },
   methods: {
-    ...mapActions(['getUserInfo'])
+    ...mapActions([ 'getUserInfo' ])
   }
 }
 </script>

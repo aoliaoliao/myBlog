@@ -25,35 +25,39 @@ export default {
     },
     options: {
       type: Object,
-      default: () => {
-        return {
-          // autoFill: true,
-          // distanceIndex: 2,
-          // maxDistance: 0,
-          // topPullText: '下拉刷新',
-          // ... 还有很多，需要的时候再加
-        }
-      },
+      default: () => ({
+        // autoFill: true,
+        // distanceIndex: 2,
+        // maxDistance: 0,
+        // topPullText: '下拉刷新',
+        // ... 还有很多，需要的时候再加
+      }),
       descriptor: '其他的个性配置'
     }
   },
   methods: {
-    loadTop() {
+    loadTop () {
       // new Promise( (resolve,reject) => {
       //   return this.pullDown()
       // })
-      Promise.resolve( this.pullDown() ).then( res => {
+      Promise.resolve(this.pullDown()).then(res => {
         this.$refs.mtLoadmore.onTopLoaded()
-      } )
+      })
     },
-    loadBottom() {
-      if ( this.over ) {
+    loadBottom () {
+      if (this.over) {
         return
       }
-      Promise.resolve( this.pullDown() ).then( res => {
+      Promise.resolve(this.pullUp()).then(res => {
         this.$refs.mtLoadmore.onBottomLoaded()
-      } )
+      })
     }
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.scroll
+  height 550px
+  overflow scroll
+</style>

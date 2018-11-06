@@ -16,7 +16,7 @@ import ArticleItem from './articles/articleItem'
 
 export default {
   name: 'article-list',
-  data() {
+  data () {
     return {
       list: [],
       allLoaded: false,
@@ -29,45 +29,45 @@ export default {
   components: {
     ArticleItem
   },
-  created() {
+  created () {
     this.loadTop()
   },
   methods: {
-    loadTop() {
-      return this.getData( {
+    loadTop () {
+      return this.getData({
         num: 10,
         start: 0
-      } ).then( data => {
+      }).then(data => {
         this.list = [ ...data ]
         // this.$refs.loadmore.onTopLoaded()
-      } )
+      })
     },
-    loadBottom() {
-      if ( this.allLoaded ) {
+    loadBottom () {
+      if (this.allLoaded) {
         return
       }
       let { cur, num } = this.page
-      return this.getData( {
+      return this.getData({
         num,
-        start: ( cur - 1 ) * num
-      } ).then( data => {
+        start: (cur - 1) * num
+      }).then(data => {
         this.page.cur = cur + 1
         this.list = [ ...this.list, ...data ]
         // this.$refs.loadmore.onBottomLoaded()
-      } )
+      })
 
     },
-    getData( param ) {
-      return getArticleList( param ).then( ( { rt } ) => {
+    getData (param) {
+      return getArticleList(param).then(({ rt }) => {
         this.allLoaded = rt.end
         return rt.list
-      } )
+      })
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.article-list
-  overflow-y auto
+li
+  height 30px
 </style>
