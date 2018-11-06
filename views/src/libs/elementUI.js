@@ -8,8 +8,6 @@ import {
   Input,
   Form,
   FormItem,
-  Tabs,
-  TabPane,
   Notification
 } from 'element-ui'
 
@@ -21,6 +19,8 @@ import {
   TabContainerItem,
   Loadmore
 } from 'mint-ui'
+
+import TheScroll from '../components/TheScroll.vue'
 
 Vue.use(Row)
 Vue.use(Col)
@@ -38,3 +38,5 @@ Vue.component(TabItem.name, TabItem)
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Loadmore.name, Loadmore)
+
+Vue.component(TheScroll.name, TheScroll)
