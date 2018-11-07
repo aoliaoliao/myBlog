@@ -22,22 +22,22 @@ import { tabPanes } from './const'
 
 export default {
   name: 'home',
-  data: () => ({
+  data: () => ( {
     userInfo: {}, // 作者信息
     tabPanes,
     selected: ''
-  }),
+  } ),
   components: {
     StatusList,
     ArticleList,
     UserInfo
   },
-  created () {
-    this.selected = this.tabPanes[0].name
+  created() {
+    this.selected = this.tabPanes[ 0 ].name
   },
   methods: {
-    chanagePane (tab, event) {
-      console.log(tab, event)
+    chanagePane( tab, event ) {
+      console.log( tab, event )
     }
   }
 }

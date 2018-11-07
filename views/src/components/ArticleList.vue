@@ -1,12 +1,8 @@
 <template>
   <div class="article-list">
-    <the-scroll :pull-down="loadTop" :pull-up="loadBottom" :over="allLoaded" ref="theScroll">
+    <the-scroll :data="list" @pulling-up="loadBottom" @pulling-down="loadTop" ref="theScroll">
       <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
     </the-scroll>
-
-    <!-- <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-      <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
-    </mt-loadmore> -->
   </div>
 </template>
 
@@ -16,7 +12,7 @@ import ArticleItem from './articles/articleItem'
 
 export default {
   name: 'article-list',
-  data () {
+  data() {
     return {
       list: [],
       allLoaded: false,
@@ -29,45 +25,44 @@ export default {
   components: {
     ArticleItem
   },
-  created () {
+  created() {
     this.loadTop()
   },
   methods: {
-    loadTop () {
-      return this.getData({
+    loadTop() {
+      this.getData( {
         num: 10,
         start: 0
-      }).then(data => {
+      } ).then( data => {
         this.list = [ ...data ]
-        // this.$refs.loadmore.onTopLoaded()
-      })
+      } )
     },
-    loadBottom () {
-      if (this.allLoaded) {
+    loadBottom() {
+      if ( this.allLoaded ) {
         return
       }
       let { cur, num } = this.page
-      return this.getData({
+      this.getData( {
         num,
-        start: (cur - 1) * num
-      }).then(data => {
+        start: ( cur - 1 ) * num
+      } ).then( data => {
         this.page.cur = cur + 1
         this.list = [ ...this.list, ...data ]
-        // this.$refs.loadmore.onBottomLoaded()
-      })
+      } )
 
     },
-    getData (param) {
-      return getArticleList(param).then(({ rt }) => {
+    getData( param ) {
+      return getArticleList( param ).then( ( { rt } ) => {
         this.allLoaded = rt.end
         return rt.list
-      })
+      } )
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-li
-  height 30px
+.article-list
+  height 667px
+  overflow scroll
 </style>
