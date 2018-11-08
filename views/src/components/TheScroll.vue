@@ -1,7 +1,10 @@
 <template>
-  <div class="scroll-wrap" ref="theScroll">
-    <div class="content">
-      <slot></slot>
+  <div ref="wrapper" class="list-wrapper">
+    <div class="scroll-content">
+      <div ref="listWrapper">
+        <slot>
+        </slot>
+      </div>
     </div>
   </div>
 </template>
@@ -9,54 +12,94 @@
 <script >
 import BScroll from 'better-scroll'
 
+const COMPONENT_NAME = 'scroll'
+const DIRECTION_H = 'horizontal'
+const DIRECTION_V = 'vertical'
+
 export default {
   name: 'the-scroll',
   props: {
+    data: {
+      type: Array,
+      default: function () {
+        return []
+      },
+      descriptor: '列表数据'
+    },
     propbeType: {
       type: Number,
       default: 1,
       descriptor: '1:滚动的时候会派发scroll事件，会截流; 2:滚动的时候实时派发scroll事件，不会截流; 3:除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件'
-    },
-    pullUp: {
-      type: Boolean,
-      default: true,
-      descriptor: '上拉加载'
-    },
-    pullDown: {
-      type: Boolean,
-      default: true,
-      descriptor: '下拉刷新'
-    },
-    beforeScroll: {
-      type: Boolean,
-      default: false,
-      descriptor: '是否派发列表滚动开始的事件'
-    },
-    data: {
-      type: Array,
-      default: null,
-      descriptor: '列表数据'
-    },
-    scrollX: {
-      type: Boolean,
-      default: false,
-      descriptor: '是否开启横向滚动'
-    },
-    listenScroll: {
-      type: Boolean,
-      default: false,
-      descriptor: '是否派发滚动事件'
     },
     click: {
       type: Boolean,
       default: true,
       descriptor: '是否派发Click事件'
     },
+    listenScroll: {
+      type: Boolean,
+      default: false,
+      descriptor: '是否派发滚动事件'
+    },
+    listenBeforeScroll: {
+      type: Boolean,
+      default: false,
+      descriptor: '是否监听滚动开始之前事件'
+    },
+    listenScrollEnd: {
+      type: Boolean,
+      default: false,
+      descriptor: '滚动结束事件'
+    },
+    direction: {
+      type: String,
+      default: DIRECTION_V,
+      descriptor: '指定滚动方向'
+    },
+    scrollbar: {
+      type: null,
+      default: false,
+      descriptor: '是否开启滚动条, 类型为Boolean值或对象'
+    },
+    pullDownRefresh: {
+      type: null,
+      default: true,
+      descriptor: '是否开启下拉刷新, 类型为Boolean值或对象'
+    },
+    pullUpLoad: {
+      type: null,
+      default: true,
+      descriptor: '是否开启上拉加载, 类型为Boolean值或对象'
+    },
+    startY: {
+      type: Number,
+      default: 0,
+      descriptor: '纵轴方向初始化位置'
+    },
     refreshDelay: {
       type: Number,
       default: 20,
       descriptor: '当数据更新后，刷新scroll的延时'
     },
+    freeScroll: {
+      type: Boolean,
+      default: false,
+      descriptor: '是否支持横向和纵向同时滚动'
+    },
+    mouseWheel: {
+      type: Boolean,
+      default: false,
+      descriptor: '开启鼠标滚轮'
+    },
+    bounce: {
+      default: true,
+      descriptor: '是否开启回弹动画'
+    },
+    zoom: {
+      default: false,
+      descriptor: '对滚动内容的缩放'
+    },
+
     topDistance: {
       type: Number,
       default: 70,
@@ -69,96 +112,188 @@ export default {
     }
 
   },
-  data () {
+  data() {
     return {
-      // scroll: null
+      beforePullDown: true,
+      isRebounding: false,
+      isPullingDown: false,
+      isPullUpLoad: false,
+      pullUpDirty: true,
+      pullDownStyle: '',
+      bubbleY: 0
     }
   },
-  mounted () {
-    setTimeout(() => {
+  created() {
+    this.pullDownInitTop = -50
+  },
+  mounted() {
+    setTimeout( () => {
       this._initScroll()
-    }, 20)
+    }, 20 )
   },
   watch: {
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
-    data () {
-      setTimeout(() => {
-        this.refresh()
-      }, this.refreshDelay)
+    data() {
+      setTimeout( () => {
+        this.forceUpdate( true )
+      }, this.refreshDelay )
     }
   },
   methods: {
-    _initScroll () {
-      if (!this.$refs.theScroll) {
+    _initScroll() {
+      if ( !this.$refs.wrapper ) {
         return
       }
-      const pullDownRefresh = {
-        threshold: 50,
-        stop: 0
-      }
+
       let options = {
-        propbeType: this.propbeType,
-        pullDownRefresh,
+        probeType: this.probeType,
         click: this.click,
-        scrollX: this.scrollX
-      }
-      this.scroll = new BScroll(this.$refs.theScroll, options)
-      // 是否派发滚动事件
-      if (this.listenScroll) {
-        this.scroll.on('scroll', (pos) => {
-          this.$emit('scroll', pos)
-        })
-      }
-      // 上拉加载事件
-      if (this.pullUp) {
-        this.scroll.on('pullingUp', () => {
-          if (this.scroll.y <= (this.scroll.maxScrollY + this.bottomDistance)) {
-            this.$emit('pullingUp')
-          }
-        })
+        scrollY: this.freeScroll || this.direction === DIRECTION_V,
+        scrollX: this.freeScroll || this.direction === DIRECTION_H,
+        scrollbar: this.scrollbar,
+        pullDownRefresh: this.pullDownRefresh,
+        pullUpLoad: this.pullUpLoad,
+        startY: this.startY,
+        freeScroll: this.freeScroll,
+        mouseWheel: this.mouseWheel,
+        bounce: this.bounce,
+        zoom: this.zoom
       }
 
-      // 下拉刷新事件
-      if (this.pullDown) {
-        this.scroll.on('pullingDown', () => {
-          this.$emit('pullingDown')
-        })
+      this.scroll = new BScroll( this.$refs.wrapper, options )
+
+      if ( this.listenScroll ) {
+        this.scroll.on( 'scroll', ( pos ) => {
+          this.$emit( 'scroll', pos )
+        } )
       }
 
-      // 列表滚动开始前的事件
-      if (this.beforeScroll) {
-        this.scroll.on('beforeScrollStart', () => {
-          this.$emit('beforeScroll')
-        })
+      if ( this.listenScrollEnd ) {
+        this.scroll.on( 'scrollEnd', ( pos ) => {
+          this.$emit( 'scroll-end', pos )
+        } )
+      }
+
+      if ( this.listenBeforeScroll ) {
+        this.scroll.on( 'beforeScrollStart', () => {
+          this.$emit( 'beforeScrollStart' )
+        } )
+
+        this.scroll.on( 'scrollStart', () => {
+          this.$emit( 'scroll-start' )
+        } )
+      }
+
+      if ( this.pullDownRefresh ) {
+        this._initPullDownRefresh()
+      }
+
+      if ( this.pullUpLoad ) {
+        this._initPullUpLoad()
       }
     },
-    disable () {
+    _initPullDownRefresh() {
+      this.scroll.on( 'pullingDown', () => {
+        this.beforePullDown = false
+        this.isPullingDown = true
+        this.$emit( 'pullingDown' )
+      } )
+      this.scroll.on( 'scroll', ( pos ) => {
+        if ( !this.pullDownRefresh ) {
+          return
+        }
+        if ( this.beforePullDown ) {
+          this.bubbleY = Math.max( 0, pos.y + this.pullDownInitTop )
+          this.pullDownStyle = `top:${Math.min( pos.y + this.pullDownInitTop, 10 )}px`
+        } else {
+          this.bubbleY = 0
+        }
+
+        if ( this.isRebounding ) {
+          this.pullDownStyle = `top:${10 - ( this.pullDownRefresh.stop - pos.y )}px`
+        }
+      } )
+    },
+    _initPullUpLoad() {
+      this.scroll.on( 'pullingUp', () => {
+        this.isPullUpLoad = true
+        this.$emit( 'pullingUp' )
+      } )
+
+    },
+    disable() {
       // 代理better-scroll的disable方法
       this.scroll && this.scroll.disable()
     },
-    enable () {
+    enable() {
       // 代理better-scroll的enable方法
       this.scroll && this.scroll.enable()
     },
-    refresh () {
+    refresh() {
       // 代理better-scroll的refresh方法
       this.scroll && this.scroll.refresh()
     },
-    scrollTo () {
+    scrollTo() {
       // 代理better-scroll的scrollTo方法
-      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+      this.scroll && this.scroll.scrollTo.apply( this.scroll, arguments )
     },
-    scrollToElement () {
+    scrollToElement() {
       // 代理better-scroll的scrollToElement方法
-      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
+      this.scroll && this.scroll.scrollToElement.apply( this.scroll, arguments )
+    },
+    clickItem( e, item ) {
+      console.log( e )
+      this.$emit( 'click', item )
+    },
+    destroy() {
+      this.scroll.destroy()
+    },
+    forceUpdate( dirty ) {
+      if ( this.pullDownRefresh && this.isPullingDown ) {
+        this.isPullingDown = false
+        this._reboundPullDown().then( () => {
+          this._afterPullDown()
+        } )
+      } else if ( this.pullUpLoad && this.isPullUpLoad ) {
+        this.isPullUpLoad = false
+        this.scroll.finishPullUp()
+        this.pullUpDirty = dirty
+        this.refresh()
+      } else {
+        this.refresh()
+      }
+    },
+    _reboundPullDown() {
+      const { stopTime = 600 } = this.pullDownRefresh
+      return new Promise( ( resolve ) => {
+        setTimeout( () => {
+          this.isRebounding = true
+          this.scroll.finishPullDown()
+          resolve()
+        }, stopTime )
+      } )
+    },
+    _afterPullDown() {
+      setTimeout( () => {
+        this.pullDownStyle = `top:${this.pullDownInitTop}px`
+        this.beforePullDown = true
+        this.isRebounding = false
+        this.refresh()
+      }, this.scroll.options.bounceTime )
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.scroll-wrap
-  height 100%
-  .content
-    min-height 101%
+  .list-wrapper
+    position: relative
+    height: 100%
+    overflow: hidden
+    .scroll-content
+      position: relative
+      z-index: 1
+    .list-content
+      position: relative
+      z-index: 10
 </style>

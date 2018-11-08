@@ -1,22 +1,22 @@
 <template>
   <div class="article-list">
-    <!-- <the-scroll :data="list" @pulling-up="loadBottom" @pulling-down="loadTop" ref="theScroll">
+    <the-scroll :probe-type="3" :listen-scroll="true" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
       <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
-    </the-scroll> -->
-    <scroll :data="list" @pulling-up="loadBottom" @pulling-down="loadTop" ref="theScroll">
+    </the-scroll>
+    <!-- <scroll :data="list" @pulling-up="loadBottom" @pulling-down="loadTop" ref="theScroll">
       <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
-    </scroll>
+    </scroll> -->
   </div>
 </template>
 
 <script>
 import { getArticleList } from '@/API'
 import ArticleItem from './articles/articleItem'
-import Scroll from './scroll'
+// import Scroll from './scroll'
 
 export default {
   name: 'article-list',
-  data () {
+  data() {
     return {
       list: [],
       allLoaded: false,
@@ -28,39 +28,39 @@ export default {
   },
   components: {
     ArticleItem,
-    Scroll
+    // Scroll
   },
-  created () {
+  created() {
     this.loadTop()
   },
   methods: {
-    loadTop () {
-      this.getData({
+    loadTop() {
+      this.getData( {
         num: 10,
         start: 0
-      }).then(data => {
+      } ).then( data => {
         this.list = [ ...data ]
-      })
+      } )
     },
-    loadBottom () {
-      if (this.allLoaded) {
+    loadBottom() {
+      if ( this.allLoaded ) {
         return
       }
       let { cur, num } = this.page
-      this.getData({
+      this.getData( {
         num,
-        start: (cur - 1) * num
-      }).then(data => {
+        start: ( cur - 1 ) * num
+      } ).then( data => {
         this.page.cur = cur + 1
         this.list = [ ...this.list, ...data ]
-      })
+      } )
 
     },
-    getData (param) {
-      return getArticleList(param).then(({ rt }) => {
+    getData( param ) {
+      return getArticleList( param ).then( ( { rt } ) => {
         this.allLoaded = rt.end
         return rt.list
-      })
+      } )
     }
   }
 }
