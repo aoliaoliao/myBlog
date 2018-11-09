@@ -16,6 +16,8 @@ import {
   Navbar,
   Button,
   TabItem,
+  Swipe,
+  SwipeItem,
   TabContainer,
   TabContainerItem,
   Loadmore
@@ -40,5 +42,7 @@ Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Loadmore.name, Loadmore)
 Vue.component(Button.name, Button)
+Vue.component(Swipe.name, Swipe)
+Vue.component(SwipeItem.name, SwipeItem)
 
 Vue.component(TheScroll.name, TheScroll)

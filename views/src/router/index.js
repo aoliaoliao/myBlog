@@ -16,7 +16,7 @@ export default new Router({
   {
     path: '/publish',
     name: 'publish',
-    component: () => import('../pages/create/CreateMoment')
+    component: () => import('../pages/create')
   },
   {
     path: '/login',
