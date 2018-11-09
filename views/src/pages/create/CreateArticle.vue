@@ -1,12 +1,12 @@
 <template>
-  <div>
-    statusList
+  <div class="create-article">
+    create-article
   </div>
 </template>
 
 <script>
 export default {
-  name: 'status-list'
+
 }
 </script>
 

@@ -15,7 +15,7 @@
 <script>
 export default {
   name: 'TheMenu',
-  data () {
+  data() {
     return {
       isShowItems: false,
       menus: [
@@ -26,18 +26,19 @@ export default {
       ]
     }
   },
-  created () {
-    let self = this
-    document.addEventListener('click', (e) => {
-      self.isShowItems = false
-    })
+  created() {
+    document.removeEventListener( 'click', this.hideItems )
+    document.addEventListener( 'click', this.hideItems )
   },
   methods: {
-    changeItems () {
+    changeItems() {
       this.isShowItems = !this.isShowItems
     },
-    showItems () {
+    showItems() {
       this.isShowItems = true
+    },
+    hideItems() {
+      this.isShowItems = false
     }
   }
 }

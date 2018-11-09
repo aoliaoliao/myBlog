@@ -11,25 +11,26 @@ export default new Router({
   {
     path: '/home',
     name: 'home',
-    component: () =>
-        import('../pages/home')
+    component: () => import('../pages/home')
+  },
+  {
+    path: '/publish',
+    name: 'publish',
+    component: () => import('../pages/create/CreateMoment')
   },
   {
     path: '/login',
     name: 'login',
-    component: () =>
-        import('../pages/login/AppLogin')
+    component: () => import('../pages/login/AppLogin')
   },
   {
     path: '/register',
     name: 'register',
-    component: () =>
-        import('../pages/login/AppRegister')
+    component: () => import('../pages/login/AppRegister')
   },
   {
     path: '*',
-    component: () =>
-        import('../pages/404')
+    component: () => import('../pages/404')
   }
   ]
 })

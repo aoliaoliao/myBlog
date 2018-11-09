@@ -5,6 +5,10 @@ p, span, div
   font-size 14px
 a
   text-decoration none
+#app
+  .mint-navbar
+    margin-bottom 3px
+
 .icon
   width 1em
   height 1em
@@ -15,6 +19,11 @@ a
   display -webkit-box
   -webkit-box-orient vertical
   overflow hidden
+  -webkit-line-clamp 3
+.one-ellipsis
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
 [aspectratio]
   position relative
 [aspectratio]::before

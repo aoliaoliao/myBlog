@@ -5,7 +5,34 @@
         <slot>
         </slot>
       </div>
+      <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullingUp="isPullingUp">
+        <div class="pullup-wrapper" v-if="pullUpLoad">
+          <div class="before-trigger" v-if="!isPullingUp">
+            上拉加载
+          </div>
+          <div class="after-trigger" v-else>
+            加载中。。。
+          </div>
+        </div>
+      </slot>
     </div>
+    <slot name="pulldown" :pullDownRefresh="pullDownRefresh" :pullDownStyle="pullDownStyle" :beforePullDown="beforePullDown" :isPullingDown="isPullingDown" :bubbleY="bubbleY">
+      <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
+        <div class="before-trigger" v-if="beforePullDown">
+          <!-- <bubble :y="bubbleY"></bubble> -->
+          下拉更新
+        </div>
+        <div class="after-trigger" v-else>
+          <div v-if="isPullingDown" class="loading">
+            <!-- <loading></loading> -->
+            加载中。。。
+          </div>
+          <div v-else>
+            <span>加载完毕</span>
+          </div>
+        </div>
+      </div>
+    </slot>
   </div>
 </template>
 
@@ -117,7 +144,7 @@ export default {
       beforePullDown: true,
       isRebounding: false,
       isPullingDown: false,
-      isPullUpLoad: false,
+      isPullingUp: false,
       pullUpDirty: true,
       pullDownStyle: '',
       bubbleY: 0
@@ -216,7 +243,7 @@ export default {
     },
     _initPullUpLoad() {
       this.scroll.on( 'pullingUp', () => {
-        this.isPullUpLoad = true
+        this.isPullingUp = true
         this.$emit( 'pullingUp' )
       } )
 
@@ -254,8 +281,8 @@ export default {
         this._reboundPullDown().then( () => {
           this._afterPullDown()
         } )
-      } else if ( this.pullUpLoad && this.isPullUpLoad ) {
-        this.isPullUpLoad = false
+      } else if ( this.pullUpLoad && this.isPullingUp ) {
+        this.isPullingUp = false
         this.scroll.finishPullUp()
         this.pullUpDirty = dirty
         this.refresh()
@@ -296,4 +323,15 @@ export default {
     .list-content
       position: relative
       z-index: 10
+    .pulldown-wrapper
+      position: absolute
+      width: 100%
+      left: 0
+      display: flex
+      justify-content center
+      align-items center
+      transition: all
+    .after-trigger
+    .before-trigger
+      margin-top: 10px
 </style>

@@ -6,12 +6,9 @@ export const getUserInfo = params => $http.get('user/getUserInfo', params)
 
 export const getArticleList = params => $http.post('article/list', params)
 export const getArticleDetail = params => $http.get('article/getDetail', params)
-export const getArticleComment = params =>
-  $http.post('article/getComment', params)
+export const getArticleComment = params => $http.post('article/getComment', params)
 export const postArticle = params => $http.post('article/createArticle', params)
-export const postArticleComment = params =>
-  $http.post('article/createComment', params)
+export const postArticleComment = params => $http.post('article/createComment', params)
 
-export const getStatusList = params => $http.get('user/getStatusList', params)
-export const getStatusDetail = params =>
-  $http.get('user/getStatusDetail', params)
+export const getMomentList = params => $http.get('moment/list', params)
+export const getMomentDetail = params => $http.get('moment/detail', params)

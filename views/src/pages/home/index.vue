@@ -8,7 +8,9 @@
     </mt-navbar>
     <mt-tab-container v-model="selected">
       <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.name">
-        <component :is="item.name"></component>
+        <keep-alive>
+          <component :is="item.name"></component>
+        </keep-alive>
       </mt-tab-container-item>
     </mt-tab-container>
   </div>
@@ -16,19 +18,18 @@
 
 <script>
 import UserInfo from '@/components/UserInfo'
-import ArticleList from '@/components/ArticleList'
-import StatusList from '@/components/StatusList'
+import ArticleList from '@/components/articles/ArticleList'
+import MomentList from '@/components/moment/MomentList'
 import { tabPanes } from './const'
 
 export default {
   name: 'home',
   data: () => ( {
-    userInfo: {}, // 作者信息
     tabPanes,
     selected: ''
   } ),
   components: {
-    StatusList,
+    MomentList,
     ArticleList,
     UserInfo
   },

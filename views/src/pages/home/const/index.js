@@ -1,10 +1,9 @@
-export const tabPanes = [
-  {
-    name: 'articleList',
-    label: '文章'
-  },
-  {
-    name: 'statusList',
-    label: '动态'
-  }
+export const tabPanes = [ {
+  name: 'articleList',
+  label: '文章'
+},
+{
+  name: 'momentList',
+  label: '动态'
+}
 ]

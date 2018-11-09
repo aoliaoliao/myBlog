@@ -8,6 +8,9 @@
       <div class="memu">
         <the-menu></the-menu>
       </div>
+      <svg @click="publish" class="icon publish" aria-hidden="true">
+        <use xlink:href="#icon-add"></use>
+      </svg>
     </div>
   </div>
 </template>
@@ -15,28 +18,33 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import TheMenu from './TheMenu'
+import TheHeader from './TheHeader'
 
-const { mapState, mapActions } = createNamespacedHelpers('user')
+const { mapState, mapActions } = createNamespacedHelpers( 'user' )
 
 export default {
   name: 'user-info',
-  data () {
+  data() {
     return {}
   },
   components: {
-    TheMenu
+    TheMenu,
+    TheHeader
   },
   computed: {
-    ...mapState({
+    ...mapState( {
       avatar: state => state.avatar,
       signature: state => state.signature
-    })
+    } )
   },
-  created () {
+  created() {
     this.getUserInfo()
   },
   methods: {
-    ...mapActions([ 'getUserInfo' ])
+    ...mapActions( [ 'getUserInfo' ] ),
+    publish() {
+      this.$router.push( '/publish' )
+    }
   }
 }
 </script>
@@ -68,4 +76,12 @@ export default {
   left 0
   top 0
   padding 20px
+.publish
+  position absolute
+  right 0
+  top 0
+  padding 20px
+  color #3BB048
+  width w = 25px
+  height w
 </style>

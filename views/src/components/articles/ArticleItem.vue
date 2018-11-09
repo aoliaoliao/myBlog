@@ -37,9 +37,10 @@ export default {
 [w-335-200]
   aspect-ratio '335:200'
 .article-item
-  margin 15px
+  padding 10px
   text-align left
-  border-bottom 1px solid #999999
+  margin-bottom 10px
+  // border-bottom 1px solid #999999
   background #ffffff
   .img
     margin-bottom 5px

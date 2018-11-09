@@ -4,7 +4,7 @@ import 'mint-ui/lib/style.css'
 import {
   Row,
   Col,
-  Button,
+  // Button,
   Input,
   Form,
   FormItem,
@@ -14,6 +14,7 @@ import {
 import {
   Cell,
   Navbar,
+  Button,
   TabItem,
   TabContainer,
   TabContainerItem,
@@ -24,7 +25,7 @@ import TheScroll from '../components/TheScroll.vue'
 
 Vue.use(Row)
 Vue.use(Col)
-Vue.use(Button)
+// Vue.use(Button)
 Vue.use(Input)
 Vue.use(Form)
 Vue.use(FormItem)
@@ -38,5 +39,6 @@ Vue.component(TabItem.name, TabItem)
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Loadmore.name, Loadmore)
+Vue.component(Button.name, Button)
 
 Vue.component(TheScroll.name, TheScroll)
