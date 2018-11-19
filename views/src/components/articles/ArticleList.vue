@@ -5,9 +5,6 @@
       <template slot="pullUp"></template>
       <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
     </the-scroll>
-    <!-- <scroll :data="list" @pulling-up="loadBottom" @pulling-down="loadTop" ref="theScroll">
-      <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
-    </scroll> -->
   </div>
 </template>
 
@@ -71,5 +68,5 @@ export default {
 .article-list
   padding-top 10px
   height 667px
-  overflow scroll
+  // overflow scroll
 </style>

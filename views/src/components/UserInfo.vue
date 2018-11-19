@@ -15,6 +15,7 @@
   </div>
 </template>
 
+
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import TheMenu from './TheMenu'

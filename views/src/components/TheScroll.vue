@@ -2,9 +2,10 @@
   <div ref="wrapper" class="list-wrapper">
     <div class="scroll-content">
       <div ref="listWrapper">
-        <slot>
-        </slot>
+
       </div>
+      <slot>
+      </slot>
       <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullingUp="isPullingUp">
         <div class="pullup-wrapper" v-if="pullUpLoad">
           <div class="before-trigger" v-if="!isPullingUp">

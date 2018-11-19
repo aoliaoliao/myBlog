@@ -5,8 +5,12 @@
     </the-header>
     <div class="content">
       <mt-swipe class="mt-swipe" :show-indicators="false" :auto="0" @change="changeType">
-        <mt-swipe-item class="moment">1</mt-swipe-item>
-        <mt-swipe-item class="article">2</mt-swipe-item>
+        <mt-swipe-item class="moment">
+          <create-moment></create-moment>
+        </mt-swipe-item>
+        <mt-swipe-item class="article">
+          <create-article></create-article>
+        </mt-swipe-item>
       </mt-swipe>
     </div>
   </div>
@@ -34,7 +38,6 @@ export default {
   },
   methods: {
     changeType( index ) {
-      alert( index )
     }
   }
 }
@@ -53,10 +56,7 @@ export default {
     right 0
     bottom 0
     overflow auto
+    background #ffffff
     .mt-swipe
       height 100%
-    .moment
-      background #f0f0f0
-    .article
-      background #999999
 </style>

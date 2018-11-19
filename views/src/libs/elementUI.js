@@ -20,7 +20,9 @@ import {
   SwipeItem,
   TabContainer,
   TabContainerItem,
-  Loadmore
+  Loadmore,
+  Field,
+  Toast
 } from 'mint-ui'
 
 import TheScroll from '../components/TheScroll.vue'
@@ -44,5 +46,10 @@ Vue.component(Loadmore.name, Loadmore)
 Vue.component(Button.name, Button)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
+Vue.component(Field.name, Field)
+Vue.prototype.$toast = Toast
+
+
+
 
 Vue.component(TheScroll.name, TheScroll)
