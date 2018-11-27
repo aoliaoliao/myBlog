@@ -5,7 +5,7 @@
     </div>
     <div class="moment-img">
       <img class="size" v-for="img in imgList" :key="img" :src="img">
-      <the-file-btn class="size create-btn" @change="changeImageList" v-show="showImgBtn" >
+      <the-file-btn class="size create-btn" @change="changeImageList" :type="fileTypes" :multiple="true" v-show="showImgBtn">
       </the-file-btn>
     </div>
   </div>
@@ -46,8 +46,8 @@ export default {
     formatImg() {
       return ''
     },
-    changeImageList(){
-      
+    changeImageList() {
+
     },
     publish() {
 

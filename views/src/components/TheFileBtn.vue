@@ -2,7 +2,7 @@
   <div class="the-file-btn">
     <slot>
     </slot>
-    <input @change="selectedFile" class="file-btn" name="fileBtn" type="file" :accept="types" multiple>
+    <input @change="selectedFile" class="file-btn" name="fileBtn" type="file" :accept="types" :multiple="multiple">
   </div>
 </template>
 
@@ -16,8 +16,15 @@ export default {
   props: {
     types: {
       type: Array,
-      default: () => ([])
+      default: () => ([]),
+      descript:'上传文件的限制类型'
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
+      descript: '是否允许多选'
     }
+
   },
   data() {
     return {
