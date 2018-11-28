@@ -52,6 +52,9 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
 
+        // dll
+
+
         /**
          * Source Maps
          */

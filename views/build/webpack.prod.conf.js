@@ -7,7 +7,7 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -75,9 +75,15 @@ const webpackConfig = merge(baseWebpackConfig, {
             },
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
             chunksSortMode: 'dependency',
-            inlineSource: '/site/(.)+.js$'
+            // inlineSource: '/site/(.)+.js$'
         }),
-        new HtmlWebpackInlineSourcePlugin(),
+        new AddAssetHtmlPlugin([{
+            filepath: config.build.assetsRoot + '/dll/dll.vendor.js',
+            hash: true,
+            publicPath: '/dll/',
+            includeSourcemap: false
+        }]),
+        // new HtmlWebpackInlineSourcePlugin(),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         // enable scope hoisting
@@ -113,7 +119,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
 
         new webpack.DllReferencePlugin({
-            manifest: require('../dist/site/vendor-manifest.json')
+            manifest: require(config.build.assetsRoot + '/dll/manifest.vendor.json')
         }),
 
         // copy custom static assets
