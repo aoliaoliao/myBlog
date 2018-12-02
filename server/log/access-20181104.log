@@ -1,0 +1,12 @@
+[0mGET / [33m404 [0m692.991 ms - 1472[0m
+[0mGET /stylesheets/style.css [32m200 [0m5.349 ms - 119[0m
+[0mGET /favicon.ico [33m404 [0m9.955 ms - 1404[0m
+[0mGET /user [32m200 [0m39.206 ms - 16[0m
+[0mGET /user [36m304 [0m3.727 ms - -[0m
+[0mGET /index [33m404 [0m7.231 ms - 1481[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.762 ms - -[0m
+[0mGET /article [33m404 [0m7.252 ms - 1481[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.734 ms - -[0m
+[0mGET /articles [33m404 [0m8.676 ms - 1195[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.411 ms - -[0m
+[0mGET /user [36m304 [0m5.535 ms - -[0m

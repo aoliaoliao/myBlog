@@ -7,6 +7,7 @@ const {
 
 function validateNickName( res, nickName ) {
   let msg
+  
   if ( typeof nickName === 'undefined' ) {
     msg = '用户昵称不可为空'
   } else if ( nickName.length < 2 || nickName.length > 10 ) {
