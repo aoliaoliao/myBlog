@@ -2,7 +2,7 @@
   <div class="the-file-btn">
     <slot>
     </slot>
-    <input @change="selectedFile" class="file-btn" name="fileBtn" type="file" :accept="types" :multiple="multiple">
+    <input @change="selectedFile" class="file-btn" name="fileBtn" type="file" :accept="accept" :multiple="multiple">
   </div>
 </template>
 
@@ -14,28 +14,28 @@ const maxImgSize = 3 * 1024 * 1024
 export default {
   name: 'the-file-btn',
   props: {
-    types: {
-      type: Array,
-      default: () => ([]),
-      descript:'上传文件的限制类型'
+    accept: {
+      type: String,
+      default: '',
+      descript: '上传文件的限制类型'
     },
     multiple: {
       type: Boolean,
       default: false,
       descript: '是否允许多选'
     }
-
   },
-  data() {
+  data () {
     return {
     }
   },
-  created() {
+  created () {
 
   },
   methods: {
-    selectedFile( ev ) {
-      this.$emit('change',ev )
+    selectedFile (ev) {
+      this.$emit('change', ev)
+      ev.target.value = ''
     },
   }
 }
@@ -45,6 +45,7 @@ export default {
 .the-file-btn
   position relative
   .file-btn
+    position absolute
     width 100%
     height 100%
     opacity 0
