@@ -1,12 +1,27 @@
 <template>
   <div class="create-moment">
     <div class="moment-text">
-      <mt-field type="textarea" rows="5" placeholder="For Your Moment" v-model="momentText"></mt-field>
+      <mt-field type="textarea" rows="5" placeholder="For Your Moment" v-model="moment.text"></mt-field>
     </div>
     <div class="moment-img">
-      <img class="size" v-for="img in imgList" :key="img" :src="img">
-      <the-file-btn class="size create-btn" @change="changeImageList" :type="fileTypes" :multiple="true" v-show="showImgBtn">
+      <img class="size" v-for="img in moment.imgList" :key="img" :src="img">
+      <the-file-btn class="size create-btn" @change="changeImageList" :accept="fileTypes" :multiple="true" v-show="showImgBtn">
+        <svg class="icon addIcon" aria-hidden="true">
+          <use xlink:href="#icon-jiahao"></use>
+        </svg>
       </the-file-btn>
+    </div>
+    <div class="config">
+      <div class="item">
+        <div class="title">
+          <svg class="icon private" aria-hidden="true">
+            <use xlink:href="#icon-yinsi"></use>
+          </svg>
+          <span>仅自己可见</span>
+        </div>
+        <mt-switch v-model="moment.isPrivate"></mt-switch>
+      </div>
+
     </div>
   </div>
 </template>
@@ -23,33 +38,46 @@ export default {
   components: {
     TheFileBtn
   },
-  data() {
+  data () {
     return {
-      momentText: '',
-      imgList: [],
-      fileTypes: [
-        'image/jpeg',
-        'image/pjpeg',
-        'image/png'
-      ]
+      moment: {
+        text: '',
+        imgList: [],
+        isPrivate: false
+      },
+      fileTypes: 'image/jpeg,image/pjpeg,image/png',
     }
   },
   computed: {
-    showImgBtn() {
-      return this.imgList.length < maxImgCount
+    showImgBtn () {
+      return this.moment.imgList.length < maxImgCount
     }
   },
-  created() {
+  created () {
 
   },
   methods: {
-    formatImg() {
-      return ''
-    },
-    changeImageList() {
+    formatImg (img) {
+      // if ( img.size > maxImgSize ) return 
+
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.readAsDataURL(img);
+        reader.onloadend = (e) => {
+          resolve(e.target.result)
+        }
+      })
 
     },
-    publish() {
+    changeImageList (ev) {
+      const files = ev.target.files
+      Array.from(files).forEach(v => {
+        this.formatImg(v).then(img => {
+          this.moment.imgList.push(img)
+        })
+      })
+    },
+    publish () {
 
     }
   }
@@ -58,7 +86,6 @@ export default {
 
 <style lang="stylus" scoped>
 imgSize = 115px
-
 .create-moment
   .moment-text
     margin 10px 0
@@ -74,12 +101,24 @@ imgSize = 115px
     &:nth-child(3n)
       margin-right 0
   .create-btn
-    background-color #999999
-</style>
-
-<style lang="stylus">
-.create-moment
-  .mint-field-core
-    font-family -webkit-body
+    background-color #cccccc
+    margin 0
+    display flex
+    align-items center
+    justify-content center
+    .addIcon
+      font-size 36px
+      color #666
+.config
+  margin 100px 10px 50px
+  border-top 1px solid #eeeeee
+  >div
+    display flex
+    align-items center
+    padding 10px 0
+    border-bottom 1px solid #ccc
+    .title
+      flex 1
+      text-align left
 </style>
 
