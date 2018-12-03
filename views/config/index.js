@@ -53,6 +53,7 @@ module.exports = {
         assetsPublicPath: '/',
 
         // dll
+        dllRoot: path.resolve(__dirname, '../dll'),
 
 
         /**

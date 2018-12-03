@@ -1,12 +1,32 @@
 <template>
   <div id="app">
+    <div>{{a}}</div>
+    <div>{{b}}</div>
+    <!-- <div>{{c}}</div> -->
+    <div>
+      <button @click="a = 2">ceshi</button>
+    </div>
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      a: 'a'
+    }
+  },
+  computed: {
+    b() {
+      return this.a + 'b'
+    },
+    c() {
+      console.log( 'c' )
+      return this.b + 'c'
+    }
+  }
 }
 </script>
 

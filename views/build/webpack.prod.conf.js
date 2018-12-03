@@ -16,6 +16,14 @@ const env = process.env.NODE_ENV === 'testing' ?
     require('../config/test.env') :
     require('../config/prod.env')
 
+const createDllReferencePlugin = function() {
+    return utils.dllFiles('*.json').map(v => {
+        return new webpack.DllReferencePlugin({
+            manifest: v
+        })
+    })
+}
+
 const webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({
@@ -78,9 +86,9 @@ const webpackConfig = merge(baseWebpackConfig, {
             // inlineSource: '/site/(.)+.js$'
         }),
         new AddAssetHtmlPlugin([{
-            filepath: config.build.assetsRoot + '/dll/dll.vendor.js',
+            filepath: utils.dllPath('*.js'),
             hash: true,
-            publicPath: '/dll/',
+            publicPath: '/',
             includeSourcemap: false
         }]),
         // new HtmlWebpackInlineSourcePlugin(),
@@ -118,9 +126,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             minChunks: 3
         }),
 
-        new webpack.DllReferencePlugin({
-            manifest: require(config.build.assetsRoot + '/dll/manifest.vendor.json')
-        }),
+        ...createDllReferencePlugin(),
 
         // copy custom static assets
         new CopyWebpackPlugin([{
