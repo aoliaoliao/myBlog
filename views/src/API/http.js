@@ -12,13 +12,13 @@ axios.defaults.timeout = 10000
 axios.interceptors.request.use(
   config => {
     // console.log( this )
-    if (cancelObj[config.url]) {
-      cancelObj[config.url]('request cancel')
+    if (cancelObj[ config.url ]) {
+      cancelObj[ config.url ]('request cancel')
     }
-    cancelObj[config.url] = curCancel
-    const protocol = config.url.split('://')[0]
+    cancelObj[ config.url ] = curCancel
+    const protocol = config.url.split('://')[ 0 ]
 
-    if (!['http', 'https'].includes(protocol)) {
+    if (![ 'http', 'https' ].includes(protocol)) {
       config.url = baseURL + config.url
     }
 
@@ -94,29 +94,27 @@ axios.interceptors.response.use(
 )
 
 export default {
-  get: (url, params = {}) =>
-    axios
-      .get(url, {
-        params,
-        cancelToken: new CancelToken(c => {
-          curCancel = c
-        })
+  get: (url, params = {}) => axios
+    .get(url, {
+      params,
+      cancelToken: new CancelToken(c => {
+        curCancel = c
       })
-      .then(({ data }) => data),
+    })
+    .then(({ data }) => data),
 
-  post: (url, params, config) =>
-    axios
-      .post(
-        url,
-        {
-          ...params
-        },
-        {
-          ...config,
-          cancelToken: new CancelToken(c => {
-            curCancel = c
-          })
-        }
-      )
-      .then(({ data }) => data)
+  post: (url, params, config) => axios.post(
+    url, {
+      ...params
+    }, {
+      headers: {
+        'content-type': 'text/plain;charset=UTF-8'
+      },
+      cancelToken: new CancelToken(c => {
+        curCancel = c
+      }),
+      ...config
+    }
+  )
+    .then(({ data }) => data)
 }

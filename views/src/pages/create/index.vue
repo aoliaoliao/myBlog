@@ -1,17 +1,12 @@
 <template>
   <div class="create">
-    <the-header>
-      <a class="publish">发表</a>
+    <the-header :title="componentObj.title || ''">
+      <a @click="publish" class="publish">发表</a>
     </the-header>
     <div class="content">
-      <mt-swipe class="mt-swipe" :show-indicators="false" :auto="0" @change="changeType">
-        <mt-swipe-item class="moment">
-          <create-moment></create-moment>
-        </mt-swipe-item>
-        <mt-swipe-item class="article">
-          <create-article></create-article>
-        </mt-swipe-item>
-      </mt-swipe>
+      <keep-alive>
+        <component ref="curComponent" :is="componentObj.name || ''"></component>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -30,14 +25,38 @@ export default {
   },
   data() {
     return {
-
+      publishType: ''
+    }
+  },
+  computed: {
+    componentObj() {
+      const id = +this.publishType
+      let comp = {}
+      switch ( id ) {
+        case 0:
+          comp = {
+            name: 'CreateArticle',
+            title: '文章'
+          }
+          break
+        case 1:
+          comp = {
+            name: 'CreateMoment',
+            title: '动态'
+          }
+          break
+      }
+      return comp
     }
   },
   created() {
+    // id 发布内容的类型： 0: 发布文章，1：发布动态
+    this.publishType = this.$route.params.id || 0
 
   },
   methods: {
-    changeType( index ) {
+    publish() {
+      this.$refs.curComponent.publish()
     }
   }
 }

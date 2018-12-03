@@ -1,13 +1,20 @@
 <template>
   <div class="home">
-    <user-info></user-info>
+    <user-info>
+      <div class="memu">
+        <the-menu></the-menu>
+      </div>
+      <svg @click="publish" class="icon publish" aria-hidden="true">
+        <use xlink:href="#icon-add"></use>
+      </svg>
+    </user-info>
     <mt-navbar v-model="selected">
-      <mt-tab-item v-for="item in tabPanes" :key="item.name" :id="item.name">
+      <mt-tab-item v-for="item in tabPanes" :key="item.name" :id="item.id">
         {{item.label}}
       </mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">
-      <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.name">
+      <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
         <keep-alive>
           <component :is="item.name"></component>
         </keep-alive>
@@ -21,28 +28,44 @@ import UserInfo from '@/components/UserInfo'
 import ArticleList from '@/components/articles/ArticleList'
 import MomentList from '@/components/moment/MomentList'
 import { tabPanes } from './const'
+import TheMenu from '@/components/TheMenu'
 
 export default {
   name: 'home',
   data: () => ( {
     tabPanes,
-    selected: ''
+    selected: '',
   } ),
   components: {
     MomentList,
     ArticleList,
-    UserInfo
+    UserInfo,
+    TheMenu
   },
   created() {
-    this.selected = this.tabPanes[ 0 ].name
+    this.selected = this.tabPanes[ 0 ].id
   },
   methods: {
-    chanagePane( tab, event ) {
-      console.log( tab, event )
+    publish() {
+      this.$router.push( '/publish/' + this.selected )
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+.home
+  .memu
+    position absolute
+    left 0
+    top 0
+    padding 20px
+  .publish
+    position absolute
+    right 0
+    top 0
+    padding 20px
+    color #3BB048
+    width w = 25px
+    height w
 </style>

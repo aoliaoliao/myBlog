@@ -8,7 +8,13 @@ export const getArticleList = params => $http.post('article/list', params)
 export const getArticleDetail = params => $http.get('article/getDetail', params)
 export const getArticleComment = params => $http.post('article/getComment', params)
 export const postArticle = params => $http.post('article/createArticle', params)
+export const updateArticle = params => $http.post('article/updateArticle', params)
 export const postArticleComment = params => $http.post('article/createComment', params)
 
 export const getMomentList = params => $http.get('moment/list', params)
 export const getMomentDetail = params => $http.get('moment/detail', params)
+export const createMoment = params => $http.post('moment/create', params, {
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
+})
