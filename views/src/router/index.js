@@ -9,12 +9,15 @@ export default new Router({
     redirect: '/home'
   },
   {
-    path: '/home',
+    path: '/home/',
     name: 'home',
-    component: () => import('../pages/home')
+    component: () => import('../pages/home'),
+    meta: {
+      keepAlive: true
+    }
   },
   {
-    path: '/publish',
+    path: '/publish/:id',
     name: 'publish',
     component: () => import('../pages/create')
   },

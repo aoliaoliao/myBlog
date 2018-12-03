@@ -5,12 +5,7 @@
         <img v-lazy="avatar">
         <p>{{signature}}</p>
       </div>
-      <div class="memu">
-        <the-menu></the-menu>
-      </div>
-      <svg @click="publish" class="icon publish" aria-hidden="true">
-        <use xlink:href="#icon-add"></use>
-      </svg>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -18,7 +13,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import TheMenu from './TheMenu'
+
 import TheHeader from './TheHeader'
 
 const { mapState, mapActions } = createNamespacedHelpers( 'user' )
@@ -29,7 +24,6 @@ export default {
     return {}
   },
   components: {
-    TheMenu,
     TheHeader
   },
   computed: {
@@ -43,9 +37,6 @@ export default {
   },
   methods: {
     ...mapActions( [ 'getUserInfo' ] ),
-    publish() {
-      this.$router.push( '/publish' )
-    }
   }
 }
 </script>
@@ -72,17 +63,5 @@ export default {
     font-size 18px
     line-height 32px
     color #ffffff
-.memu
-  position absolute
-  left 0
-  top 0
-  padding 20px
-.publish
-  position absolute
-  right 0
-  top 0
-  padding 20px
-  color #3BB048
-  width w = 25px
-  height w
+
 </style>

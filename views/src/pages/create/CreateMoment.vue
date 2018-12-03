@@ -4,7 +4,7 @@
       <mt-field type="textarea" rows="5" placeholder="For Your Moment" v-model="moment.text"></mt-field>
     </div>
     <div class="moment-img">
-      <img class="size" v-for="img in moment.imgList" :key="img" :src="img">
+      <img class="size" v-for="( img, index) in moment.imgList" @click="showImg(index)" :key="img" :src="img">
       <the-file-btn class="size create-btn" @change="changeImageList" :accept="fileTypes" :multiple="true" v-show="showImgBtn">
         <svg class="icon addIcon" aria-hidden="true">
           <use xlink:href="#icon-jiahao"></use>
@@ -23,62 +23,86 @@
       </div>
 
     </div>
+    <component :is="componentName" :imgs="moment.imgList" :index="imgIndex" @close="hideImg"></component>
   </div>
 </template>
 
 <script>
 
 const maxImgCount = 9
-const maxImgSize = 3 * 1024 * 1024
-
+import { createMoment } from '@/API'
 import TheFileBtn from '@/components/TheFileBtn'
+import PreviewImg from '@/components/PreviewImg'
 
 export default {
   name: 'create-moment',
   components: {
-    TheFileBtn
+    TheFileBtn,
+    PreviewImg
   },
-  data () {
+  data() {
     return {
       moment: {
         text: '',
         imgList: [],
         isPrivate: false
       },
+      imgIndex: 0,
+      componentName: '',
       fileTypes: 'image/jpeg,image/pjpeg,image/png',
     }
   },
   computed: {
-    showImgBtn () {
+    showImgBtn() {
       return this.moment.imgList.length < maxImgCount
     }
   },
-  created () {
+  created() {
 
   },
   methods: {
-    formatImg (img) {
-      // if ( img.size > maxImgSize ) return 
+    formatImg( img ) {
+      // if ( img.size > maxImgSize ) return
 
-      return new Promise(function (resolve, reject) {
+      return new Promise( function ( resolve, reject ) {
         var reader = new FileReader();
-        reader.readAsDataURL(img);
-        reader.onloadend = (e) => {
-          resolve(e.target.result)
+        reader.readAsDataURL( img );
+        reader.onloadend = ( e ) => {
+          resolve( e.target.result )
         }
-      })
+      } )
 
     },
-    changeImageList (ev) {
-      const files = ev.target.files
-      Array.from(files).forEach(v => {
-        this.formatImg(v).then(img => {
-          this.moment.imgList.push(img)
-        })
-      })
+    changeImageList( ev ) {
+      const files = Array.from( ev.target.files )
+      if ( files.length > maxImgCount ) {
+        return
+      }
+      for ( let i = 0, len = files.length; i < len; i++ ) {
+        let v = files[ i ]
+        if ( this.fileTypes.split( ',' ).indexOf( v.type ) === -1 ) {
+          let name = v.name
+          alert( `${name}图片的格式不符合，已忽略` )
+          continue
+        }
+        this.formatImg( v ).then( img => {
+          this.moment.imgList.push( img )
+        } )
+      }
     },
-    publish () {
-
+    showImg( index ) {
+      this.imgIndex = index || 0
+      this.componentName = 'PreviewImg'
+    },
+    hideImg() {
+      this.componentName = ''
+    },
+    publish() {
+      createMoment( this.moment ).then( res => {
+        console.log( res )
+      } ).catch( err => {
+        console.log( err )
+      } )
     }
   }
 }
@@ -93,6 +117,8 @@ imgSize = 115px
   display flex
   flex-wrap wrap
   padding 0 10px
+  img
+    object-fit cover
   .size
     width imgSize
     height imgSize
