@@ -4,7 +4,7 @@
       <mt-field type="textarea" rows="5" placeholder="For Your Moment" v-model="moment.text"></mt-field>
     </div>
     <div class="moment-img">
-      <img class="size" v-for="( img, index) in moment.imgList" @click="showImg(index)" :key="img" :src="img">
+      <img class="size" v-for="( img, index) in moment.imgs" @click="showImg(index)" :key="img" :src="img">
       <the-file-btn class="size create-btn" @change="changeImageList" :accept="fileTypes" :multiple="true" v-show="showImgBtn">
         <svg class="icon addIcon" aria-hidden="true">
           <use xlink:href="#icon-jiahao"></use>
@@ -23,7 +23,7 @@
       </div>
 
     </div>
-    <component :is="componentName" :imgs="moment.imgList" :index="imgIndex" @close="hideImg"></component>
+    <component :is="componentName" :imgs="moment.imgs" :index="imgIndex" @close="hideImg"></component>
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
     return {
       moment: {
         text: '',
-        imgList: [],
+        imgs: [],
         isPrivate: false
       },
       imgIndex: 0,
@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     showImgBtn() {
-      return this.moment.imgList.length < maxImgCount
+      return this.moment.imgs.length < maxImgCount
     }
   },
   created() {
@@ -86,7 +86,7 @@ export default {
           continue
         }
         this.formatImg( v ).then( img => {
-          this.moment.imgList.push( img )
+          this.moment.imgs.push( img )
         } )
       }
     },
