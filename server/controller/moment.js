@@ -1,6 +1,9 @@
 const momentModel = require("../Dao").Moment
-const { formatResponse } = require("../utils")
-const momentConst = require('../conf')['gloableConst'].momentConst
+const formidable = require('formidable')
+const fs = require('fs')
+const { formatResponse, createUUID } = require("../utils")
+const { momentConst, staticPublicPath } = require('../conf')['gloableConst']
+const userId = '0120f580-f92a-11e8-8db7-791c9005fcff'
 
 function validateMoment(moment) {
     let isValidate = true
@@ -17,38 +20,79 @@ function validateMoment(moment) {
     } else if (video) {}
 
     return { isValidate, message }
+}
+
+function storeImgs(imgs = []) {
+    if (!imgs.length) {
+        return []
+    }
+    let localImgs = []
+    imgs.forEach(img => {
+        const date = new Date()
+        const fileName = `${staticPublicPath}/${date.getFullYear()}/${date.getMonth() + 1 }/${date.getDate()}/${createUUID()}.png`
+        img.lastModifiedDate = date
+
+        img.name = fileName;
+        localImgs.push(img)
+    })
+
+    return localImgs;
 
 }
 
 module.exports = {
-    addMoment(req, res, next) {
-        let body = req.body
-        let result = validateMoment(body)
+    addMoment: async function(req, res, next) {
+        const date = new Date()
+        const form = new formidable.IncomingForm()
+        // form.uploadDir = `${staticPublicPath}/${date.getFullYear()}_${date.getMonth() + 1 }/${date.getDate()}`
+        form.uploadDir = `${staticPublicPath}`
+        form.keepExtensions = true
+        form.multiples = true
+        form.parse(req, function(err, fields, files) {
+            console.log('fields : ', fields)
+            console.log('files : ', files)
 
-        if (!result.isValidate) {
-            res.send(formatResponse(0, result.message))
-            return
-        }
+            const text = fields.text
+            const imgs = files.imgs
 
-        momentModel.create(body).then(rt => {
-            res.send(formatResponse(1, '发表成功'))
-        }).catch(err => {
-            res.send(formatResponse(0, '发表失败，请重试'))
+            let valid = validateMoment({
+                text,
+                imgs
+            })
+
+            if (!valid.isValidate) {
+                res.send(formatResponse(0, result.message))
+                return
+            }
+
+            let localImgs = []
+            const targetDir = `${staticPublicPath}/${date.getFullYear()}_${date.getMonth() + 1 }/${date.getDate()}`
+
+            if (!fs.existsSync(targetDir)) {
+                console.log('fs.mkdir( targetDir)', await fs.mkdir(targetDir))
+                await fs.mkdir(targetDir)
+            }
+
+            for (let i = 0, len = imgs.length; i < len; i++) {
+                const img = imgs[i]
+                // const fileType = img.type
+                const targetFile = path.posix.join(targetDir, img.name)
+                await fs.rename(img.path, targetFile).then(res => {
+                    localImgs.push(targetFile)
+                })
+            }
+
+            momentModel.create({
+                text,
+                userId: userId,
+                imgs: localImgs.join(',')
+            }).then(rt => {
+                res.send(formatResponse(1, '发表成功'))
+            }).catch(err => {
+                res.send(formatResponse(0, err))
+            })
+
         })
 
-    },
-    // 新增单个用户
-    addUser(req, res, next) {
-        let body = req.body
-        if (validateUser(res, body)) {
-            body.password = cryptoPasswordByMD5(body.password)
-            userModel.create(body).then(rt => {
-                console.log('新增单个用户: rt', rt)
-                res.send(formatResponse(1, rt.id))
-            }).catch(err => {
-                console.log('新增单个用户: err', err)
-                res.send(formatResponse(0, err.message))
-            })
-        }
-    },
+    }
 }

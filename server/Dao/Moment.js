@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(1000),
             comment: 'moment的具体内容'
         },
-        img: {
+        imgs: {
             type: DataTypes.STRING(1000),
             comment: 'moment关联图片的位置，用英文逗号分隔'
         },
