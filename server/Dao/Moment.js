@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-    let User = sequelize.define('Moment', {
+    let Moment = sequelize.define('Moment', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
@@ -31,8 +31,9 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
 
-    User.associate = function(models) {
+    Moment.associate = function(models) {
         // models.User.hasMany(models.Task);
+        models.Moment.belongsTo(models.User, { foreignKey: 'userId' })
     };
-    return User
+    return Moment
 }

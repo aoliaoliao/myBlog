@@ -5,7 +5,8 @@
     "scripts": {
         "start": "node ./bin/www",
         "dev": "node-dev ./bin/www",
-        "syncdb": "node ./syncDataBase.js"
+        "syncdb:force": "node ./syncDataBase.js --force true",
+        "syncdb": "node ./syncDataBase.js --force false"
     },
     "dependencies": {
         "cookie-parser": "~1.4.3",
@@ -21,6 +22,7 @@
     },
     "devDependencies": {
         "file-stream-rotator": "^0.3.1",
+        "minimist": "^1.2.0",
         "mysql": "^2.16.0"
     }
 }

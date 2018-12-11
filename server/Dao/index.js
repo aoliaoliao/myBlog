@@ -35,9 +35,4 @@ Object.keys(database).forEach(modelName => {
 database.sequelize = sequelize
 database.Sequelize = Sequelize
 
-// database.sequelize.sync({
-//   force: true,
-//   logging: true
-// })
-
 module.exports = database
