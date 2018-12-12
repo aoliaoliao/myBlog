@@ -29,11 +29,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(1000),
             comment: 'moment关联视频的位置，只有一个'
         }
+    }, {
+        freezeTableName: true
     })
 
     Moment.associate = function(models) {
         // models.User.hasMany(models.Task);
-        models.Moment.belongsTo(models.User, { foreignKey: 'userId' })
+        models.Moment.belongsTo(models.User, { foreignKey: 'userId', as: 'momentAuthor' })
+        models.Moment.hasMany(models.Comment, { foreignKey: 'momentId', as: 'momentComments' })
     };
     return Moment
 }
