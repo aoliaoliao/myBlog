@@ -4,7 +4,7 @@
       <mt-field type="textarea" rows="5" placeholder="For Your Moment" v-model="moment.text"></mt-field>
     </div>
     <div class="moment-img">
-      <img class="size" v-for="( img, index) in moment.imgList" @click="showImg(index)" :key="img" :src="img">
+      <img class="size" v-for="( img, index) in showImgs" @click="showImg(index)" :key="img" :src="img">
       <the-file-btn class="size create-btn" @change="changeImageList" :accept="fileTypes" :multiple="true" v-show="showImgBtn">
         <svg class="icon addIcon" aria-hidden="true">
           <use xlink:href="#icon-jiahao"></use>
@@ -23,7 +23,7 @@
       </div>
 
     </div>
-    <component :is="componentName" :imgs="moment.imgList" :index="imgIndex" @close="hideImg"></component>
+    <component :is="componentName" :imgs="showImgs" :index="imgIndex" @close="hideImg"></component>
   </div>
 </template>
 
@@ -44,9 +44,10 @@ export default {
     return {
       moment: {
         text: '',
-        imgList: [],
+        imgs: [],
         isPrivate: false
       },
+      showImgs: [],
       imgIndex: 0,
       componentName: '',
       fileTypes: 'image/jpeg,image/pjpeg,image/png',
@@ -54,7 +55,7 @@ export default {
   },
   computed: {
     showImgBtn() {
-      return this.moment.imgList.length < maxImgCount
+      return this.moment.imgs.length < maxImgCount
     }
   },
   created() {
@@ -66,7 +67,8 @@ export default {
 
       return new Promise( function ( resolve, reject ) {
         var reader = new FileReader();
-        reader.readAsDataURL( img );
+        // reader.readAsDataURL( img )
+        reader.readAsBinaryString( img )
         reader.onloadend = ( e ) => {
           resolve( e.target.result )
         }
@@ -86,7 +88,8 @@ export default {
           continue
         }
         this.formatImg( v ).then( img => {
-          this.moment.imgList.push( img )
+          this.moment.imgs.push( img )
+          this.showImgs.push( URL.createObjectURL( img ) )
         } )
       }
     },

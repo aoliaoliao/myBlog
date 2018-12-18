@@ -11,8 +11,8 @@
     </div>
     <div class="content">
       <p v-if="content.text.length > 0">{{content.text}}</p>
-      <!-- <template v-if="content.img.length > 0">
-        <img :src="content.img[0]" />
+      <!-- <template v-if="content.imgs.length > 0">
+        <img :src="content.imgs[0]" />
       </template>
       <template v-if="content.video.length > 0">
         <img :src="content.video" />
@@ -56,7 +56,7 @@ export default {
     content() {
       return this.item.content || {
         text: '',
-        img: [],
+        imgs: [],
         video: ''
       }
     },
