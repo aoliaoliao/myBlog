@@ -11,7 +11,14 @@ module.exports = {
             idle: 10000,
             evict: 10000,
             acquire: 10000
-        }
+        },
+        timezone: '+08:00',
+        define: {
+            charset: 'utf8',
+            dialectOptions: {
+                collate: 'utf8_general_ci'
+            }
+        },
         // logging:function(){
         // },
         // benchmark: true
