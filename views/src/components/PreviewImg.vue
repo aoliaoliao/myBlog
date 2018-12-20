@@ -5,7 +5,7 @@
       <mt-swipe-item class="mt-swipe-item" v-for="( item, index ) in imgs" :key="index" :id="index">
         <keep-alive>
           <div class="img">
-            <img v-lazy="item"> </img>
+            <img v-lazy="item" />
           </div>
         </keep-alive>
       </mt-swipe-item>

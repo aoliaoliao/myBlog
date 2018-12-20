@@ -4,7 +4,8 @@ import { Notification } from 'element-ui'
 let curCancel
 let cancelObj = {}
 const { CancelToken } = axios
-let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
+// let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
+let baseURL = 'http://localhost:3000/'
 
 axios.defaults.headers = {}
 axios.defaults.timeout = 10000

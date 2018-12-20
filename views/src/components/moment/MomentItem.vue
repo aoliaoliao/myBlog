@@ -5,8 +5,8 @@
         <img aspectratio-content v-lazy="user.avatar" />
       </div>
       <div class="user">
-        <p class="name one-ellipsis">{{user.name}}</p>
-        <p class="sign one-ellipsis">{{user.sign}}</p>
+        <p class="name one-ellipsis">{{user.nickName}}</p>
+        <p class="sign one-ellipsis">{{user.signature}}</p>
       </div>
     </div>
     <div class="content">
@@ -23,8 +23,8 @@
     </div>
     <div class="comments">
       <p class="comments-item" v-for="( item, index ) in comments" :key="index">
-        <span class="comment-name">{{item.name}}</span>
-        <span class="comment-content">{{item.content}}</span>
+        <span class="comment-name">{{ item.commentAuthor.nickName }}</span>
+        <span class="comment-content">{{item.text }}</span>
       </p>
     </div>
   </div>
@@ -51,17 +51,18 @@ export default {
     //   return this.moment
     // },
     user() {
-      return this.item.user || {}
+      return this.item.momentAuthor || {}
     },
     content() {
-      return this.item.content || {
-        text: '',
-        imgs: [],
-        video: ''
+      let { text = '', imgs = [], video = '' } = this.item
+      return {
+        text,
+        imgs,
+        video
       }
     },
     comments() {
-      return this.item.comments || []
+      return this.item.momentComments || []
     },
     createDate() {
       let createDate = this.item.createDate
@@ -132,6 +133,7 @@ export default {
     margin-right 10px
   .comment-content
     color #999999
+    word-break break-all
 
 </style>
 

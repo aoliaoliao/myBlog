@@ -72,9 +72,7 @@ async function formatRequest(req) {
             const text = fields.text
             const imgs = Array.isArray(files.imgs) ?
                 files.imgs :
-                files.imgs ?
-                [files.imgs] :
-                []
+                files.imgs ? [files.imgs] : []
             resolve({ text, imgs })
         })
     })
@@ -95,7 +93,7 @@ module.exports = async function(req, res, next) {
         res.send(formatResponse(0, valid.message))
         // 删除已储存的图片
         localImgs.forEach(img => {
-            fsPromises.unlink(img)
+            fs.unlink(img)
         })
         return
     }
