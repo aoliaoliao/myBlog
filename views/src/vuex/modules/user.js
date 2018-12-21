@@ -1,5 +1,6 @@
 import { getUserInfo } from '@/API'
 
+
 let state = {
   avatar: '',
   nickname: '',
@@ -8,7 +9,7 @@ let state = {
 
 let mutations = {
   setUserAvatar(state, avatar = '') {
-    state.avatar = avatar || '@/assets/user_avatar.jpg'
+    state.avatar = avatar
   },
   setUserNickname(state, nickname = '') {
     state.nickname = nickname

@@ -5,10 +5,10 @@ const CommentModel = require("../../../Dao").Comment;
 const { formatResponse } = require("../../../utils");
 const { staticNetPrefix } = require('../../../conf')['gloableConst']
 
-const momentAttributes = ['id', 'text', 'imgs', 'video', 'updatedAt']
+const momentAttributes = ['id', 'userId', 'text', 'imgs', 'video', 'updatedAt']
 const userAttributes = ['nickName', 'avatar', 'signature', 'id']
-const commentAttributes = ['userId', 'parentCommentId', 'text', 'id', 'updatedAt']
-const commentUserAttributes = ['nickName']
+const commentAttributes = ['userId', 'userName', 'parentCommentId', 'text', 'id', 'updatedAt']
+// const commentUserAttributes = ['nickName']
 
 function createMomentOption(limit, offset) {
     return {
@@ -24,11 +24,11 @@ function createMomentOption(limit, offset) {
                 model: CommentModel,
                 as: 'momentComments',
                 attributes: commentAttributes,
-                include: [{
-                    model: userModel,
-                    as: 'commentAuthor',
-                    attributes: commentUserAttributes
-                }]
+                // include: [{
+                //     model: userModel,
+                //     as: 'commentAuthor',
+                //     attributes: commentUserAttributes
+                // }]
             },
         ]
     }

@@ -4,8 +4,6 @@
       <div ref="listWrapper">
 
       </div>
-      <slot>
-      </slot>
       <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullingUp="isPullingUp">
         <div class="pullup-wrapper" v-if="pullUpLoad">
           <div class="before-trigger" v-if="!isPullingUp">
@@ -15,6 +13,8 @@
             加载中。。。
           </div>
         </div>
+      </slot>
+      <slot>
       </slot>
     </div>
     <slot name="pulldown" :pullDownRefresh="pullDownRefresh" :pullDownStyle="pullDownStyle" :beforePullDown="beforePullDown" :isPullingDown="isPullingDown" :bubbleY="bubbleY">
@@ -142,7 +142,7 @@ export default {
   },
   data() {
     return {
-      beforePullDown: true,
+      beforePullDown: false,
       isRebounding: false,
       isPullingDown: false,
       isPullingUp: false,

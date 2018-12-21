@@ -23,7 +23,7 @@
     </div>
     <div class="comments">
       <p class="comments-item" v-for="( item, index ) in comments" :key="index">
-        <span class="comment-name">{{ item.commentAuthor.nickName }}</span>
+        <span class="comment-name">{{ item.userName }}</span>
         <span class="comment-content">{{item.text }}</span>
       </p>
     </div>

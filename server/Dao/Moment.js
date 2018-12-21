@@ -13,11 +13,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             comment: '关联的用户ID',
         },
-        userName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '关联用户的昵称'
-        },
         commentsId: {
             type: DataTypes.STRING(1000),
             comment: '关联的评论ID，用英文逗号分隔',
