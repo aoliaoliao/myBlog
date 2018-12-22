@@ -4,6 +4,8 @@
       <div ref="listWrapper">
 
       </div>
+      <slot>
+      </slot>
       <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullingUp="isPullingUp">
         <div class="pullup-wrapper" v-if="pullUpLoad">
           <div class="before-trigger" v-if="!isPullingUp">
@@ -14,8 +16,7 @@
           </div>
         </div>
       </slot>
-      <slot>
-      </slot>
+
     </div>
     <slot name="pulldown" :pullDownRefresh="pullDownRefresh" :pullDownStyle="pullDownStyle" :beforePullDown="beforePullDown" :isPullingDown="isPullingDown" :bubbleY="bubbleY">
       <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
@@ -142,7 +143,7 @@ export default {
   },
   data() {
     return {
-      beforePullDown: false,
+      beforePullDown: true,
       isRebounding: false,
       isPullingDown: false,
       isPullingUp: false,
@@ -174,7 +175,7 @@ export default {
       }
 
       let options = {
-        probeType: this.probeType,
+        propbeType: this.propbeType,
         click: this.click,
         scrollY: this.freeScroll || this.direction === DIRECTION_V,
         scrollX: this.freeScroll || this.direction === DIRECTION_H,

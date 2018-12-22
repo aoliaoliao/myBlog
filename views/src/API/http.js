@@ -105,9 +105,7 @@ export default {
     .then(({ data }) => data),
 
   post: (url, params, config) => axios.post(
-    url, {
-      ...params
-    }, {
+    url, params, {
       headers: {
         'content-type': 'text/plain;charset=UTF-8'
       },
@@ -118,4 +116,8 @@ export default {
     }
   )
     .then(({ data }) => data)
+    .catch(err => {
+      console.log(err)
+    }),
+
 }

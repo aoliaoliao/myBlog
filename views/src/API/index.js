@@ -15,6 +15,6 @@ export const getMomentList = params => $http.get('moment/list', params)
 export const getMomentDetail = params => $http.get('moment/detail', params)
 export const createMoment = params => $http.post('moment/create', params, {
   headers: {
-    'Content-Type': 'multipart/form-data;charset=UTF-8'
+    'Content-type': 'multipart/form-data'
   }
 })

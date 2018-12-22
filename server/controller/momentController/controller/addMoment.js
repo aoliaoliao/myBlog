@@ -68,6 +68,7 @@ async function formatRequest(req) {
         form.parse(req, (err, fields, files) => {
             if (err) {
                 reject(err)
+                throw err
             }
             const text = fields.text
             const imgs = Array.isArray(files.imgs) ?
@@ -108,6 +109,6 @@ module.exports = async function(req, res, next) {
             res.send(formatResponse(1, '发表成功'))
         })
         .catch(err => {
-            res.send(formatResponse(0, err))
+            res.send(formatResponse(0, '发表失败'))
         })
 }

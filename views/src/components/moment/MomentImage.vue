@@ -44,7 +44,7 @@ export default {
       return ''
     },
     validateFile( type ) {
-      return this.fileTypes.includes(type)
+      return this.fileTypes.includes( type )
     },
     changeImageList( ev ) {
       let inValidate = []
@@ -56,13 +56,13 @@ export default {
         } else {
           inValidate.push( file.name )
         }
-      })
-      if( this.inValidate.length > 0 ) {
-        this.$toast({
-          message: `${this.inValidate.join(',')}不符合格式`,
+      } )
+      if ( this.inValidate.length > 0 ) {
+        this.$toast( {
+          message: `${this.inValidate.join( ',' )}不符合格式`,
           position: 'bottom',
           duration: 5000
-        })
+        } )
       }
     },
     publish() {
