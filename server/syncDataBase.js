@@ -1,4 +1,3 @@
-const database = require('./Dao')
 var minimist = require('minimist');
 var args = minimist(process.argv.slice(2), {
     boolean: ['force']
@@ -6,6 +5,11 @@ var args = minimist(process.argv.slice(2), {
 
 let isForce = args.force
 let tables = args['_']
+let env = args.env
+
+process.env.NODE_ENV = env
+
+const database = require('./Dao')
 
 if (tables) {
     // 获取Sequelize的实例
