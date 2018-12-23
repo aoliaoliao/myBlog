@@ -49,7 +49,7 @@ export default {
   props: {
     data: {
       type: Array,
-      default: function () {
+      default () {
         return []
       },
       descriptor: '列表数据'
@@ -140,7 +140,7 @@ export default {
     }
 
   },
-  data() {
+  data () {
     return {
       beforePullDown: true,
       isRebounding: false,
@@ -151,25 +151,25 @@ export default {
       bubbleY: 0
     }
   },
-  created() {
+  created () {
     this.pullDownInitTop = -50
   },
-  mounted() {
-    setTimeout( () => {
+  mounted () {
+    setTimeout(() => {
       this._initScroll()
-    }, 20 )
+    }, 20)
   },
   watch: {
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
-    data() {
-      setTimeout( () => {
-        this.forceUpdate( true )
-      }, this.refreshDelay )
+    data () {
+      setTimeout(() => {
+        this.forceUpdate(true)
+      }, this.refreshDelay)
     }
   },
   methods: {
-    _initScroll() {
-      if ( !this.$refs.wrapper ) {
+    _initScroll () {
+      if (!this.$refs.wrapper) {
         return
       }
 
@@ -188,101 +188,101 @@ export default {
         zoom: this.zoom
       }
 
-      this.scroll = new BScroll( this.$refs.wrapper, options )
+      this.scroll = new BScroll(this.$refs.wrapper, options)
 
-      if ( this.listenScroll ) {
-        this.scroll.on( 'scroll', ( pos ) => {
-          this.$emit( 'scroll', pos )
-        } )
+      if (this.listenScroll) {
+        this.scroll.on('scroll', (pos) => {
+          this.$emit('scroll', pos)
+        })
       }
 
-      if ( this.listenScrollEnd ) {
-        this.scroll.on( 'scrollEnd', ( pos ) => {
-          this.$emit( 'scroll-end', pos )
-        } )
+      if (this.listenScrollEnd) {
+        this.scroll.on('scrollEnd', (pos) => {
+          this.$emit('scroll-end', pos)
+        })
       }
 
-      if ( this.listenBeforeScroll ) {
-        this.scroll.on( 'beforeScrollStart', () => {
-          this.$emit( 'beforeScrollStart' )
-        } )
+      if (this.listenBeforeScroll) {
+        this.scroll.on('beforeScrollStart', () => {
+          this.$emit('beforeScrollStart')
+        })
 
-        this.scroll.on( 'scrollStart', () => {
-          this.$emit( 'scroll-start' )
-        } )
+        this.scroll.on('scrollStart', () => {
+          this.$emit('scroll-start')
+        })
       }
 
-      if ( this.pullDownRefresh ) {
+      if (this.pullDownRefresh) {
         this._initPullDownRefresh()
       }
 
-      if ( this.pullUpLoad ) {
+      if (this.pullUpLoad) {
         this._initPullUpLoad()
       }
     },
-    _initPullDownRefresh() {
-      this.scroll.on( 'pullingDown', () => {
+    _initPullDownRefresh () {
+      this.scroll.on('pullingDown', () => {
         this.beforePullDown = false
         this.isPullingDown = true
-        this.$emit( 'pullingDown' )
-      } )
-      this.scroll.on( 'scroll', ( pos ) => {
-        if ( !this.pullDownRefresh ) {
+        this.$emit('pullingDown')
+      })
+      this.scroll.on('scroll', (pos) => {
+        if (!this.pullDownRefresh) {
           return
         }
-        if ( this.beforePullDown ) {
-          this.bubbleY = Math.max( 0, pos.y + this.pullDownInitTop )
-          this.pullDownStyle = `top:${Math.min( pos.y + this.pullDownInitTop, 10 )}px`
+        if (this.beforePullDown) {
+          this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop)
+          this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`
         } else {
           this.bubbleY = 0
         }
 
-        if ( this.isRebounding ) {
-          this.pullDownStyle = `top:${10 - ( this.pullDownRefresh.stop - pos.y )}px`
+        if (this.isRebounding) {
+          this.pullDownStyle = `top:${10 - (this.pullDownRefresh.stop - pos.y)}px`
         }
-      } )
+      })
     },
-    _initPullUpLoad() {
-      this.scroll.on( 'pullingUp', () => {
+    _initPullUpLoad () {
+      this.scroll.on('pullingUp', () => {
         this.isPullingUp = true
-        this.$emit( 'pullingUp' )
-      } )
+        this.$emit('pullingUp')
+      })
 
     },
-    disable() {
+    disable () {
       // 代理better-scroll的disable方法
       this.scroll && this.scroll.disable()
     },
-    enable() {
+    enable () {
       // 代理better-scroll的enable方法
       this.scroll && this.scroll.enable()
     },
-    refresh() {
+    refresh () {
       // 代理better-scroll的refresh方法
       this.scroll && this.scroll.refresh()
     },
-    scrollTo() {
+    scrollTo () {
       // 代理better-scroll的scrollTo方法
-      this.scroll && this.scroll.scrollTo.apply( this.scroll, arguments )
+      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
     },
-    scrollToElement() {
+    scrollToElement () {
       // 代理better-scroll的scrollToElement方法
-      this.scroll && this.scroll.scrollToElement.apply( this.scroll, arguments )
+      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
     },
-    clickItem( e, item ) {
-      console.log( e )
-      this.$emit( 'click', item )
+    clickItem (e, item) {
+      console.log(e)
+      this.$emit('click', item)
     },
-    destroy() {
+    destroy () {
       this.scroll.destroy()
     },
-    forceUpdate( dirty ) {
-      if ( this.pullDownRefresh && this.isPullingDown ) {
+    forceUpdate (dirty) {
+      if (this.pullDownRefresh && this.isPullingDown) {
         this.isPullingDown = false
-        this._reboundPullDown().then( () => {
+        this._reboundPullDown().then(() => {
           this._afterPullDown()
-        } )
-      } else if ( this.pullUpLoad && this.isPullingUp ) {
+        })
+      } else if (this.pullUpLoad && this.isPullingUp) {
         this.isPullingUp = false
         this.scroll.finishPullUp()
         this.pullUpDirty = dirty
@@ -291,48 +291,47 @@ export default {
         this.refresh()
       }
     },
-    _reboundPullDown() {
+    _reboundPullDown () {
       const { stopTime = 600 } = this.pullDownRefresh
-      return new Promise( ( resolve ) => {
-        setTimeout( () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
           this.isRebounding = true
           this.scroll.finishPullDown()
           resolve()
-        }, stopTime )
-      } )
+        }, stopTime)
+      })
     },
-    _afterPullDown() {
-      setTimeout( () => {
+    _afterPullDown () {
+      setTimeout(() => {
         this.pullDownStyle = `top:${this.pullDownInitTop}px`
         this.beforePullDown = true
         this.isRebounding = false
         this.refresh()
-      }, this.scroll.options.bounceTime )
+      }, this.scroll.options.bounceTime)
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .list-wrapper
-    position: relative
-    height: 100%
-    overflow: hidden
-    .scroll-content
-      position: relative
-      z-index: 1
-    .list-content
-      position: relative
-      z-index: 10
-    .pulldown-wrapper
-      position: absolute
-      width: 100%
-      left: 0
-      display: flex
-      justify-content center
-      align-items center
-      transition: all
-    .after-trigger
-    .before-trigger
-      margin-top: 10px
+.list-wrapper
+  position relative
+  height 100%
+  overflow hidden
+  .scroll-content
+    position relative
+    z-index 1
+  .list-content
+    position relative
+    z-index 10
+  .pulldown-wrapper
+    position absolute
+    width 100%
+    left 0
+    display flex
+    justify-content center
+    align-items center
+    transition all
+  .after-trigger, .before-trigger
+    margin-top 10px
 </style>
