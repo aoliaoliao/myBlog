@@ -3,6 +3,7 @@ const formidable = require('formidable')
 const validator = require('validator')
 const fs = require('fs')
 const fsPromises = fs.promises;
+const uuidv1 = require('uuid/v1');
 const util = require('util')
 const articleModel = require("../../../Dao").Article;
 const { formatResponse } = require("../../../utils");
@@ -38,15 +39,16 @@ function validateArticle(article) {
 }
 
 
+
+
 // 图片存储的目标位置
 async function createTargetDir() {
     const date = new Date()
     targetDir = `${staticPublicPath}/articles/${date.getFullYear()}_${date.getMonth() + 1}/${date.getDate()}/`
 
     if (!fs.existsSync(targetDir)) {
-        const mkdir = util.promisify(fs.mkdir)
         try {
-            await mkdir(targetDir, {
+            await fsPromises.mkdir(targetDir, {
                 recursive: true
             })
         } catch (error) {
@@ -60,6 +62,15 @@ async function createTargetDir() {
     return targetDir
 }
 
+async function setNewPath(name) {
+    const index = name.lastIndexOf('.')
+    const uploadDir = await createTargetDir()
+    const ext = name.slice(index, name.length)
+    const fName = name.slice(0, index)
+    return `${uploadDir}/${fName + uuidv1() + ext}`
+
+}
+
 async function formatRequest(req) {
     const form = new formidable.IncomingForm()
     form.uploadDir = await createTargetDir()
@@ -71,9 +82,25 @@ async function formatRequest(req) {
                 reject(err)
                 throw err
             }
+
+
             let { name = '', author = '', summary = '', isPrivate = 1, isComment = 1 } = fields
             let { articleAddress = '', summaryImage = '' } = files
-            resolve({ name, author, summary, summaryImage, articleAddress, isPrivate, isComment })
+
+            // 将图片和文章重命名
+            // fsPromises.renameFile(articleAddress),
+
+            let articlePath = setNewPath(articleAddress.name)
+            let summaryImgPath = setNewPath(summaryImage.name)
+
+            try {
+                await Promise.all([fsPromises.rename(articleAddress.path, articleNewPath), fsPromises.rename(summaryImage.path, summaryNewPath)])
+            } catch (error) {
+                articlePath = articleAddress.path
+                summaryImgPath = summaryImage.path
+            }
+
+            resolve({ name, author, summary, articlePath, summaryImgPath, isPrivate, isComment })
         })
     })
 }
@@ -83,14 +110,9 @@ function formatModelData(article) {
         // TODO： 读取文章内容并截取最多300个字符
         article.summary = ''
     }
-    if (article.summaryImage) {
-        article.summaryImage = article.summaryImage.path
-    } else {
+    if (!article.summaryImgPath) {
         // TODO： 读取文章内容并选择第一张合规的图片（类似微信分享）
         article.summaryImage = ''
-    }
-    if (article.articleAddress) {
-        article.articleAddress = article.articleAddress.path
     }
     delete article.id
     return article
