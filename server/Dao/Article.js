@@ -1,25 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
     let Article = sequelize.define('Article', {
         id: {
-            type: DataTypes.UUID, // uniqid
-            defaultValue: DataTypes.UUIdV1,
-            validate: {
-                isUUID: 1
-            },
-            primaryKey: true,
-            comment: '文章ID'
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
+            comment: '动态ID，主键',
+            primaryKey: true
         },
         name: {
             type: DataTypes.STRING(100),
-            validate: {
-                notNull: true,
-                notEmpty: true,
-                len: {
-                    args: [1, 50],
-                    msg: '文章名称长度为1位至50位'
-                }
-            },
             comment: '文章名称'
+        },
+        summary: {
+            type: DataTypes.STRING(500),
+            comment: '文章简介'
+        },
+        summaryImage: {
+            type: DataTypes.STRING(200),
+            comment: '文章简介的配图'
+        },
+        articleAddress: {
+            type: DataTypes.STRING(500),
+            allowNull: false,
+            comment: '上传文件存储的位置，不允许为空'
         },
         mdAddress: {
             type: DataTypes.STRING(500),
@@ -27,38 +29,30 @@ module.exports = (sequelize, DataTypes) => {
         },
         htmlAddress: {
             type: DataTypes.STRING(500),
-            comment: '.html / .hml 文件所在的位置'
+            comment: '.html / .htm 文件所在的位置'
         },
         author: {
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIdV1,
-            validate: {
-                isUUID: 1
-            },
+            allowNull: false,
             comment: '作者，外键关联 Users 表',
         },
-        types: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIdV1,
-            validate: {
-                isUUID: 1
-            },
-            comment: '类别，外键关联 Types 表'
+        isPrivate: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+            comment: '是否私有，1：私有，0：非私有'
         },
         isComment: {
-            type: DataTypes.BOOLEAN,
-            comment: '是否允许评论'
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+            comment: '是否允许评论，1：允许，0：不允许'
         }
-
     }, {
         freezeTableName: true
     })
 
     Article.associate = function(models) {
-        models.Article.belongsTo(models.User, {
-            foreignKey: 'author',
-            as: 'articleAuthor'
-        })
+        models.Article.belongsTo(models.User, { foreignKey: 'author', as: 'articleAuthor' })
+        models.Article.hasMany(models.Comment, { foreignKey: 'articleId', as: 'articleComments' })
     };
     return Article
 }

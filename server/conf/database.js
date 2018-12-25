@@ -1,7 +1,7 @@
 module.exports = {
     development: {
-        // host: '47.101.150.40',
-        host: 'localhost',
+        host: '47.101.150.40',
+        // host: 'localhost',
         username: 'root',
         password: '123456',
         database: 'nodejs',

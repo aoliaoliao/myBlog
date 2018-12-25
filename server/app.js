@@ -35,6 +35,7 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+
 app.use(`/${staticPublicPath}`, express.static(path.join(__dirname, staticPublicPath)));
 
 app.all('*', function(req, res, next) {

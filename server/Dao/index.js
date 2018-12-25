@@ -4,7 +4,7 @@
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV === 'production' ? 'production' : 'development'
 const dbConfig = require(path.join(__dirname, '..', 'conf'))['database']
 const database = {}
 const basename = path.basename(__filename)
