@@ -3,10 +3,8 @@ const formidable = require('formidable')
 const validator = require('validator')
 const fs = require('fs')
 const fsPromises = fs.promises;
-const uuidv1 = require('uuid/v1');
-const util = require('util')
 const articleModel = require("../../../Dao").Article;
-const { formatResponse } = require("../../../utils");
+const { formatResponse, createUUID, getFileExt } = require("../../../utils");
 const { staticPublicPath, articleConst } = require('../../../conf')['gloableConst']
 
 const userId = '0120f580-f92a-11e8-8db7-791c9005fcff'
@@ -19,8 +17,8 @@ function validateArticle(article) {
         errMsg = '请上传文章'
         return errMsg
     }
-    let articleName = articleAddress.name
-    let ext = articleName.slice(articleName.lastIndexOf('.') + 1, articleName.length)
+
+    let ext = getFileExt(articleAddress.name)
 
     if (articleConst.articleTypes.indexOf(ext) === -1) {
         errMsg = '暂时只接受 .md 或 .html 格式的文章'
@@ -56,18 +54,13 @@ async function createTargetDir() {
               正确路径应该为：${targetDir},
               当前暂存路径为：${staticPublicPath}
               `)
-            targetDir = `${staticPublicPath}`
+            targetDir = `${staticPublicPath}/`
         }
     }
     return targetDir
 }
 
-async function setNewPath(name) {
-    const index = name.lastIndexOf('.')
-    const uploadDir = await createTargetDir()
-    const ext = name.slice(index, name.length)
-    const fName = name.slice(0, index)
-    return `${uploadDir}/${fName + uuidv1() + ext}`
+function resetFileName(file, preDir, name) {
 
 }
 
@@ -77,30 +70,35 @@ async function formatRequest(req) {
     form.keepExtensions = true
     form.multiples = true
     return new Promise((resolve, reject) => {
-        form.parse(req, (err, fields, files) => {
+        form.parse(req, async (err, fields, files) => {
             if (err) {
                 reject(err)
                 throw err
             }
 
-
             let { name = '', author = '', summary = '', isPrivate = 1, isComment = 1 } = fields
             let { articleAddress = '', summaryImage = '' } = files
 
-            // 将图片和文章重命名
-            // fsPromises.renameFile(articleAddress),
+            // if ( articleAddress ) {
+            //   resetFileName( articleAddress, form.uploadDir, name )
+            // }
+            // if ( summaryImage ) {
 
-            let articlePath = setNewPath(articleAddress.name)
-            let summaryImgPath = setNewPath(summaryImage.name)
+            // }
 
-            try {
-                await Promise.all([fsPromises.rename(articleAddress.path, articleNewPath), fsPromises.rename(summaryImage.path, summaryNewPath)])
-            } catch (error) {
-                articlePath = articleAddress.path
-                summaryImgPath = summaryImage.path
-            }
+            // // 将图片和文章重命名
+            // const uuid = createUUID()
+            // let articlePath = form.uploadDir + name + uuid + getFileExt(articleAddress.name)
+            // let summaryImgPath = form.uploadDir + name + uuid + getFileExt(summaryImage.name)
 
-            resolve({ name, author, summary, articlePath, summaryImgPath, isPrivate, isComment })
+            // try {
+            //     await Promise.all([fsPromises.rename(articleAddress.path, articlePath), fsPromises.rename1(summaryImage.path, summaryImgPath)])
+            // } catch (error) {
+            //     articlePath = articleAddress.path
+            //     summaryImgPath = summaryImage.path
+            // }
+
+            resolve({ name, author, summary, articleAddress, summaryImage, isPrivate, isComment })
         })
     })
 }
@@ -110,7 +108,7 @@ function formatModelData(article) {
         // TODO： 读取文章内容并截取最多300个字符
         article.summary = ''
     }
-    if (!article.summaryImgPath) {
+    if (!article.summaryImage) {
         // TODO： 读取文章内容并选择第一张合规的图片（类似微信分享）
         article.summaryImage = ''
     }
