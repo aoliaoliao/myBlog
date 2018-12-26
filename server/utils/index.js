@@ -43,5 +43,14 @@ module.exports = {
      */
     createUUID() {
         return uuidv1()
+    },
+
+    /* 
+     * 获取文件的后缀名,包含 . 号
+     */
+    getFileExt(fileName) {
+        const index = fileName.lastIndexOf('.')
+        const ext = fileName.slice(index, fileName.length)
+        return ext
     }
 }

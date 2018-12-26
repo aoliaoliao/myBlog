@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         momentId: {
             type: DataTypes.UUID,
-            comment: '关联的评论ID',
+            comment: '关联的动态ID',
         },
         parentCommentId: {
             type: DataTypes.UUID,

@@ -17,17 +17,26 @@ if (tables) {
 
     tables.forEach(v => {
         // 查询该表所有的外键关系
+        let allConstraint = []
+
         queryInterface.getForeignKeyReferencesForTable(v).then(res => {
             res.forEach(textrow => {
                 // 删除指定表的指定约束
-                queryInterface.removeConstraint(v, textrow.constraintName)
+                // queryInterface.removeConstraint(v, textrow.constraintName)
+                allConstraint.push(queryInterface.removeConstraint(v, textrow.constraintName).then(res => {
+                    return res
+                }))
+            })
+            Promise.all(allConstraint).then(res => {
+                database[v].sync({
+                    force: isForce,
+                    alter: true,
+                    logging: true
+                })
             })
         })
-        database[v].sync({
-            force: isForce,
-            alter: true,
-            logging: true
-        })
+
+
     })
 } else {
     database.sequelize.sync({
