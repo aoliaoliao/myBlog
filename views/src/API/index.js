@@ -1,8 +1,8 @@
 import $http from './http'
 
-export const addUser = params => $http.post('user/addUser', params)
+export const addUser = params => $http.post('user/create', params)
 export const updateUser = params => $http.post('user/updateUser', params)
-export const getUserInfo = params => $http.get('user/getUserInfo', params)
+export const getUserInfo = params => $http.get('user/detail', params)
 
 export const getArticleList = params => $http.post('article/list', params)
 export const getArticleDetail = params => $http.get('article/getDetail', params)
@@ -15,6 +15,6 @@ export const getMomentList = params => $http.get('moment/list', params)
 export const getMomentDetail = params => $http.get('moment/detail', params)
 export const createMoment = params => $http.post('moment/create', params, {
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8'
+    'Content-type': 'multipart/form-data'
   }
 })

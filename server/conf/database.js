@@ -1,6 +1,7 @@
 module.exports = {
     development: {
-        host: '47.101.150.40',
+        // host: '47.101.150.40',
+        host: 'localhost',
         username: 'root',
         password: '123456',
         database: 'nodejs',
@@ -11,7 +12,14 @@ module.exports = {
             idle: 10000,
             evict: 10000,
             acquire: 10000
-        }
+        },
+        timezone: '+08:00',
+        define: {
+            charset: 'utf8',
+            dialectOptions: {
+                collate: 'utf8_general_ci'
+            }
+        },
         // logging:function(){
         // },
         // benchmark: true
@@ -34,7 +42,7 @@ module.exports = {
         // benchmark: true
     },
     production: {
-        host: 'localhost',
+        host: '47.101.150.40',
         username: 'root',
         password: '123456',
         database: 'nodejs',
@@ -45,7 +53,14 @@ module.exports = {
             idle: 10000,
             evict: 10000,
             acquire: 10000
-        }
+        },
+        timezone: '+08:00',
+        define: {
+            charset: 'utf8',
+            dialectOptions: {
+                collate: 'utf8_general_ci'
+            }
+        },
         // logging:function(){
         // },
         // benchmark: true

@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             comment: '关联的用户ID',
         },
+        userName: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+            comment: '关联用户的昵称'
+        },
         articleId: {
             type: DataTypes.UUID,
             comment: '关联的文章ID',

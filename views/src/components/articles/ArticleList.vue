@@ -1,10 +1,15 @@
 <template>
   <div class="article-list">
-    <the-scroll :probe-type="3" :listen-scroll="true" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
-      <template slot="pulldown"></template>
-      <template slot="pullUp"></template>
-      <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
-    </the-scroll>
+    <template v-if="list.length > 0">
+      <the-scroll :propbe-type="3" :listen-scroll="true" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
+        <template slot="pulldown"></template>
+        <template slot="pullUp"></template>
+        <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
+      </the-scroll>
+    </template>
+    <div v-else>
+      暂无数据
+    </div>
   </div>
 </template>
 
@@ -18,7 +23,7 @@ export default {
   data() {
     return {
       list: [],
-      allLoaded: false,
+      isOver: false,
       page: {
         num: 10,
         cur: 1
@@ -34,31 +39,35 @@ export default {
   },
   methods: {
     loadTop() {
-      this.getData( {
-        num: 10,
-        start: 0
-      } ).then( data => {
+      this.page.cur = 1
+      this.getData().then( data => {
         this.list = [ ...data ]
       } )
     },
     loadBottom() {
-      if ( this.allLoaded ) {
+      if ( this.isOver ) {
         return
       }
-      let { cur, num } = this.page
-      this.getData( {
-        num,
-        start: ( cur - 1 ) * num
-      } ).then( data => {
-        this.page.cur = cur + 1
+      this.page.cur = this.page.cur + 1
+      this.getData().then( data => {
         this.list = [ ...this.list, ...data ]
       } )
     },
-    getData( param ) {
-      return getArticleList( param ).then( ( { rt } ) => {
-        this.allLoaded = rt.end
+    getData() {
+      return getArticleList( this.formatParam() ).then( ( { rt } ) => {
+        this.isOver = rt.end
         return rt.list
+      } ).catch( err => {
+        this.isOver = true
+        return []
       } )
+    },
+    formatParam() {
+      let { cur, num } = this.page
+      return {
+        num,
+        start: ( cur - 1 ) * num
+      }
     }
   }
 }

@@ -16,6 +16,7 @@
           </div>
         </div>
       </slot>
+
     </div>
     <slot name="pulldown" :pullDownRefresh="pullDownRefresh" :pullDownStyle="pullDownStyle" :beforePullDown="beforePullDown" :isPullingDown="isPullingDown" :bubbleY="bubbleY">
       <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
@@ -174,7 +175,7 @@ export default {
       }
 
       let options = {
-        probeType: this.probeType,
+        propbeType: this.propbeType,
         click: this.click,
         scrollY: this.freeScroll || this.direction === DIRECTION_V,
         scrollX: this.freeScroll || this.direction === DIRECTION_H,

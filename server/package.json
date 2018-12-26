@@ -3,10 +3,10 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "node ./bin/www",
-        "dev": "node-dev ./bin/www",
-        "syncdb:force": "node ./syncDataBase.js --force true",
-        "syncdb": "node ./syncDataBase.js --force false"
+        "start": "set NODE_ENV=production && node ./bin/www",
+        "dev": "set NODE_ENV=development && node-dev ./bin/www",
+        "product": "set NODE_ENV=production && node ./bin/www",
+        "syncdb": "node ./syncDataBase.js "
     },
     "dependencies": {
         "cookie-parser": "~1.4.3",

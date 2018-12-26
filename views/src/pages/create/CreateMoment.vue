@@ -78,18 +78,34 @@ export default {
     changeImageList( ev ) {
       const files = Array.from( ev.target.files )
       if ( files.length > maxImgCount ) {
+        this.$toast( {
+          message: `最多允许上传${maxImgCount}张图片`,
+          position: 'bottom',
+          duration: 2000
+        } )
         return
       }
+      let inValidate = []
       for ( let i = 0, len = files.length; i < len; i++ ) {
         let v = files[ i ]
         if ( this.fileTypes.split( ',' ).indexOf( v.type ) === -1 ) {
           let name = v.name
-          alert( `${name}图片的格式不符合，已忽略` )
+          inValidate.push( name )
           continue
         }
-        this.formatImg( v ).then( img => {
-          this.moment.imgs.push( img )
-          this.showImgs.push( URL.createObjectURL( img ) )
+        this.moment.imgs.push( v )
+        this.showImgs.push( URL.createObjectURL( v ) )
+
+        // this.formatImg( v ).then( img => {
+        //   // this.moment.imgs.push( img )
+        //   // this.showImgs.push( URL.createObjectURL( img ) )
+        // } )
+      }
+      if ( inValidate.length > 0 ) {
+        this.$toast( {
+          message: `${inValidate.join( ' ' )}不符合格式`,
+          position: 'bottom',
+          duration: 5000
         } )
       }
     },
@@ -101,10 +117,18 @@ export default {
       this.componentName = ''
     },
     publish() {
-      createMoment( this.moment ).then( res => {
-        console.log( res )
+      let param = new FormData()
+      for ( const [ key, value ] of Object.entries( this.moment ) ) {
+        param.append( key, value )
+      }
+      createMoment( param ).then( res => {
+        this.$route.back()
       } ).catch( err => {
-        console.log( err )
+        this.$toast( {
+          message: `发表失败，请重试`,
+          position: 'bottom',
+          duration: 2000
+        } )
       } )
     }
   }

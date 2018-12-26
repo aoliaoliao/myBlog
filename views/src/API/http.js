@@ -4,7 +4,9 @@ import { Notification } from 'element-ui'
 let curCancel
 let cancelObj = {}
 const { CancelToken } = axios
-let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
+// let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
+// let baseURL = 'http://localhost:3000/'
+let baseURL = 'http://47.101.150.40:3000/'
 
 axios.defaults.headers = {}
 axios.defaults.timeout = 10000
@@ -95,26 +97,26 @@ axios.interceptors.response.use(
 
 export default {
   get: (url, params = {}) => axios
-    .get(url, {
-      params,
-      cancelToken: new CancelToken(c => {
-        curCancel = c
+      .get(url, {
+        params,
+        cancelToken: new CancelToken(c => {
+          curCancel = c
+        })
       })
-    })
-    .then(({ data }) => data),
+      .then(({ data }) => data),
 
-  post: (url, params, config) => axios.post(
-    url, {
-      ...params
-    }, {
-      headers: {
-        'content-type': 'text/plain;charset=UTF-8'
-      },
-      cancelToken: new CancelToken(c => {
-        curCancel = c
-      }),
-      ...config
-    }
-  )
-    .then(({ data }) => data)
+  post: (url, params, config) => axios
+      .post(url, params, {
+        headers: {
+          'content-type': 'text/plain;charset=UTF-8'
+        },
+        cancelToken: new CancelToken(c => {
+          curCancel = c
+        }),
+        ...config
+      })
+      .then(({ data }) => data)
+      .catch(err => {
+        console.log(err)
+      })
 }

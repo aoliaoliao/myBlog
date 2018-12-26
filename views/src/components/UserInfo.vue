@@ -2,7 +2,7 @@
   <div aspectratio w-375-375>
     <div aspectratio-content class="user-wrap">
       <div class="avatar">
-        <img v-lazy="avatar">
+        <img v-lazy="userAvatar">
         <p>{{signature}}</p>
       </div>
       <slot></slot>
@@ -30,7 +30,10 @@ export default {
     ...mapState( {
       avatar: state => state.avatar,
       signature: state => state.signature
-    } )
+    } ),
+    userAvatar() {
+      return this.avatar || '/static/images/user_avatar.jpg'
+    }
   },
   created() {
     this.getUserInfo()

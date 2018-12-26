@@ -1,10 +1,19 @@
 <template>
   <div class="moment-list">
-    <the-scroll :probe-type="3" :listen-scroll="true" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
-      <template slot="pulldown"></template>
-      <template slot="pullUp"></template>
-      <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item>
-    </the-scroll>
+    <template v-if="list.length > 0">
+      <the-scroll v-if="list.length > 0" :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
+        <template slot="pulldown"></template>
+        <template slot="pullUp"></template>
+        <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item>
+        <div v-if=" isOver">
+          到底了哦~
+        </div>
+      </the-scroll>
+
+    </template>
+    <div v-else>
+      暂无数据
+    </div>
     <!-- <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item> -->
   </div>
 </template>
@@ -21,7 +30,11 @@ export default {
   data() {
     return {
       isOver: false,
-      list: []
+      list: [],
+      page: {
+        num: 10,
+        cur: 1
+      }
     }
   },
   created() {
@@ -37,20 +50,32 @@ export default {
       if ( this.isOver ) {
         return
       }
+      this.page.cur = this.page.cur + 1
       this.getData().then( res => {
         this.list = [ ...this.list, ...res ]
       } )
     },
     loadTop() {
+      this.page.cur = 1
       this.getData().then( res => {
         this.list = [ ...res ]
       } )
     },
     getData() {
-      return getMomentList().then( ( { rt } ) => {
+      return getMomentList( this.formatParam() ).then( ( { rt } ) => {
         this.isOver = rt.end
         return rt.list
+      } ).catch( res => {
+        this.isOver = true
+        return []
       } )
+    },
+    formatParam() {
+      let { cur, num } = this.page
+      return {
+        num,
+        start: ( cur - 1 ) * num
+      }
     }
   }
 
