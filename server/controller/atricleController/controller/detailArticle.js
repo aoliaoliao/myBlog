@@ -10,8 +10,8 @@ const userAttributes = ['nickName', 'avatar', 'signature']
 // const commentAttributes = ['userId', 'userName', 'parentCommentId', 'text', 'updatedAt']
 
 
-function readArticle(path) {
-    fs.createReadStream(path, {
+function readArticleStream(path) {
+    let stream = fs.createReadStream(path, {
         encoding: 'utf8',
         start: 0,
         end: 64 * 1024
@@ -30,12 +30,7 @@ function setQueryOption() {
 function queryArticleById(id) {
     return articleModel.findById(id, setQueryOption()).then(result => {
         console.log('result', result)
-        result = result.map(v => {
-            let row = v.dataValues
-            row.summaryImage = staticNetPrefix + row.summaryImage.split(path.sep).join('/')
-            return row
-        })
-        return result
+        return result.dataValues
     }).catch(err => {
         console.log('err', err)
         return false
@@ -45,5 +40,10 @@ function queryArticleById(id) {
 
 module.exports = async function(req, res, next) {
     const { id } = req.query
-
+    if ( !id ){
+      res.send(formatResponse(0, '未获取到文章ID'))
+      return
+    }
+    let result = await queryArticleById( id )
+    
 }
