@@ -12,7 +12,7 @@ module.exports = {
     },
     articleConst: {
         nameLength: 50,
-        articleTypes: ['md', 'html'],
+        articleTypes: ['.md', '.html'],
         summaryLength: 300
     }
 }

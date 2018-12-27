@@ -6,6 +6,7 @@ var fs = require('fs');
 var FileStreamRotator = require('file-stream-rotator')
 var routers = require('./routes');
 const { staticPublicPath } = require('./conf')['gloableConst']
+const parseFormData = require('./middlewares/parseFormData')
 
 var app = express();
 
@@ -24,6 +25,7 @@ let accessLogStream = FileStreamRotator.getStream({
         encoding: 'utf-8'
     }
 })
+
 app.use(logger('dev', {
     stream: accessLogStream,
     immediate: true
@@ -51,7 +53,11 @@ app.all('*', function(req, res, next) {
     }
 });
 
+// 格式化 FormData 请求
+app.use(parseFormData)
+
 routers(app)
+
 
 app.use((req, res, next) => {
     res.setTimeout(50000, () => {
@@ -69,8 +75,6 @@ app.use(function(err, req, res, next) {
     // render the error page
     res.status(err.status || 500);
     res.render('error');
-
-
 });
 
 module.exports = app;
