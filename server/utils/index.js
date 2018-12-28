@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const uuidv1 = require('uuid/v1')
 
+
 module.exports = {
     /* 
      *   生成响应的数据格式
@@ -52,5 +53,17 @@ module.exports = {
         const index = fileName.lastIndexOf('.')
         const ext = fileName.slice(index, fileName.length)
         return ext
+    },
+
+    /* 
+     * 获取文件路径的目录，包含最后一个 \
+     */
+    getFileDir(fileName) {
+        const index = fileName.lastIndexOf('\\')
+        const dir = fileName.slice(0, index + 1)
+        return dir
     }
+
+
+
 }
