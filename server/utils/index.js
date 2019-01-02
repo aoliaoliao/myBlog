@@ -29,6 +29,28 @@ module.exports = {
     },
 
     /* 
+     *   对数据库的查询结果进行格式化
+     */
+    formatDBResult(data) {
+        function getDataValues(value) {
+            Object.keys(value).some(key => {
+                let has = false
+                if (value[key] && value[key].hasOwnProperty('dataValues')) {
+                    has = true
+                    value[key] = value[key]['dataValues']
+                    getDataValues(value[key])
+                }
+                return has
+            })
+        }
+        if (data.dataValues) {
+            getDataValues(data.dataValues)
+            return data.dataValues
+        }
+        return data
+    },
+
+    /* 
      * 对密码进行加密处理
      * 
      * */
