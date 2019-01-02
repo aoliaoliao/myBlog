@@ -4,13 +4,7 @@ const articleModel = require("../../../Dao").Article;
 const userModel = require("../../../Dao").User;
 const { formatResponse, formatDBResult } = require("../../../utils");
 
-const articleAttributes = [
-    "id",
-    "author",
-    "name",
-    "updatedAt",
-    "articleAddress",
-];
+const articleAttributes = ["id", "author", "name", "updatedAt", "articleAddress"];
 const userAttributes = ["nickName", "avatar", "signature"];
 // const commentAttributes = ['userId', 'userName', 'parentCommentId', 'text', 'updatedAt']
 
@@ -58,7 +52,7 @@ function queryArticleById(id) {
 }
 
 module.exports = async function(req, res, next) {
-    const { id } = req.query;
+    const { id } = req.param;
     if (!id) {
         res.send(formatResponse(0, "未获取到文章ID"));
         return;
