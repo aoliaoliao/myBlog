@@ -53,6 +53,11 @@ export default {
 
     },
     formatArticle( article ) {
+      myMarked.setOptions( {
+        highlight: function ( code, lang, callback ) {
+
+        }
+      } );
       this.articleContent = myMarked( article )
     }
   }

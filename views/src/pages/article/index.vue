@@ -20,9 +20,9 @@ export default {
   computed: {
   },
   created() {
-    this.articleId = this.$route.id || ''
+    this.articleId = this.$route.params.id || ''
     if ( !this.articleId ) {
-      this.$route.back()
+      this.$router.back()
     }
   },
   methods: {

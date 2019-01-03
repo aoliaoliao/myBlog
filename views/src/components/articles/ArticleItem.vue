@@ -1,11 +1,11 @@
 <template>
   <div class="article-item">
     <div aspectratio w-335-200 class="img">
-      <img aspectratio-content v-lazy="item.image" />
+      <img aspectratio-content v-lazy="item.summaryImage" />
     </div>
     <div class="item" @click.stop="goDetail">
-      <h1 class="title ellipsis">{{item.title}}</h1>
-      <div class="date">{{item.updateDate}}</div>
+      <h1 class="title ellipsis">{{item.name}}</h1>
+      <div class="date">{{item.updatedAt}}</div>
       <p class="summary ellipsis">{{item.summary}}</p>
     </div>
   </div>
@@ -27,6 +27,7 @@ export default {
   methods: {
     goDetail() {
       // this.$router.push()
+      this.$router.push( `/article/${this.item.id}` )
     }
   }
 }
