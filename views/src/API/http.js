@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { Notification } from 'element-ui';
+import axios from 'axios'
+import { Notification } from 'element-ui'
 
 let curCancel
 let cancelObj = {}
 const { CancelToken } = axios
-let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/';
-// let baseURL = 'http://localhost:3000/';
+// let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
+let baseURL = 'http://localhost:3000/'
 // let baseURL = 'http://47.101.150.40:3000/'
 
 axios.defaults.headers = {}
@@ -46,46 +46,46 @@ axios.interceptors.response.use(
     if (error && error.response) {
       switch (error.response.status) {
         case 400:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 401:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 403:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 404:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 405:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 408:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 500:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 501:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 502:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 503:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 504:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         case 505:
-          error.message = '错误请求';
+          error.message = '错误请求'
           break
         default:
           break
       }
     } else {
-      error.message = '连接到服务器失败';
+      error.message = '连接到服务器失败'
     }
     Notification({
       type: 'warning',
@@ -97,42 +97,26 @@ axios.interceptors.response.use(
 
 export default {
   get: (url, params = {}) => axios
-      .get(url, {
-        params,
-        cancelToken: new CancelToken(c => {
-          curCancel = c
-<<<<<<< HEAD
-        })
-=======
-        }),
->>>>>>> 72357ba2b3a505f32984bafd76d8ff872ce6c729
+    .get(url, {
+      params,
+      cancelToken: new CancelToken(c => {
+        curCancel = c
       })
-      .then(({ data }) => data),
+    })
+    .then(({ data }) => data),
 
   post: (url, params, config) => axios
-      .post(url, params, {
-        headers: {
-<<<<<<< HEAD
-          'content-type': 'text/plain;charset=UTF-8'
-=======
-          'content-type': 'text/plain;charset=UTF-8',
->>>>>>> 72357ba2b3a505f32984bafd76d8ff872ce6c729
-        },
-        cancelToken: new CancelToken(c => {
-          curCancel = c
-        }),
-<<<<<<< HEAD
-        ...config
-=======
-        ...config,
->>>>>>> 72357ba2b3a505f32984bafd76d8ff872ce6c729
-      })
-      .then(({ data }) => data)
-      .catch(err => {
-        console.log(err)
-<<<<<<< HEAD
-      })
-=======
+    .post(url, params, {
+      headers: {
+        'content-type': 'text/plain;charset=UTF-8'
+      },
+      cancelToken: new CancelToken(c => {
+        curCancel = c
       }),
->>>>>>> 72357ba2b3a505f32984bafd76d8ff872ce6c729
+      ...config
+    })
+    .then(({ data }) => data)
+    .catch(err => {
+      console.log(err)
+    })
 }
