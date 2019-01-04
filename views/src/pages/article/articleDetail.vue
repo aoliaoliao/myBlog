@@ -9,13 +9,13 @@
 <script>
 
 export default {
-  data(){
+  data() {
     return {
 
     }
   },
 
-  created(){
+  created() {
 
   },
 
