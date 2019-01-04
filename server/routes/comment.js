@@ -1,32 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const articleController = require('../controller/atricleController')
+const express = require('express')
+const router = express.Router()
+const commentController = require('../controller/commentController')
 
-router.get('/', articleController.listArticle);
-
-router.get('/list', articleController.listArticle);
-/* 
- * 获取文章的首屏内容，包括作者信息，可供首屏展示的文章内容
- * @param<id>: string  文章ID
- */
-router.get('/content', articleController.detailArticle);
-/* 
- * 获取文章的评论
- * @param<id>: string 文章ID
+/*
+ * 列出指定的评论
+ * @param<type>: int 评论类型。0：文章，1：动态
+ * @param<id> : string 指定的文章或动态的ID
  * @param<start>: int 查询的起始位置
- * @param<num>: int 查询的数量·
+ * @param<num> : int 查询的数量·
  */
-router.get('/comments', articleController.detailArticle);
-/* 
- * 新增文章
- */
-router.post('/create', articleController.addArticle);
+router.post('/list', commentController.listComments)
 
-
-
-// router.get( '/delete', articlesModel.delete );
-// router.post( '/update', articlesModel.update );
-// router.get( '/refresh', articlesModel.refresh )
-
-
-module.exports = router;
+module.exports = router

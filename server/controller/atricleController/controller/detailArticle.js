@@ -15,29 +15,26 @@ const userAttributes = ['nickName', 'avatar', 'signature']
 // const commentAttributes = ['userId', 'userName', 'parentCommentId', 'text', 'updatedAt']
 
 function readArticleStream(path, func, res) {
-    let content = "";
+  let content = ''
 
-    let fReadStream = fs.createReadStream(path, {
-        encoding: "utf8",
-        start: 0
-    });
+  let fReadStream = fs.createReadStream(path, {
+    encoding: 'utf8',
+    start: 0
+  })
 
+  fReadStream.on('data', chunk => {
+    if (chunk) {
+      content += chunk
+    }
+    // res.write(chunk)
+  })
 
-    fReadStream.on("data", chunk => {
-        if (chunk) {
-            content += chunk;
-        }
-        // res.write(chunk)
-    });
+  fReadStream.on('close', () => {
+    func(content)
+    // res.end()
+  })
 
-    fReadStream.on("close", () => {
-        func(content);
-        // res.end()
-    });
-
-    fReadStream.on("error", () => {
-
-    })
+  fReadStream.on('error', () => {})
 }
 
 function setQueryOption() {
@@ -63,30 +60,26 @@ function queryArticleById(id) {
 }
 
 module.exports = async function(req, res, next) {
-    const { id } = req.query;
-    if (!id) {
-        res.send(formatResponse(0, "未获取到文章ID"));
-        return;
-    }
+  const { id } = req.query
+  if (!id) {
+    res.send(formatResponse(0, '未获取到文章ID'))
+    return
+  }
 
-    let result = await queryArticleById(id);
-    const articlePath = result.articleAddress || ''
+  let result = await queryArticleById(id)
+  const articlePath = result.articleAddress || ''
 
-    if (articlePath && fs.existsSync(articlePath)) {
-        function setResponse(rt) {
-            delete result.articleAddress;
-            if (rt === null) {
-                res.send(formatResponse(0, "文章内容读取错误"));
-            } else {
-                result.article = rt;
-                res.send(formatResponse(1, result));
-            }
-        }
-        readArticleStream(articlePath, setResponse, res);
-    } else {
-        res.send(formatResponse(0, "未找到相关文章"));
+  if (articlePath && fs.existsSync(articlePath)) {
+    function setResponse(rt) {
+      delete result.articleAddress
+      if (rt === null) {
+        res.send(formatResponse(0, '文章内容读取错误'))
+      } else {
+        result.article = rt
+        res.send(formatResponse(1, result))
+      }
     }
-    readArticleStream(result.articleAddress, setResponse)
+    readArticleStream(articlePath, setResponse, res)
   } else {
     res.send(formatResponse(0, '未找到相关文章'))
   }
