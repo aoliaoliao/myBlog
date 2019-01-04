@@ -22,6 +22,11 @@ export default new Router({
     component: () => import('../pages/create')
   },
   {
+    path: '/article/:id',
+    name: 'article',
+    component: () => import('../pages/article')
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('../pages/login/AppLogin')
