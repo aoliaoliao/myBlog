@@ -7,7 +7,7 @@ module.exports = (app) => {
     //   } )
     // } )
     app.use('/user', require('./user'))
-    app.use('/articles', require('./articles'))
+    app.use('/article', require('./articles'))
     app.use('/moment', require('./moment'))
     // catch 404 and forward to error handler
     app.use('*', function(req, res, next) {

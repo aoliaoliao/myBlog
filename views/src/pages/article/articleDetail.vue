@@ -1,14 +1,6 @@
 <template>
   <div class="article-detail">
-    <div class="article-error" v-if="reqStatus === -1">
-      暂无内容
-    </div>
-    <div class="article-loading" v-else-if="reqStatus === 0">
-      加载中。。。
-    </div>
-    <div class="article-success" v-else>
-      <span v-html="articleContent"></span>
-    </div>
+    <article class="markdown-body" v-html="articleContent"></article>
   </div>
 </template>
 
@@ -16,59 +8,50 @@
 
 import { getArticleDetail } from '@/API'
 import myMarked from 'marked'
+import hljs from 'highlight.js/lib/highlight';
+import 'highlight.js/styles/github.css'
+import javascript from 'highlight.js/lib/languages/javascript';
+import 'github-markdown-css';
+
 
 export default {
   props: {
-    id: {
+    content: {
       type: String,
       default: '',
-      descript: '文章ID'
+      descript: '文章内容'
     }
   },
   data() {
     return {
-      reqStatus: 0, // 请求状态。-1：请求失败， 0：正在请求中， 1： 请求成功
-      articleContent: ''
+    }
+  },
+  computed: {
+    articleContent() {
+      console.log( 'hljs', hljs )
+      myMarked.setOptions( {
+        gfm: true,
+        breaks: true,
+        tables: true,
+        sanitize: true,
+        headerIds: true,
+        highlight: function ( code, lang, callback ) {
+          return hljs.highlightAuto( code ).value;
+        }
+      } );
+      return myMarked( this.content )
     }
   },
   created() {
-    const id = this.id
-    if ( id ) {
-      this.reqStatus = 0
-      getArticleDetail( {
-        id
-      } ).then( res => {
-        if ( res.cd === 1 ) {
-          this.reqStatus = 1
-          this.formatAuthor( res.rt.articleAuthor )
-          this.formatArticle( res.rt.article )
-        } else {
-          this.reqStatus = -1
-        }
-      } )
-    }
+    hljs.registerLanguage( 'javascript', javascript );
   },
   methods: {
-    formatAuthor( author ) {
-
-    },
-    formatArticle( article ) {
-      myMarked.setOptions( {
-        highlight: function ( code, lang, callback ) {
-
-        }
-      } );
-      this.articleContent = myMarked( article )
-    }
   }
 
 }
 </script>
 
 <style lang="stylus" scoped>
-.article-error
-.article-loading
-  padding-top 100px
-  color #999
-  font-size 14px
+.article-detail
+  margin 0 12px
 </style>
