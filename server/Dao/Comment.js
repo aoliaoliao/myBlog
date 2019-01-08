@@ -1,13 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     let Comment = sequelize.define('Comment', {
         id: {
-            type: DataTypes.UUID, // uniqid
-            defaultValue: DataTypes.UUIdV1,
-            validate: {
-                isUUID: 1
-            },
-            primaryKey: true,
-            comment: '评论ID'
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
+            comment: '动态ID，主键',
+            primaryKey: true
         },
         userId: {
             type: DataTypes.UUID,

@@ -9,9 +9,8 @@
     <div class="article-success " v-else>
       <article-title :title='articleMsg'></article-title>
       <article-detail :content="articleContent"></article-detail>
-      <!-- <comments :id="articleId" :type="0"></comments> -->
+      <article-comments :article-id="articleId"></article-comments>
     </div>
-
   </div>
 </template>
 
@@ -19,14 +18,15 @@
 import { formatMyDate } from '@/utils/tool'
 import { getArticleDetail } from '@/API'
 import ArticleDetail from './articleDetail'
-import articleTitle from './articleTitle'
-// import comments from '@/components/comments'
+import ArticleTitle from './articleTitle'
+import ArticleComments from '@/components/comments/CommentList'
 
 export default {
-  name: 'article',
+  name: 'article-index',
   components: {
     ArticleDetail,
-    articleTitle
+    ArticleTitle,
+    ArticleComments
   },
   data() {
     return {
@@ -75,4 +75,6 @@ export default {
 <style lang="stylus" scoped>
 .index-article
   background #ffffff
+.article-success
+  margin 0 12px
 </style>

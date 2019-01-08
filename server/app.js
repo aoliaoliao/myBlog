@@ -7,6 +7,7 @@ var FileStreamRotator = require('file-stream-rotator')
 var routers = require('./routes');
 const { staticPublicPath } = require('./conf')['gloableConst']
 const parseFormData = require('./middlewares/parseFormData')
+const bodyParser = require('body-parser')
 
 var app = express();
 
@@ -52,6 +53,20 @@ app.all('*', function(req, res, next) {
         next();
     }
 });
+
+// 格式化post请求参数
+app.use(bodyParser.json({
+    inflate: true, // 是否解压缩请求体
+    limit: '100kb', // Controls the maximum request body size
+    reviver: null, // 一般为一个函数，将被传递给 JSON.parse，作为其第二个参数, 可以用来修改解析生成的原始值，调用时机在parse函数返回之前。
+    strict: true, // 为 true 时，只接受数组或对象，为false时，可接受任何 JSON.parse 可以解析的类型
+    type: 'application/json' //  确定该中间件会作用于哪些MIME类型
+}))
+
+app.use(bodyParser.urlencoded({
+    extended: false, //扩展模式
+    limit: 2 * 1024 * 1024 //限制-2M
+}));
 
 // 格式化 FormData 请求
 app.use(parseFormData)

@@ -1,17 +1,16 @@
 <template>
   <div class="article-detail">
-    <article class="markdown-body" v-html="articleContent"></article>
+    <div class="markdown-body" v-html="articleContent"></div>
   </div>
 </template>
 
 <script>
-
-import { getArticleDetail } from '@/API'
 import myMarked from 'marked'
 import hljs from 'highlight.js/lib/highlight';
-import 'highlight.js/styles/github.css'
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'github-markdown-css';
+import 'highlight.js/styles/github.css'
+import { getArticleDetail } from '@/API'
 
 
 export default {
@@ -22,28 +21,27 @@ export default {
       descript: '文章内容'
     }
   },
-  data () {
+  data() {
     return {
     }
   },
   computed: {
-    articleContent () {
-      console.log('hljs', hljs)
-      myMarked.setOptions({
+    articleContent() {
+      myMarked.setOptions( {
         gfm: true,
         breaks: true,
         tables: true,
         sanitize: true,
         headerIds: true,
-        highlight: function (code, lang, callback) {
-          return hljs.highlightAuto(code).value;
+        highlight: function ( code, lang, callback ) {
+          return hljs.highlightAuto( code ).value;
         }
-      });
-      return myMarked(this.content)
+      } );
+      return myMarked( this.content )
     }
   },
-  created () {
-    hljs.registerLanguage('javascript', javascript);
+  created() {
+    hljs.registerLanguage( 'javascript', javascript );
   },
   methods: {
   }
@@ -52,6 +50,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.article-detail
-  margin 0 12px
 </style>
