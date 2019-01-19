@@ -1,6 +1,10 @@
 <template>
   <div class="comments-item">
     <span class="comment-name">{{ comment.userName }}</span>
+    <template v-if="comment.parentCommentUserId">
+      <span class="comment-reply">回复</span>
+      <span class="comment-name">{{ comment.userName }}</span>
+    </template>
     <span class="comment-content">{{comment.text }}</span>
   </div>
 </template>
@@ -28,10 +32,13 @@ export default {
   border-radius 10px
   padding 10px
   .comment-name
-    color #666666
+    color #111
     margin-right 10px
   .comment-content
-    color #999999
+    color #666
     word-break break-all
+  .comment-reply
+    color #333
+    margin-right #333
 </style>
 

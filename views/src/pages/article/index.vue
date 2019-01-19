@@ -9,6 +9,9 @@
     <div class="article-success " v-else>
       <article-title :title='articleMsg'></article-title>
       <article-detail :content="articleContent"></article-detail>
+      <div class="split-block">
+
+      </div>
       <article-comments :article-id="articleId"></article-comments>
     </div>
   </div>
@@ -77,4 +80,6 @@ export default {
   background #ffffff
 .article-success
   margin 0 12px
+.split-block
+  margin 12px auto 0
 </style>
