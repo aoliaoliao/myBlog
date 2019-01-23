@@ -9,10 +9,9 @@
     <div class="article-success " v-else>
       <article-title :title='articleMsg'></article-title>
       <article-detail :content="articleContent"></article-detail>
-      <div class="split-block">
-
-      </div>
-      <article-comments :article-id="articleId"></article-comments>
+      <div class="split-block"></div>
+      <article-comments :article-id="articleId" class="comment-margin"></article-comments>
+      <comment-create></comment-create>
     </div>
   </div>
 </template>
@@ -23,13 +22,15 @@ import { getArticleDetail } from '@/API'
 import ArticleDetail from './articleDetail'
 import ArticleTitle from './articleTitle'
 import ArticleComments from '@/components/comments/CommentList'
+import CommentCreate from '@/components/comments/CommentCreate'
 
 export default {
   name: 'article-index',
   components: {
     ArticleDetail,
     ArticleTitle,
-    ArticleComments
+    ArticleComments,
+    CommentCreate
   },
   data() {
     return {
@@ -82,4 +83,6 @@ export default {
   margin 0 12px
 .split-block
   margin 12px auto 0
+.comment-margin
+  margin-bottom 60px
 </style>

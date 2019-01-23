@@ -23,7 +23,8 @@ import {
   Loadmore,
   Field,
   Toast,
-  Switch
+  Switch,
+  Badge
 } from 'mint-ui'
 
 import TheScroll from '../components/TheScroll.vue'
@@ -49,6 +50,7 @@ Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.component(Field.name, Field)
 Vue.component(Switch.name, Switch)
+Vue.component(Badge.name, Badge)
 Vue.prototype.$toast = Toast
 
 Vue.component(TheScroll.name, TheScroll)
