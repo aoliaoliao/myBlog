@@ -58,7 +58,8 @@ export default {
       type: Number,
       default: 0,
       descipe: '点赞的数量',
-    }
+    },
+
   },
   data() {
     return {
@@ -112,7 +113,7 @@ export default {
   .badge
     position absolute
     top -5px
-    right -5px
+    right -8px
     z-index 2
     border 1px solid #fff
 .comment-input
@@ -145,7 +146,8 @@ export default {
 <style lang="stylus">
 .comment-create
   .is-size-small
-    padding 1px 4px
+    padding 1px 3px
+    line-height 12px
 
 </style>
 
