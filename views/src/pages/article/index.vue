@@ -11,7 +11,7 @@
       <article-detail :content="articleContent"></article-detail>
       <div class="split-block"></div>
       <article-comments :article-id="articleId" class="comment-margin"></article-comments>
-      <comment-create></comment-create>
+      <comment-create :article-id="articleId"></comment-create>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
     ArticleComments,
     CommentCreate
   },
-  data() {
+  data () {
     return {
       articleId: '',
       reqStatus: 0,
@@ -42,34 +42,34 @@ export default {
   },
   computed: {
   },
-  created() {
+  created () {
     this.articleId = this.$route.params.id || ''
-    if ( !this.articleId ) {
+    if (!this.articleId) {
       this.$router.back()
     } else {
-      this.getArticle( this.articleId )
+      this.getArticle(this.articleId)
     }
   },
   methods: {
-    getArticle( id ) {
-      getArticleDetail( {
+    getArticle (id) {
+      getArticleDetail({
         id
-      } ).then( res => {
-        if ( res.cd === 1 ) {
+      }).then(res => {
+        if (res.cd === 1) {
           this.reqStatus = 1
-          this.formatContent( res.rt )
-          this.formatArticle( res.rt.article )
+          this.formatContent(res.rt)
+          this.formatArticle(res.rt.article)
         } else {
           this.reqStatus = -1
         }
-      } )
+      })
     },
-    formatContent( result ) {
+    formatContent (result) {
       this.articleMsg.articleTitle = result.name
       this.articleMsg.articleAuthor = result.articleAuthor.nickName
-      this.articleMsg.articleDate = formatMyDate( result.updatedAt, 'yyyy-MM-dd' )
+      this.articleMsg.articleDate = formatMyDate(result.updatedAt, 'yyyy-MM-dd')
     },
-    formatArticle( content ) {
+    formatArticle (content) {
       this.articleContent = content
     }
   }

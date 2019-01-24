@@ -13,17 +13,13 @@ router.post('/list', commentController.listComments)
 
 /*
  * 新建评论
- * @param<articleId>: string 文章ID
- * @param<momentId>: string 动态ID
- * @param<text>: string 评论内容  
+ * @param articleId {string} 文章ID
+ * @param <momentId>: string 动态ID
+ * @param<text>: string 评论内容
  * @param<userId> : string 用户Id
  * @param<userName> : string 用户姓名
  * @param<parentCommentId> :  string 回复的上一条评论
  */
 router.post('/create', commentController.createComment)
-
-
-
-
 
 module.exports = router

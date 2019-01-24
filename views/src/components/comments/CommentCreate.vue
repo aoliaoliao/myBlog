@@ -34,7 +34,7 @@
 </template>
 
 <script>
-
+import { createComments } from '@/API'
 
 export default {
   name: 'comment-create',
@@ -49,6 +49,11 @@ export default {
       default: '',
       descipe: '评论所属的动态ID'
     },
+    parentCommentId: {
+      type: String,
+      default: '',
+      descipe: '父ID'
+    },
     comment: {
       type: Number,
       default: 0,
@@ -61,29 +66,49 @@ export default {
     },
 
   },
-  data() {
+  data () {
     return {
       text: '',
       isShowInput: false
     }
   },
   watch: {
-    isShowInput( nv, ov ) {
-      if ( nv ) {
-        this.$nextTick().then( () => {
-          let ref = this.$refs[ 'textarea' ]
-          let textarea = ref.$el.querySelector( 'textarea' )
+    isShowInput (nv) {
+      if (nv) {
+        this.$nextTick().then(() => {
+          let ref = this.$refs.textarea
+          let textarea = ref.$el.querySelector('textarea')
           textarea.focus()
-        } )
-
+        })
       }
     }
   },
   methods: {
-    submit() {
-
+    formatParam () {
+      const param = {}
+      param.text = this.text
+      this.articleId ? param.articleId = this.articleId : ''
+      this.momentId ? param.momentId = this.momentId : ''
+      this.parentId ? param.parentCommentId = this.parentId : ''
+      return param
     },
-    toggle() {
+    submit () {
+      let o = this.formatParam()
+      createComments(o).then(res => {
+        this.$toast({
+          message: '发表成功',
+          position: 'middle',
+          duration: 1000
+        })
+      }).catch(err => {
+        this.$toast({
+          message: '发表失败',
+          position: 'middle',
+          duration: 1000
+        })
+      })
+    },
+    toggle () {
       this.isShowInput = !this.isShowInput
     }
 
@@ -128,26 +153,58 @@ export default {
   height 25px
 .comment-shadow
   height 100%
-  background-color rgba(0,0,0,0.5)
+  background-color rgba(0, 0, 0, 0.5)
 .comment-area
   position absolute
   bottom 0
   width 100%
   .title-border
     border-bottom 1px solid #cccccc
-
-// .move-enter
-
-
-
 </style>
 
 
 <style lang="stylus">
-.comment-create
-  .is-size-small
-    padding 1px 3px
-    line-height 12px
-
+.comment-position
+  position fixed
+  bottom 0
+  left 0
+  right 0
+  z-index 9
+.comment-btn
+  display flex
+  justify-content space-between
+  border-top 1px solid #cccccc
+  background-color #ffffff
+  padding 10px
+  height 30px
+  >div
+    position relative
+    margin-right 10px
+    &:last-child
+      margin-right 0
+  .badge
+    position absolute
+    top -5px
+    right -8px
+    z-index 2
+    border 1px solid #fff
+.comment-input
+  background #dddddd
+  border-radius 15px
+  color #333
+  flex 1
+  text-align center
+  line-height 30px
+.social-icon
+  width 25px
+  height 25px
+.comment-shadow
+  height 100%
+  background-color rgba(0, 0, 0, 0.5)
+.comment-area
+  position absolute
+  bottom 0
+  width 100%
+  .title-border
+    border-bottom 1px solid #cccccc
 </style>
-

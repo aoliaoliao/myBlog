@@ -6,9 +6,9 @@
 
 <script>
 import myMarked from 'marked'
-import hljs from 'highlight.js/lib/highlight';
-import javascript from 'highlight.js/lib/languages/javascript';
-import 'github-markdown-css';
+import hljs from 'highlight.js/lib/highlight'
+import javascript from 'highlight.js/lib/languages/javascript'
+import 'github-markdown-css'
 import 'highlight.js/styles/github.css'
 import { getArticleDetail } from '@/API'
 
@@ -21,27 +21,27 @@ export default {
       descript: '文章内容'
     }
   },
-  data() {
+  data () {
     return {
     }
   },
   computed: {
-    articleContent() {
-      myMarked.setOptions( {
+    articleContent () {
+      myMarked.setOptions({
         gfm: true,
         breaks: true,
         tables: true,
         sanitize: true,
         headerIds: true,
-        highlight: function ( code, lang, callback ) {
-          return hljs.highlightAuto( code ).value;
+        highlight (code, lang, callback) {
+          return hljs.highlightAuto(code).value;
         }
-      } );
-      return myMarked( this.content )
+      })
+      return myMarked(this.content)
     }
   },
-  created() {
-    hljs.registerLanguage( 'javascript', javascript );
+  created () {
+    hljs.registerLanguage('javascript', javascript)
   },
   methods: {
   }
