@@ -22,7 +22,7 @@ export default {
         { name: '主页', path: '' },
         { name: '关于', path: '' },
         { name: '标签', path: '' },
-        { name: '设置', path: '' }
+        { name: '登录', path: '/login' }
       ]
     }
   },

@@ -1,3 +1,5 @@
+import md5 from 'md5'
+
 export const requireAll = (requireContext) => requireContext.keys().reduce((prev, next) => {
   let path = next.split('.')[ 1 ].substr(1)
   // prev[ path ] = fn.call(requireContext(next), next)
@@ -39,5 +41,7 @@ export const formatMyDate = (date, str = 'yyyy-MM-dd hh:mm:ss', isEnd = false) =
 
   return str
 }
+
+export const encryptByMd5 = (key) => md5(key)
 
 export default {}

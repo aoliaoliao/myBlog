@@ -1,6 +1,7 @@
 <template>
-  <div class="login-wrap">
-    <app-login></app-login>
+  <div class="login-index">
+    <div class="title">for friend</div>
+    <app-login class="login-wrap"></app-login>
   </div>
 </template>
 
@@ -8,7 +9,7 @@
 import AppLogin from './AppLogin'
 
 export default {
-  name: 'login-wrap',
+  name: 'login-index',
   components: {
     AppLogin
   }
@@ -16,4 +17,19 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.login-index
+  height 100%
+  background #ffffff
+  .title
+    margin 100px 0 20px
+    font-size 24px
+    text-align center
+  .login-wrap
+    width 80%
+    margin-left 10%
+
+
+
+
+
 </style>

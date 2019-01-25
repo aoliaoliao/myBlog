@@ -9,6 +9,11 @@ export default new Router({
     redirect: '/home'
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('../pages/login')
+  },
+  {
     path: '/home/',
     name: 'home',
     component: () => import('../pages/home'),

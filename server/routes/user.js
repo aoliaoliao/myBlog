@@ -9,6 +9,13 @@ router.get('/list', userController.listUser);
 // 新增一个 user
 router.post('/create', userController.addUser);
 
+/* 
+ * 用户登录
+ * @param account { string } 用户账号
+ * @param password { string } 用户密码，已经过md5进行加密
+ */
+router.post('/login', userController.loginUser);
+
 // // 删除一个User
 // router.get( '/delete', userController.deleteUser );
 
