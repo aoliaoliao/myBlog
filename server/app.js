@@ -10,7 +10,7 @@ const parseFormData = require('./middlewares/parseFormData')
 const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken')
 const expressJWT = require('express-jwt')
-const cert = require('./conf/token')
+const { cert } = require('./conf/token')
 
 var app = express()
 
@@ -89,32 +89,37 @@ app.use(parseFormData)
 
 // app.all('*', function(req, res, next) {
 //     const token = req.get('authorization')
-//     try {
-//         expressJWT({
-//             secret: cert
-//         })
-//     } catch (error) {
-//         console.log(error)
-//     }
+//     // try {
+//     //     expressJWT({
+//     //         secret: cert
+//     //     })
+//     // } catch (error) {
+//     //     console.log(error)
+//     // }
 
-//     next()
+//     // next()
 
-//     // jwt.verify(token, cert, function(err, decoded) {
-//     //     console.log(req)
-//     //     next()
-//     // })
+//     jwt.verify(token.split(' ')[1], cert, function(err, decoded) {
+//         console.log(err)
+//         next()
+//     })
+
+//     const decoded = jwt.decode(token.split(' ')[1])
+//     console.log(decoded)
+//     // next()
 // })
 
 
-app.use(expressJWT({ secret: cert }).unless({ path: 'user/login' }))
-app.use(function(err, req, res, next) {
-    if (err.name === "UnauthorizedError") {
-        res.status(401).send("invalid token");
-    }
-});
+// app.use(expressJWT({ secret: cert }).unless({ path: '/user/login' }))
+// app.use(function(err, req, res, next) {
+//     if (err.name === "UnauthorizedError") {
+//         res.status(401).send("invalid token");
+//     }
+// });
 
 
-routers(app)
+// routers(app)
+app.use(routers)
 
 app.use((req, res, next) => {
     res.setTimeout(50000, () => {

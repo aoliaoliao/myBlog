@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const cert = require('../../../conf').token
+const { cert } = require('../../../conf').token
 const userModel = require('"../../../Dao').User
 const {
     formatResponse,
@@ -55,7 +55,7 @@ module.exports = async function loginUser(req, res, next) {
                     const token = jwt.sign({
                         userId: user.id
                     }, cert, {
-                        expiresIn: 180001800018000
+                        expiresIn: '30m'
                     })
                     res.send(
                         formatResponse(1, {
