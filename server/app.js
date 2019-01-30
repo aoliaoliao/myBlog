@@ -2,15 +2,11 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
-var fs = require('fs')
 var FileStreamRotator = require('file-stream-rotator')
 var routers = require('./routes')
 const { staticPublicPath } = require('./conf')['gloableConst']
 const parseFormData = require('./middlewares/parseFormData')
 const bodyParser = require('body-parser')
-const jwt = require('jsonwebtoken')
-const expressJWT = require('express-jwt')
-const { cert } = require('./conf/token')
 
 var app = express()
 
@@ -45,10 +41,7 @@ app.use(
 )
 app.use(cookieParser())
 
-app.use(
-    `/${staticPublicPath}`,
-    express.static(path.join(__dirname, staticPublicPath))
-)
+app.use(`/${staticPublicPath}`, express.static(path.join(__dirname, staticPublicPath)))
 
 app.all('*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*')
@@ -87,38 +80,7 @@ app.use(
 // 格式化 FormData 请求
 app.use(parseFormData)
 
-// app.all('*', function(req, res, next) {
-//     const token = req.get('authorization')
-//     // try {
-//     //     expressJWT({
-//     //         secret: cert
-//     //     })
-//     // } catch (error) {
-//     //     console.log(error)
-//     // }
-
-//     // next()
-
-//     jwt.verify(token.split(' ')[1], cert, function(err, decoded) {
-//         console.log(err)
-//         next()
-//     })
-
-//     const decoded = jwt.decode(token.split(' ')[1])
-//     console.log(decoded)
-//     // next()
-// })
-
-
-// app.use(expressJWT({ secret: cert }).unless({ path: '/user/login' }))
-// app.use(function(err, req, res, next) {
-//     if (err.name === "UnauthorizedError") {
-//         res.status(401).send("invalid token");
-//     }
-// });
-
-
-// routers(app)
+// 路由
 app.use(routers)
 
 app.use((req, res, next) => {

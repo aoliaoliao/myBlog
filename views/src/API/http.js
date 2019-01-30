@@ -1,9 +1,11 @@
 import axios from 'axios'
-import { Notification } from 'element-ui'
+import store from '../vuex/index'
+import router from '../router'
 
 let curCancel
 let cancelObj = {}
 const { CancelToken } = axios
+
 // let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
 let baseURL = 'http://localhost:3000/'
 // let baseURL = 'http://192.168.188.163:3000/'
@@ -24,6 +26,8 @@ axios.interceptors.request.use(
     if (![ 'http', 'https' ].includes(protocol)) {
       config.url = baseURL + config.url
     }
+    const { state } = store
+    config.headers.authorization = state.token || ''
 
     return config
   },
@@ -32,65 +36,24 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    let { data } = response
-    if (data.cd) {
-      return response
-    } else {
-      Notification({
-        type: 'warning',
-        message: data.msg || '请检查并重试',
-      })
-      return Promise.reject(response)``
-    }
+    let { data = {} } = response
+    return data
   },
   error => {
     if (error && error.response) {
-      switch (error.response.status) {
-        case 400:
-          error.message = '错误请求'
-          break
-        case 401:
-          error.message = '错误请求'
-          break
-        case 403:
-          error.message = '错误请求'
-          break
-        case 404:
-          error.message = '错误请求'
-          break
-        case 405:
-          error.message = '错误请求'
-          break
-        case 408:
-          error.message = '错误请求'
-          break
-        case 500:
-          error.message = '错误请求'
-          break
-        case 501:
-          error.message = '错误请求'
-          break
-        case 502:
-          error.message = '错误请求'
-          break
-        case 503:
-          error.message = '错误请求'
-          break
-        case 504:
-          error.message = '错误请求'
-          break
-        case 505:
-          error.message = '错误请求'
-          break
-        default:
-          break
+      const { status } = error.response
+      if (status === 401) {
+        store.commit('setToken', undefined)
+        router.replace('/login')
+      } else {
+        error.message = '错误请求'
       }
     } else {
       error.message = '连接到服务器失败'
     }
-    Notification({
-      type: 'warning',
+    this.$toast({
       message: error.message || '网络请求失败',
+      duration: 2000
     })
     return Promise.reject(error.response)
   }
@@ -104,20 +67,18 @@ export default {
         curCancel = c
       })
     })
-    .then(({ data }) => data),
+    .then((data) => data),
 
-  post: (url, params, config) => axios
-    .post(url, params, {
-      headers: {
-        'content-type': 'text/plain;charset=UTF-8'
-      },
-      cancelToken: new CancelToken(c => {
-        curCancel = c
-      }),
-      ...config
-    })
-    .then(({ data }) => data)
-    .catch(err => {
-      console.log(err)
-    })
+  post: (url, params, config) => axios.post(url, params, {
+    headers: {
+      // 'content-type': 'text/plain;charset=UTF-8'
+      'content-type': 'application/json'
+    },
+    cancelToken: new CancelToken(c => {
+      curCancel = c
+    }),
+    ...config
+  }).then((data) => data).catch(err => {
+    console.log(err)
+  })
 }

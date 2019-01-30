@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { formatResponse } = require("../utils/index.js");
-
-// const { cert, validePeriod, cachePeriod } = require('../conf').token
+const { formatResponse } = require("./index.js");
 
 const cert = '123456'
 const validePeriod = '30m' // token有效期
@@ -22,6 +20,9 @@ function createToken(payload = {}) {
  */
 function getTokenData(req) {
     let token = req.get('authorization')
+    if (!token) {
+        return null
+    }
 
     const token_tmp = token.split(' ')
 
@@ -37,13 +38,6 @@ function getTokenData(req) {
 
 function setFailedResponse(res) {
     res.status(401).send('invalid token')
-}
-
-/* 
- * 不做验证的接口
- */
-function unlessJwt() {
-  
 }
 
 /* 
@@ -94,11 +88,6 @@ function refreshToken(req, res, next) {
             formatResponse(1, createToken(decoded))
         }
     })
-
-
-
-
-    const newToken = createToken(req)
 }
 
 module.exports = {

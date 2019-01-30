@@ -14,7 +14,7 @@ export default new Router({
     component: () => import('../pages/login')
   },
   {
-    path: '/home/',
+    path: '/home',
     name: 'home',
     component: () => import('../pages/home'),
     meta: {

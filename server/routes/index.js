@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require('path')
 const express = require('express');
 const router = express.Router();
-const {} = require('../middlewares/middle_token')
+const { validateToken } = require('../utils/token')
 
 let routerMap = new Map()
 let allFiles = fs.readdirSync(__dirname)
