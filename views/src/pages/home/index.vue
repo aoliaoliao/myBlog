@@ -1,34 +1,30 @@
 <template>
   <div class="home">
-    <user-info>
-      <div class="memu">
-        <the-menu></the-menu>
-      </div>
-      <svg @click="publish" class="icon publish" aria-hidden="true">
-        <use xlink:href="#icon-add"></use>
-      </svg>
-    </user-info>
-    <mt-navbar v-model="selected">
-      <mt-tab-item v-for="item in tabPanes" :key="item.name" :id="item.id">
-        {{item.label}}
+    <div class="content-tabbar">
+      <mt-tab-container v-model="selected">
+        <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
+          <keep-alive>
+            <component :is="item.name"></component>
+          </keep-alive>
+        </mt-tab-container-item>
+      </mt-tab-container>
+    </div>
+    <mt-tabbar class="menu-tabbar" v-model="selected">
+      <mt-tab-item class="menu-tab-item" v-for="item in tabPanes" :key="item.name" :id="item.id">
+        <svg class="icon menu" :class="item.icon" aria-hidden="true">
+          <use :xlink:href="`#icon-${item.icon}`"></use>
+        </svg>
+        <span class="menu-name">{{item.label}}</span>
       </mt-tab-item>
-    </mt-navbar>
-    <mt-tab-container v-model="selected">
-      <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
-        <keep-alive>
-          <component :is="item.name"></component>
-        </keep-alive>
-      </mt-tab-container-item>
-    </mt-tab-container>
+    </mt-tabbar>
   </div>
 </template>
 
 <script>
-import UserInfo from '@/components/UserInfo'
-import ArticleList from '@/components/articles/ArticleList'
+import ArticlePage from '@/pages/article/articlePage'
 import MomentList from '@/components/moment/MomentList'
+import My from '@/pages/my'
 import { tabPanes } from './const'
-import TheMenu from '@/components/TheMenu'
 
 export default {
   name: 'home',
@@ -38,9 +34,8 @@ export default {
   } ),
   components: {
     MomentList,
-    ArticleList,
-    UserInfo,
-    TheMenu
+    ArticlePage,
+    My,
   },
   created() {
     this.selected = this.tabPanes[ 0 ].id
@@ -55,17 +50,43 @@ export default {
 
 <style lang="stylus" scoped>
 .home
-  .memu
-    position absolute
-    left 0
-    top 0
-    padding 20px
-  .publish
-    position absolute
-    right 0
-    top 0
-    padding 20px
-    color #3BB048
-    width w = 25px
-    height w
+  position relative
+  overflow hidden
+  height 100%
+.content-tabbar
+  position absolute
+  top 0
+  bottom 50px
+  left 0
+  right 0
+.menu-tabbar
+  z-index 2
+  background #ffffff
+  height 49px
+  bottom 0
+  position absolute
+  border-top 1px solid #ccc
+  .menu-tab-item
+    .menu
+      width 20px
+      height 20px
+  .menu-name
+    margin-top 5px
+    font-size 12px
+
+
 </style>
+
+<style lang="stylus">
+.home
+  .mint-tab-item-label
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  .mint-tab-item
+    color #999
+  .mint-tab-item.is-selected
+    background #ffffff
+    color #000
+</style>
+

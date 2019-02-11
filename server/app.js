@@ -2,17 +2,11 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
-var fs = require('fs')
 var FileStreamRotator = require('file-stream-rotator')
 var routers = require('./routes')
 const { staticPublicPath } = require('./conf')['gloableConst']
 const parseFormData = require('./middlewares/parseFormData')
 const bodyParser = require('body-parser')
-const session = require('express-session')
-const sessionConfig = require('./middlewares/session')
-
-const jwt = require('express-jwt')
-
 
 var app = express()
 
@@ -47,8 +41,6 @@ app.use(
 )
 app.use(cookieParser())
 
-app.use(session(sessionConfig))
-
 app.use(
   `/${staticPublicPath}`,
   express.static(path.join(__dirname, staticPublicPath))
@@ -70,13 +62,7 @@ app.all('*', function(req, res, next) {
   }
 })
 
-// 请求的token
-app.all('*', function( req, res, next ) {
-    
-})
-
-
-// 格式化post请求参数
+// 格式化post请求参数(针对 ‘application/json’)
 app.use(
   bodyParser.json({
     inflate: true, // 是否解压缩请求体
@@ -86,7 +72,7 @@ app.use(
     type: 'application/json' //  确定该中间件会作用于哪些MIME类型
   })
 )
-
+// 格式化post请求参数(针对 'application/x-www-form-urlencoded')
 app.use(
   bodyParser.urlencoded({
     extended: false, //扩展模式
@@ -97,7 +83,8 @@ app.use(
 // 格式化 FormData 请求
 app.use(parseFormData)
 
-routers(app)
+// 路由
+app.use(routers)
 
 app.use((req, res, next) => {
   res.setTimeout(50000, () => {

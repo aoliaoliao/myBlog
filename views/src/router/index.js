@@ -14,7 +14,7 @@ export default new Router({
     component: () => import('../pages/login')
   },
   {
-    path: '/home/',
+    path: '/home',
     name: 'home',
     component: () => import('../pages/home'),
     meta: {
@@ -29,7 +29,7 @@ export default new Router({
   {
     path: '/article/:id',
     name: 'article',
-    component: () => import('../pages/article')
+    component: () => import('../pages/article/detail')
   },
   {
     path: '/login',

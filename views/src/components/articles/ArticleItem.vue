@@ -1,12 +1,18 @@
 <template>
   <div class="article-item">
-    <div aspectratio w-335-200 class="img">
+    <!-- <div aspectratio w-335-200 class="img">
       <img aspectratio-content v-lazy="item.summaryImage" />
-    </div>
+    </div> -->
     <div class="item" @click.stop="goDetail">
       <h1 class="title ellipsis">{{item.name}}</h1>
       <div class="date">{{item.updatedAt}}</div>
-      <p class="summary ellipsis">{{item.summary}}</p>
+      <div class="summary-wrap">
+        <p class="summary ellipsis">{{item.summary}}</p>
+        <div class="img">
+          <img v-lazy="item.summaryImage" />
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -35,19 +41,12 @@ export default {
 
 
 <style lang="stylus" scoped>
-[w-335-200]
-  aspect-ratio '335:200'
 .article-item
   padding 10px
   text-align left
   margin-bottom 10px
-  // border-bottom 1px solid #999999
   background #ffffff
-  .img
-    margin-bottom 5px
-    img
-      width 100%
-      height 100%
+
 .item
   margin-bottom 15px
   h1
@@ -58,6 +57,18 @@ export default {
     color #999999
     font-size 10px
     margin-bottom 5px
+  .summary-wrap
+    display flex
+    align-items center
+    justify-content space-between
+    .img
+      flex-basis 66px
+      margin-left 5px
+      height 66px
+      width 66px
+      img
+        width 100%
+        height 100%
   .summary
     line-height 22px
     height 66px

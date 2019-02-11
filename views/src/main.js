@@ -2,11 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import vueLazy from 'vue-lazyload'
+import http from './API/http'
 import App from './App'
-import router from './router'
 import './libs/elementUI'
 
-import http from './API/http'
+import router from './router'
 import store from './vuex'
 import '@/assets/font/iconfont.js'
 import '@/assets/styles/globalStyles.styl'
@@ -20,7 +20,7 @@ new Vue({
   router,
   store,
   components: {
-    App
+    App,
   },
-  template: '<App/>'
+  template: '<App/>',
 })

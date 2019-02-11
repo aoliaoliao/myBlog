@@ -14,6 +14,8 @@
 
 <script>
 import { encryptByMd5 } from '@/utils/tool'
+import { loginUser } from '@/API'
+import { mapMutations, Store } from 'vuex'
 
 let encryptPwd = ''
 export default {
@@ -25,11 +27,37 @@ export default {
     }
   },
   methods: {
+    ...mapMutations( [
+      'setUserId',
+      'setToken'
+    ] ),
     login() {
-
+      loginUser( {
+        account: this.account,
+        password: encryptPwd
+      } ).then( ( res = {} ) => {
+        let { cd, rt } = res
+        if ( cd == 1 ) {
+          this.setToken( rt.token )
+          this.setUserId( rt.userId )
+          this.$router.push( '/' )
+        } else {
+          this.formatError( res.msg )
+        }
+      } ).catch( err => {
+        this.formatError()
+      } )
     },
     encryptPwd() {
       encryptPwd = encryptByMd5( this.password )
+    },
+    formatError( msg ) {
+      this.$toast( {
+        message: msg || '登录失败',
+        duration: 2000
+      } )
+      this.setToken( undefined )
+      this.setUserId( undefined )
     }
   }
 }

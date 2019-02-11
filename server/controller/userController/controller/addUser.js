@@ -67,8 +67,7 @@ module.exports = async function addUser(req, res, next) {
     let body = req.body
     if (validateUser(res, body)) {
         body.password = cryptoPasswordByMD5(body.password)
-        userModel
-            .create(body)
+        userModel.create(body)
             .then(rt => {
                 console.log('新增单个用户: rt', rt)
                 res.send(formatResponse(1, rt.id))
