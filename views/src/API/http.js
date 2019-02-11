@@ -60,14 +60,14 @@ axios.interceptors.response.use(
 )
 
 export default {
-  get: (url, params = {}) => axios
-    .get(url, {
-      params,
-      cancelToken: new CancelToken(c => {
-        curCancel = c
-      })
+  get: (url, params = {}) => axios.get(url, {
+    params,
+    cancelToken: new CancelToken(c => {
+      curCancel = c
     })
-    .then((data) => data),
+  }).then((data) => data).catch(err => {
+    console.log(err)
+  }),
 
   post: (url, params, config) => axios.post(url, params, {
     headers: {

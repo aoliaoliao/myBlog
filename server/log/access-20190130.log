@@ -200,3 +200,9 @@
 [0mGET /article/list?num=10&start=0 [0m- [0m- ms - -[0m
 [0mOPTIONS /user/login [0m- [0m- ms - -[0m
 [0mPOST /user/login [0m- [0m- ms - -[0m
+[0mOPTIONS /user/detail [0m- [0m- ms - -[0m
+[0mOPTIONS /article/list?num=10&start=0 [0m- [0m- ms - -[0m
+[0mOPTIONS /moment/list?num=10&start=0 [0m- [0m- ms - -[0m
+[0mGET /user/detail [0m- [0m- ms - -[0m
+[0mGET /article/list?num=10&start=0 [0m- [0m- ms - -[0m
+[0mGET /moment/list?num=10&start=0 [0m- [0m- ms - -[0m

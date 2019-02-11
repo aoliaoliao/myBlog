@@ -1,6 +1,6 @@
 <template>
   <div class="login-index">
-    <div class="title">for friend</div>
+    <div class="title">For You</div>
     <app-login class="login-wrap"></app-login>
   </div>
 </template>

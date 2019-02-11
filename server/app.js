@@ -69,7 +69,7 @@ app.use(
         type: 'application/json' //  确定该中间件会作用于哪些MIME类型
     })
 )
-
+// 格式化post请求参数(针对 'application/x-www-form-urlencoded')
 app.use(
     bodyParser.urlencoded({
         extended: false, //扩展模式
