@@ -11,6 +11,9 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const sessionConfig = require('./middlewares/session')
 
+const jwt = require('express-jwt')
+
+
 var app = express()
 
 // view engine setup
@@ -66,6 +69,12 @@ app.all('*', function(req, res, next) {
     next()
   }
 })
+
+// 请求的token
+app.all('*', function( req, res, next ) {
+    
+})
+
 
 // 格式化post请求参数
 app.use(
