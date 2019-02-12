@@ -1,15 +1,13 @@
 <template>
   <div class="home">
     <div class="content-tabbar">
-      <div style="position:relative;height:100%">
-        <mt-tab-container v-model="selected">
-          <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
-            <keep-alive>
-              <component :is="item.name"></component>
-            </keep-alive>
-          </mt-tab-container-item>
-        </mt-tab-container>
-      </div>
+      <mt-tab-container v-model="selected">
+        <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
+          <keep-alive>
+            <component :is="item.name"></component>
+          </keep-alive>
+        </mt-tab-container-item>
+      </mt-tab-container>
     </div>
     <mt-tabbar class="menu-tabbar" v-model="selected">
       <mt-tab-item class="menu-tab-item" v-for="item in tabPanes" :key="item.name" :id="item.id">
@@ -61,6 +59,8 @@ export default {
   bottom 50px
   left 0
   right 0
+  overflow-y auto
+  overflow-x hidden
 .menu-tabbar
   z-index 2
   background #ffffff

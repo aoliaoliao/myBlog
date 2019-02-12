@@ -11,12 +11,20 @@
     </div>
     <div class="content">
       <p v-if="content.text.length > 0">{{content.text}}</p>
-      <!-- <template v-if="content.imgs.length > 0">
-        <img :src="content.imgs[0]" />
+      <template v-if="content.imgs.length > 0">
+        <!-- <img :src="content.imgs[0]" /> -->
+        <img class="content-one-image" v-if="content.imgs.length === 1 " v-lazy="content.imgs[0]">
+        <div class="content-four-image content-multi-image" v-else-if="content.imgs.length === 4 ">
+          <div class="content-image-block" v-for="img in content.imgs" :key="img" :style="{backgroundImage: 'url(' + img + ')'}"></div>
+        </div>
+        <div class="content-multi-image" v-else>
+          <div class="content-image-block" v-for="img in content.imgs" :key="img" :style="{backgroundImage: 'url(' + img + ')'}"></div>
+          <!-- <img v-for="img in content.imgs" :key="img" v-lazy="img"> -->
+        </div>
       </template>
-      <template v-if="content.video.length > 0">
+      <template v-if="content.video && content.video.length > 0">
         <img :src="content.video" />
-      </template> -->
+      </template>
     </div>
     <div class="footer">
       <span>{{createDate}}</span>
@@ -122,6 +130,25 @@ export default {
   margin-bottom 10px
   p
     line-height 20px
+    margin-bottom 10px
+  .content-one-image
+    max-width 100%
+    max-height 150px
+  .content-four-image
+    .content-image-block
+      &:nth-child(2n)
+        margin-right 20px !important
+  .content-multi-image
+    display flex
+    flex-wrap wrap
+    .content-image-block
+      margin-right 5px
+      margin-bottom 5px
+      width w = 115px
+      height w
+      background-color #cccccc
+      &:nth-child(3n)
+        margin-right 0
 .comments
   .comments-item
     background #f0f0f0

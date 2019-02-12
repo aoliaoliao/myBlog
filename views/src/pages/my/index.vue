@@ -3,7 +3,7 @@
     <user-info>
     </user-info>
     <div>
-      <mt-cell v-for="menu in menus " :key="menu.title" :title="menu.title">
+      <mt-cell v-for="menu in menus " :key="menu.title" :title="menu.title" :is-link="!!menu.to" :to="menu.to">
         <span v-if="menu.explain">{{menu.explain}}</span>
         <svg class="icon" slot="icon">
           <use :xlink:href="`#icon-${menu.icon}`"></use>
@@ -25,12 +25,25 @@ export default {
     return {
       menus: [
         {
+          title: '创建文章',
+          icon: 'xiewenzhang',
+          to: '/publish/article'
+        },
+        {
           title: '我的文章',
           explain: '投稿',
           icon: 'xiewenzhang'
         },
         {
           title: '我的动态',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的评论',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的点赞',
           icon: 'xiewenzhang'
         },
         {
@@ -59,4 +72,9 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.my
+  overflow auto
+</style>
 

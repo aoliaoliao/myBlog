@@ -33,7 +33,7 @@ export default {
       const id = this.publishType
       let comp = {}
       switch ( id ) {
-        case 0:
+        case 'article':
           comp = {
             name: 'CreateArticle',
             title: '文章'
