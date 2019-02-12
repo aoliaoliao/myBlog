@@ -1,21 +1,27 @@
 <template>
   <div class="article-page">
-    <div class="title">
-      搜索
+    <the-page-title>
+      <span>文章</span>
+      <svg slot="right" class="icon title-search" aria-hidden="true">
+        <use xlink:href="#icon-search"></use>
+      </svg>
+    </the-page-title>
+    <div class="article-page-list">
+      <article-list></article-list>
     </div>
-    <div class="article-list">
 
-    </div>
-    <article-list></article-list>
   </div>
 </template>
 
 <script>
 import ArticleList from '@/components/articles/ArticleList'
+import ThePageTitle from '@/components/ThePageTitle'
+
 export default {
   name: 'article-page',
   components: {
-    ArticleList
+    ArticleList,
+    ThePageTitle
   },
   data() {
     return {
@@ -30,14 +36,9 @@ export default {
 .article-page
   height 100%
   position relative
-  .title
-    position fixed
-    top 0
-    left 0
-    right 0
-    height 45px
-    z-index 9
-    background #ffffff
-  .article-list
+  .article-page-list
     margin-top 45px
+  .title-search
+    font-size 18px
+    font-weight bolder
 </style>

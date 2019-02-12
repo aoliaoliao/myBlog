@@ -60,7 +60,6 @@ export default {
   .summary-wrap
     display flex
     align-items center
-    justify-content space-between
     .img
       flex-basis 66px
       margin-left 5px
@@ -70,6 +69,7 @@ export default {
         width 100%
         height 100%
   .summary
+    flex 1
     line-height 22px
     height 66px
     overflow hidden

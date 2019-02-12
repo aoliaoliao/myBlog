@@ -6,7 +6,7 @@ export const tabPanes = [ {
 },
 {
   id: 1,
-  name: 'momentList',
+  name: 'MomentPage',
   icon: 'moment',
   label: '动态'
 },

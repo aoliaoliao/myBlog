@@ -1,13 +1,15 @@
 <template>
   <div class="home">
     <div class="content-tabbar">
-      <mt-tab-container v-model="selected">
-        <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
-          <keep-alive>
-            <component :is="item.name"></component>
-          </keep-alive>
-        </mt-tab-container-item>
-      </mt-tab-container>
+      <div style="position:relative;height:100%">
+        <mt-tab-container v-model="selected">
+          <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
+            <keep-alive>
+              <component :is="item.name"></component>
+            </keep-alive>
+          </mt-tab-container-item>
+        </mt-tab-container>
+      </div>
     </div>
     <mt-tabbar class="menu-tabbar" v-model="selected">
       <mt-tab-item class="menu-tab-item" v-for="item in tabPanes" :key="item.name" :id="item.id">
@@ -22,7 +24,7 @@
 
 <script>
 import ArticlePage from '@/pages/article/articlePage'
-import MomentList from '@/components/moment/MomentList'
+import MomentPage from '@/pages/moment/momentPage'
 import My from '@/pages/my'
 import { tabPanes } from './const'
 
@@ -33,7 +35,7 @@ export default {
     selected: '',
   } ),
   components: {
-    MomentList,
+    MomentPage,
     ArticlePage,
     My,
   },

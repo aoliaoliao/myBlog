@@ -5,7 +5,7 @@
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
         <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item>
-        <div v-if=" isOver">
+        <div class="list-bottom" v-if="isOver">
           到底了哦~
         </div>
       </the-scroll>
@@ -84,7 +84,11 @@ export default {
 
 <style lang="stylus" scoped>
 .moment-list
-  padding-top 10px
-  height 667px
-  overflow scroll
+  height 667px - 50 - 45
+  .list-bottom
+    display flex
+    justify-content center
+    align-items center
+    font-size 12px
+    color #999999
 </style>
