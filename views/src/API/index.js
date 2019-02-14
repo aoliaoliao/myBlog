@@ -1,5 +1,7 @@
 import $http from './http'
 
+export const refreshToken = params => $http.get('user/refreshToken', params)
+
 export const addUser = params => $http.post('user/create', params)
 export const getUserInfo = params => $http.get('user/detail', params)
 export const loginUser = params => $http.post('user/login', params)

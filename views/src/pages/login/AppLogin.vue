@@ -38,8 +38,9 @@ export default {
       } ).then( ( res = {} ) => {
         let { cd, rt } = res
         if ( cd == 1 ) {
-          this.setToken( rt.token )
+          this.setToken( rt.accessToken )
           this.setUserId( rt.userId )
+          localStorage.setItem('refresh_token', rt.refreshToken)
           this.$router.push( '/' )
         } else {
           this.formatError( res.msg )

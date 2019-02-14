@@ -10,9 +10,7 @@
         </div>
       </the-scroll>
     </template>
-    <div v-else>
-      暂无数据
-    </div>
+    <div v-else class="article-null">暂无数据 </div>
   </div>
 </template>
 
@@ -85,4 +83,9 @@ export default {
     align-items center
     font-size 12px
     color #999999
+.article-null
+  text-align center
+  padding-top 100px
+  font-size 16px
+  color #999
 </style>

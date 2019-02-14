@@ -6,12 +6,12 @@
         <template slot="pullUp"></template>
         <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item>
         <div class="list-bottom" v-if="isOver">
-          到底了哦
+          到底了哦~````
         </div>
       </the-scroll>
     </template>
-    <div v-else>
-      暂无数据
+    <div class="moment-null" v-else @click="loadTop">
+      暂无数据, 点击刷新
     </div>
   </div>
 </template>
@@ -83,8 +83,18 @@ export default {
 <style lang="stylus" scoped>
 .moment-list
   height 667px - 50 - 45
-.list-bottom
+.moment-null
   text-align center
-  font-size 12px
-  color #999999
+  padding-top 100px
+  font-size 16px
+  color #999
+</style>
+
+<style lang="stylus">
+.moment-list .list-bottom
+    display flex
+    justify-content center
+    align-items center
+    font-size 12px
+    color #999999
 </style>

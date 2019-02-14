@@ -1,5 +1,4 @@
 const userController = require('../controller/userController')
-const { refreshToken } = require('../utils/token')
 
 const userRouters = [{
         method: 'get',
@@ -38,7 +37,7 @@ const userRouters = [{
     {
         method: 'get',
         path: '/refreshToken',
-        handler: refreshToken,
+        handler: userController.tokenUser,
     }
 
 ]

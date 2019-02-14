@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Toast } from 'mint-ui'
 import store from '../vuex/index'
 import router from '../router'
 
@@ -11,8 +12,19 @@ let baseURL = 'http://localhost:3000/'
 // let baseURL = 'http://192.168.188.163:3000/'
 // let baseURL = 'http://47.101.150.40:3000/'
 
+
+async function doRequest(error) {
+  await store.dispatch('refreshToken')
+
+  let { config } = error.response
+  config.headers.Authorization = store.token || ''
+
+  const res = await axios.request(config)
+  return res
+}
+
 axios.defaults.headers = {}
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 10 * 1000 * 6 * 10
 
 axios.interceptors.request.use(
   config => {
@@ -36,6 +48,10 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
+    if (response.headers[ 'token-warning' ] === 'true') {
+      store.dispatch('refreshToken')
+    }
+
     let { data = {} } = response
     return data
   },
@@ -43,15 +59,19 @@ axios.interceptors.response.use(
     if (error && error.response) {
       const { status } = error.response
       if (status === 401) {
-        store.commit('setToken', undefined)
-        router.replace('/login')
+        doRequest(error).then(content => {
+          let { data = {} } = content
+          return data
+        })
+        // store.commit('setToken', undefined)
+        // router.replace('/login')
       } else {
         error.message = '错误请求'
       }
     } else {
       error.message = '连接到服务器失败'
     }
-    this.$toast({
+    Toast({
       message: error.message || '网络请求失败',
       duration: 2000
     })

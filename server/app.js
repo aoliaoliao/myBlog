@@ -49,6 +49,7 @@ app.all('*', function(req, res, next) {
         'Access-Control-Allow-Headers',
         'Content-Type, Content-Length, Authorization, Accept, X-Requested-With '
     )
+    res.header('Access-Control-Expose-Headers', 'Token-Warning') // 因为CORS的限制，所以显示定义客户端可以访问的自定义header
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
 
     if (req.method == 'OPTIONS') {

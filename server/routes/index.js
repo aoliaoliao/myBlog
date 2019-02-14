@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require('path')
 const express = require('express');
 const router = express.Router();
-const { validateToken } = require('../utils/token')
+const { validateAccessToken } = require('../utils/token')
 
 let routerMap = new Map()
 let allFiles = fs.readdirSync(__dirname)
@@ -24,8 +24,7 @@ router.use('*', function(req, res, next) {
     if (routerMap.has(path)) {
         const { meta = {} } = routerMap.get(path)
         if (meta.token) {
-            // 验证
-            validateToken(req, res, next)
+            validateAccessToken(req, res, next)
         } else {
             next()
         }

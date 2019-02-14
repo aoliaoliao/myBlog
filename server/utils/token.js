@@ -2,24 +2,39 @@ const jwt = require('jsonwebtoken')
 const { formatResponse } = require("./index.js");
 
 const cert = '123456'
-const validePeriod = '30m' // token有效期
-const cachePeriod = 10 * 1000 // 旧token的缓存期
+const validePeriod = '30m' // access_token有效期
+const refreshTokenPeriod = '10d' // refresh_token有效期
+const cachePeriod = 10 * 1000 // 旧token的缓存期，10秒
+const tokenList = new Map() // 新旧token的列表
 
 /* 
  * 生成一个新的token
+ *
+ * @param {Object} payload,
+ * @param {String} type, 
+ * @return { String } 
  */
-function createToken(payload = {}) {
+function createToken(payload = {}, type) {
+    let time = validePeriod
+    switch (type) {
+        case 'refresh':
+            time = refreshTokenPeriod
+            break;
+        default:
+            time = validePeriod
+            break;
+    }
     const token = jwt.sign(payload, cert, {
-        expiresIn: validePeriod
+        expiresIn: time
     })
-    return token
+    return `Bears ${token}`
 }
 
 /* 
- * 获取token中的负载数据
+ * 获取token
  */
-function getTokenData(req) {
-    let token = req.get('authorization')
+function getTokenData(token) {
+
     if (!token) {
         return null
     }
@@ -43,22 +58,45 @@ function setFailedResponse(res) {
 /* 
  * 验证token是否在有效期内
  */
-function validateToken(req, res, next) {
-    let token = getTokenData(req)
+function validateRefreshToken(token) {
+    return new Promise((resolve, reject) => {
+        if (!token) {
+            reject('invalid token')
+            return
+        }
+        token = getTokenData(token)
+        jwt.verify(token, cert, function(err, decoded) {
+            if (err) {
+                reject('invalid token')
+            } else {
+                resolve(decoded)
+            }
+        })
+    })
+}
+
+// 验证access_token，为了处理并发请求有个10秒的缓存期
+function validateAccessToken(req, res, next) {
+    let token = getTokenData(req.get('authorization'))
 
     if (!token) {
         setFailedResponse(res)
         return
     }
-
+    token = getTokenData(token)
     jwt.verify(token, cert, function(err, decoded) {
         if (err) {
             setFailedResponse(res)
         } else {
-            const time_expired = (decoded.exp || 0) * 1000 // 过期时间
-
-            if (time_expired - cachePeriod < Date.now()) {
-                res.append('Token-Warning', true)
+            // 查看 tokenList 是否含有已更新过的 token 
+            if (tokenList.has(token)) {
+                let newToken = tokenList.get(token)
+                const time_space = Date.now() - newToken.createToken
+                if (time_space > 10 * 1000 && time_space < 0) {
+                    req.headers.authorization = newToken.value
+                } else {
+                    tokenList.delete(token)
+                }
             }
             next()
         }
@@ -66,32 +104,19 @@ function validateToken(req, res, next) {
 
 }
 
-/* 
- *  在token将要过期的时候，重新生成token，以延长token的有效期
- */
-function refreshToken(req, res, next) {
-    let token = getTokenData(req)
-
-    if (!token) {
-        formatResponse(0, 'token刷新失败')
-        return
-    }
-
-    jwt.verify(token, cert, function(err, decoded) {
-        if (err) {
-            formatResponse(0, 'token刷新失败')
-        } else {
-            const decoded = jwt.decode(token)
-            delete decoded.iat
-            delete decoded.exp
-
-            formatResponse(1, createToken(decoded))
-        }
-    })
+// 解码token，获取其中的载荷信息
+function decodedToken(token) {
+    token = getTokenData(token)
+    let data = jwt.decode(token)
+    return data || {}
 }
 
+
 module.exports = {
-    validateToken,
-    refreshToken,
-    createToken
+    validateAccessToken,
+    validateRefreshToken,
+    createToken,
+    getTokenData,
+    tokenList,
+    decodedToken
 }
