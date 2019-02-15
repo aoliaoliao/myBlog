@@ -5,16 +5,14 @@
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
         <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item>
-        <div v-if=" isOver">
-          到底了哦~
+        <div class="list-bottom" v-if="isOver">
+          到底了哦~````
         </div>
       </the-scroll>
-
     </template>
-    <div v-else>
-      暂无数据
+    <div class="moment-null" v-else @click="loadTop">
+      暂无数据, 点击刷新
     </div>
-    <!-- <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item> -->
   </div>
 </template>
 
@@ -62,9 +60,15 @@ export default {
       } )
     },
     getData() {
-      return getMomentList( this.formatParam() ).then( ( { rt } ) => {
-        this.isOver = rt.end
-        return rt.list
+      return getMomentList( this.formatParam() ).then( res => {
+        if ( res.cd === 1 ) {
+          const { rt } = res
+          this.isOver = rt.end
+          return rt.list
+        } else {
+          this.isOver = true
+          return []
+        }
       } ).catch( res => {
         this.isOver = true
         return []
@@ -84,7 +88,19 @@ export default {
 
 <style lang="stylus" scoped>
 .moment-list
-  padding-top 10px
-  height 667px
-  overflow scroll
+  height 667px - 50 - 45
+.moment-null
+  text-align center
+  padding-top 100px
+  font-size 16px
+  color #999
+</style>
+
+<style lang="stylus">
+.moment-list .list-bottom
+    display flex
+    justify-content center
+    align-items center
+    font-size 12px
+    color #999999
 </style>

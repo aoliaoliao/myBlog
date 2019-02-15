@@ -11,8 +11,13 @@
 
 <script>
 // import '@/assets/styles/github.css'
+import { updateRefreshToken } from './utils/token'
+
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    updateRefreshToken()
+  }
 }
 </script>
 

@@ -5,14 +5,12 @@
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
         <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
-        <div v-if=" isOver">
+        <div class="list-bottom" v-if="isOver">
           到底了哦~
         </div>
       </the-scroll>
     </template>
-    <div v-else>
-      暂无数据
-    </div>
+    <div v-else class="article-null">暂无数据 </div>
   </div>
 </template>
 
@@ -78,7 +76,16 @@ export default {
 
 <style lang="stylus" scoped>
 .article-list
-  padding-top 10px
-  height 667px
-  // overflow scroll
+  height 667px - 50 - 45
+  .list-bottom
+    display flex
+    justify-content center
+    align-items center
+    font-size 12px
+    color #999999
+.article-null
+  text-align center
+  padding-top 100px
+  font-size 16px
+  color #999
 </style>

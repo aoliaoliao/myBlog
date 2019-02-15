@@ -119,10 +119,16 @@ export default {
     publish() {
       let param = new FormData()
       for ( const [ key, value ] of Object.entries( this.moment ) ) {
-        param.append( key, value )
+        if ( Array.isArray( value ) ) {
+          value.forEach( v => {
+            param.append( key, v )
+          } )
+        } else {
+          param.append( key, value )
+        }
       }
       createMoment( param ).then( res => {
-        this.$route.back()
+        this.$router.back()
       } ).catch( err => {
         this.$toast( {
           message: `发表失败，请重试`,

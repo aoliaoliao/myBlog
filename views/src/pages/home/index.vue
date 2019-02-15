@@ -22,7 +22,7 @@
 
 <script>
 import ArticlePage from '@/pages/article/articlePage'
-import MomentList from '@/components/moment/MomentList'
+import MomentPage from '@/pages/moment/momentPage'
 import My from '@/pages/my'
 import { tabPanes } from './const'
 
@@ -33,7 +33,7 @@ export default {
     selected: '',
   } ),
   components: {
-    MomentList,
+    MomentPage,
     ArticlePage,
     My,
   },
@@ -59,6 +59,8 @@ export default {
   bottom 50px
   left 0
   right 0
+  overflow-y auto
+  overflow-x hidden
 .menu-tabbar
   z-index 2
   background #ffffff

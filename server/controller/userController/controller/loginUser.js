@@ -17,6 +17,7 @@ function setWhereOption(account) {
 module.exports = async function loginUser(req, res, next) {
     let body = req.body
     const { account, password } = body
+    const { hostname, ip } = req
 
     if (!(account && password)) {
         res.send(formatResponse(0, '请输入账号和密码'))
@@ -44,12 +45,18 @@ module.exports = async function loginUser(req, res, next) {
             })
 
             if (user) {
-                const token = createToken({ userId: user.id })
+                const accessToken = createToken({ userId: user.id })
+                const refreshToken = createToken({
+                    userId: user.id,
+                    hostname,
+                    ip
+                }, 'refresh')
                 res.send(
                     formatResponse(1, {
                         userId: user.id,
                         userName: user.nickName,
-                        token
+                        accessToken,
+                        refreshToken
                     })
                 )
             } else {

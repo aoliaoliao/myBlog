@@ -30,16 +30,16 @@ export default {
   },
   computed: {
     componentObj() {
-      const id = +this.publishType
+      const id = this.publishType
       let comp = {}
       switch ( id ) {
-        case 0:
+        case 'article':
           comp = {
             name: 'CreateArticle',
             title: '文章'
           }
           break
-        case 1:
+        case 'moment':
           comp = {
             name: 'CreateMoment',
             title: '动态'
