@@ -44,4 +44,5 @@ export const formatMyDate = (date, str = 'yyyy-MM-dd hh:mm:ss', isEnd = false) =
 
 export const encryptByMd5 = (key) => md5(key)
 
+
 export default {}

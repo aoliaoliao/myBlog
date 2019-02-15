@@ -29,7 +29,7 @@ router.use('*', function(req, res, next) {
             next()
         }
     } else {
-        res.send('路径不存在')
+        res.status(404).send('404 not found')
     }
 })
 

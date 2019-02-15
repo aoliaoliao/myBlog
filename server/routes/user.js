@@ -36,8 +36,16 @@ const userRouters = [{
     },
     {
         method: 'get',
-        path: '/refreshToken',
-        handler: userController.tokenUser,
+        path: '/replaceAccessToken',
+        handler: userController.accessToken,
+    },
+    {
+        method: 'get',
+        path: '/replaceRefreshToken',
+        handler: userController.refreshToken,
+        meta: {
+            token: true
+        }
     }
 
 ]

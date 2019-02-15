@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '../router'
 import { requireAll } from '../utils/tool'
-import { refreshToken } from '@/API'
+import { replaceAccessToken } from '@/API'
 
 Vue.use(Vuex)
 
@@ -29,16 +29,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    refreshToken({ commit }) {
+    replaceAccessToken({ commit }) {
       let localRefreshToken = localStorage.getItem('refresh_token') || ''
-      refreshToken({
+      return replaceAccessToken({
         refreshToken: localRefreshToken
       }).then(res => {
-        if (res.cd === 0) {
+        if (res.cd === 1) {
+          commit('setToken', res.rt)
+        } else {
           commit('setToken', undefined)
           router.replace('/login')
-        } else {
-          commit('setToken', res.rt)
         }
       }).catch(() => {
         router.replace('/login')

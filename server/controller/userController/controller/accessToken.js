@@ -10,7 +10,7 @@ function setAccessTokenPayload(token) {
 
 
 // 刷新 access_token
-module.exports = async function tokenRefresh(req, res, next) {
+module.exports = async function accessToken(req, res, next) {
     const { refreshToken } = req.query
     const { hostname, ip } = req
     const accessToken = req.get('authorization')

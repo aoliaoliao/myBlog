@@ -60,9 +60,15 @@ export default {
       } )
     },
     getData() {
-      return getMomentList( this.formatParam() ).then( ( { rt } ) => {
-        this.isOver = rt.end
-        return rt.list
+      return getMomentList( this.formatParam() ).then( res => {
+        if ( res.cd === 1 ) {
+          const { rt } = res
+          this.isOver = rt.end
+          return rt.list
+        } else {
+          this.isOver = true
+          return []
+        }
       } ).catch( res => {
         this.isOver = true
         return []

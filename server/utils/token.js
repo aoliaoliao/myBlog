@@ -1,9 +1,8 @@
+const { refreshTokenPeriod, accessTokenPeriod } = require('../conf/gloableConst')
 const jwt = require('jsonwebtoken')
 const { formatResponse } = require("./index.js");
 
 const cert = '123456'
-const validePeriod = '30m' // access_token有效期
-const refreshTokenPeriod = '10d' // refresh_token有效期
 const cachePeriod = 10 * 1000 // 旧token的缓存期，10秒
 const tokenList = new Map() // 新旧token的列表
 
@@ -15,13 +14,13 @@ const tokenList = new Map() // 新旧token的列表
  * @return { String } 
  */
 function createToken(payload = {}, type) {
-    let time = validePeriod
+    let time = accessTokenPeriod
     switch (type) {
         case 'refresh':
             time = refreshTokenPeriod
             break;
         default:
-            time = validePeriod
+            time = accessTokenPeriod
             break;
     }
     const token = jwt.sign(payload, cert, {
@@ -83,7 +82,6 @@ function validateAccessToken(req, res, next) {
         setFailedResponse(res)
         return
     }
-    token = getTokenData(token)
     jwt.verify(token, cert, function(err, decoded) {
         if (err) {
             setFailedResponse(res)

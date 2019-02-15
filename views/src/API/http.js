@@ -3,9 +3,8 @@ import { Toast } from 'mint-ui'
 import store from '../vuex/index'
 import router from '../router'
 
-let curCancel
-let cancelObj = {}
-const { CancelToken } = axios
+const MAX_TRY_TOKEN_REQUEST = 2
+let curTryTokenRequest = 0
 
 // let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
 let baseURL = 'http://localhost:3000/'
@@ -14,32 +13,50 @@ let baseURL = 'http://localhost:3000/'
 
 
 async function doRequest(error) {
-  await store.dispatch('refreshToken')
+  // await store.dispatch('replaceAccessToken')
+
+  await store.dispatch('replaceAccessToken')
 
   let { config } = error.response
-  config.headers.Authorization = store.token || ''
-
+  const { state } = store
+  config.headers.authorization = state.token || ''
   const res = await axios.request(config)
   return res
 }
 
+
+function keepLogin(error) {
+  return new Promise((resolve, reject) => {
+    if (curTryTokenRequest < MAX_TRY_TOKEN_REQUEST) {
+      // 最多发送 MAX_TRY_TOKEN_REQUEST 次获取token的请求，如果超过则返回到登录页面，避免死循环
+      doRequest(error).then(content => {
+        curTryTokenRequest = 0
+        let { data = {} } = content
+        // return data
+        resolve(data)
+      })
+    } else {
+      curTryTokenRequest = 0
+      reject()
+      // router.replace('/login')
+    }
+  })
+}
+
 axios.defaults.headers = {}
-axios.defaults.timeout = 10 * 1000 * 6 * 10
+axios.defaults.timeout = 60 * 1000
 
 axios.interceptors.request.use(
   config => {
-    // console.log( this )
-    if (cancelObj[ config.url ]) {
-      cancelObj[ config.url ]('request cancel')
-    }
-    cancelObj[ config.url ] = curCancel
     const protocol = config.url.split('://')[ 0 ]
 
     if (![ 'http', 'https' ].includes(protocol)) {
       config.url = baseURL + config.url
     }
-    const { state } = store
-    config.headers.authorization = state.token || ''
+    // const { state } = store
+    // config.headers.authorization = state.token || ''
+    const token = localStorage.getItem('token')
+    config.headers.authorization = token || ''
 
     return config
   },
@@ -48,33 +65,33 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    if (response.headers[ 'token-warning' ] === 'true') {
-      store.dispatch('refreshToken')
-    }
-
     let { data = {} } = response
     return data
   },
   error => {
+    let showToast = true
     if (error && error.response) {
       const { status } = error.response
       if (status === 401) {
-        doRequest(error).then(content => {
-          let { data = {} } = content
-          return data
+        showToast = false
+        return keepLogin(error).then(data => data).catch(() => {
+          router.replace('/login')
         })
-        // store.commit('setToken', undefined)
-        // router.replace('/login')
+
       } else {
+        showToast = true
         error.message = '错误请求'
       }
     } else {
       error.message = '连接到服务器失败'
     }
-    Toast({
-      message: error.message || '网络请求失败',
-      duration: 2000
-    })
+    // 401 的错误不进行提示
+    if (showToast) {
+      Toast({
+        message: error.message || '网络请求失败',
+        duration: 2000
+      })
+    }
     return Promise.reject(error.response)
   }
 )
@@ -82,11 +99,8 @@ axios.interceptors.response.use(
 export default {
   get: (url, params = {}) => axios.get(url, {
     params,
-    cancelToken: new CancelToken(c => {
-      curCancel = c
-    })
-  }).then((data) => data).catch(err => {
-    console.log(err)
+  }).then((data) => data).catch(() => {
+    // console.log('getErr', err)
   }),
 
   post: (url, params, config) => axios.post(url, params, {
@@ -94,11 +108,8 @@ export default {
       // 'content-type': 'text/plain;charset=UTF-8'
       'content-type': 'application/json'
     },
-    cancelToken: new CancelToken(c => {
-      curCancel = c
-    }),
     ...config
-  }).then((data) => data).catch(err => {
-    console.log(err)
+  }).then((data) => data).catch(() => {
+    // console.log(err)
   })
 }
