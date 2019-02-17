@@ -42,6 +42,11 @@ export default {
   position relative
   .moment-page-list
     margin-top 45px
+    // position absolute
+    // top 45px
+    // bottom 0
+    // left 0
+    // right 0
   .title-search
     font-size 18px
     font-weight bolder

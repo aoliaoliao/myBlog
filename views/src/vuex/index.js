@@ -24,7 +24,11 @@ export default new Vuex.Store({
       state.userId = id
     },
     setToken(state, token) {
-      localStorage.setItem('token', token)
+      if (token) {
+        localStorage.setItem('token', token)
+      } else {
+        localStorage.removeItem('token')
+      }
       state.token = token
     },
   },

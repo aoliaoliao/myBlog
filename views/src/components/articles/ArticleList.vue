@@ -1,7 +1,7 @@
 <template>
   <div class="article-list">
     <template v-if="list.length > 0">
-      <the-scroll :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
+      <the-scroll :propbe-type="3" :listen-scroll="true" :listen-scroll-end="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
         <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
@@ -76,7 +76,12 @@ export default {
 
 <style lang="stylus" scoped>
 .article-list
-  height 667px - 50 - 45
+  // height 667px - 50 - 45
+  // height 100%
+  position fixed
+  top 45px
+  bottom 50px
+  width 100%
   .list-bottom
     display flex
     justify-content center

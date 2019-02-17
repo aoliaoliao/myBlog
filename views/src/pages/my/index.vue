@@ -9,17 +9,25 @@
           <use :xlink:href="`#icon-${menu.icon}`"></use>
         </svg>
       </mt-cell>
+
+      <div class="app-logout">
+        <app-logout>
+          <mt-button type="danger" size="large">退出</mt-button>
+        </app-logout>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import UserInfo from '@/components/UserInfo'
+import AppLogout from '@/pages/login/AppLogout'
 
 export default {
   name: 'my',
   components: {
-    UserInfo
+    UserInfo,
+    AppLogout
   },
   data() {
     return {
@@ -76,5 +84,10 @@ export default {
 <style lang="stylus" scoped>
 .my
   overflow auto
+  background #ffffff
+  .app-logout
+    margin 10px 5px
+    border-top 1px solid #cccccc
+
 </style>
 

@@ -7,7 +7,8 @@ const MAX_TRY_TOKEN_REQUEST = 2
 let curTryTokenRequest = 0
 
 // let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
-let baseURL = 'http://localhost:3000/'
+// let baseURL = 'http://localhost:3000/'
+let baseURL = 'http://192.168.0.106:3000/'
 // let baseURL = 'http://192.168.188.163:3000/'
 // let baseURL = 'http://47.101.150.40:3000/'
 
@@ -27,13 +28,12 @@ async function doRequest(error) {
 
 function keepLogin(error) {
   return new Promise((resolve, reject) => {
-    if (curTryTokenRequest < MAX_TRY_TOKEN_REQUEST) {
+    if (curTryTokenRequest < MAX_TRY_TOKEN_REQUEST && router.currentRoute.path !== '/login') {
       // 最多发送 MAX_TRY_TOKEN_REQUEST 次获取token的请求，如果超过则返回到登录页面，避免死循环
       doRequest(error).then(content => {
         curTryTokenRequest = 0
-        let { data = {} } = content
         // return data
-        resolve(data)
+        resolve(content)
       })
     } else {
       curTryTokenRequest = 0
@@ -99,8 +99,8 @@ axios.interceptors.response.use(
 export default {
   get: (url, params = {}) => axios.get(url, {
     params,
-  }).then((data) => data).catch(() => {
-    // console.log('getErr', err)
+  }).then((data = { rt: undefined, cd: 0 }) => data).catch((err) => {
+    console.log('getErr', err)
   }),
 
   post: (url, params, config) => axios.post(url, params, {
@@ -109,7 +109,7 @@ export default {
       'content-type': 'application/json'
     },
     ...config
-  }).then((data) => data).catch(() => {
+  }).then((data = {}) => data).catch(() => {
     // console.log(err)
   })
 }

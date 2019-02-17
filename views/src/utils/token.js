@@ -1,7 +1,7 @@
 import { replaceRefreshToken } from '@/API'
 
 export const updateRefreshToken = () => {
-  const lastedLogin = localStorage.getItem('lastedLogin')
+  const lastedLogin = localStorage.getItem('lasted_login')
   let isUpdate = false
 
   if (lastedLogin) {
@@ -16,11 +16,11 @@ export const updateRefreshToken = () => {
     const token = localStorage.getItem('refresh_token')
     replaceRefreshToken({
       refreshToken: token
-    }).then(res => {
+    }).then((res = {}) => {
       const { cd } = res
       if (cd === 1) {
         localStorage.setItem('refresh_token', res.rt)
-        localStorage.setItem('', Date.now())
+        localStorage.setItem('lasted_login', Date.now())
       }
     })
   }

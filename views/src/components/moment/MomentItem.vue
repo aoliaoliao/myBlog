@@ -15,10 +15,16 @@
         <!-- <img :src="content.imgs[0]" /> -->
         <img class="content-one-image" v-if="content.imgs.length === 1 " v-lazy="content.imgs[0]">
         <div class="content-four-image content-multi-image" v-else-if="content.imgs.length === 4 ">
-          <div class="content-image-block" v-for="img in content.imgs" :key="img" :style="{backgroundImage: 'url(' + img + ')'}"></div>
+          <!-- <div class="content-image-block" v-for="img in content.imgs" :key="img" :style="{backgroundImage: 'url(' + img + ')'}"></div>
+           -->
+          <div class="content-image-block" v-for="img in content.imgs" :key="img">
+            <the-background-image :src="img"></the-background-image>
+          </div>
         </div>
         <div class="content-multi-image" v-else>
-          <div class="content-image-block" v-for="img in content.imgs" :key="img" :style="{backgroundImage: 'url(' + img + ')'}"></div>
+          <div class="content-image-block" v-for="img in content.imgs" :key="img">
+            <the-background-image :src="img"></the-background-image>
+          </div>
           <!-- <img v-for="img in content.imgs" :key="img" v-lazy="img"> -->
         </div>
       </template>
@@ -40,6 +46,7 @@
 
 <script>
 import { formatMyDate } from '@/utils/tool'
+import TheBackgroundImage from '@/components/TheBackgroundImage'
 
 export default {
   name: 'moment-item',
@@ -48,6 +55,9 @@ export default {
       type: Object,
       default: () => ( {} )
     }
+  },
+  components: {
+    TheBackgroundImage
   },
   data() {
     return {
@@ -138,6 +148,8 @@ export default {
     .content-image-block
       &:nth-child(2n)
         margin-right 20px !important
+      &:nth-child(3n)
+        margin-right 5px !important
   .content-multi-image
     display flex
     flex-wrap wrap

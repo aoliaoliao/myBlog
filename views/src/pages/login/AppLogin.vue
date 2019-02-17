@@ -40,8 +40,8 @@ export default {
         if ( cd == 1 ) {
           this.setToken( rt.accessToken )
           this.setUserId( rt.userId )
-          localStorage.setItem('refresh_token', rt.refreshToken)
-          this.$router.push( '/' )
+          localStorage.setItem( 'refresh_token', rt.refreshToken )
+          this.$router.push( '/home' )
         } else {
           this.formatError( res.msg )
         }

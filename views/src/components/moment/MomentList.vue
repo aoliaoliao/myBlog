@@ -88,7 +88,12 @@ export default {
 
 <style lang="stylus" scoped>
 .moment-list
-  height 667px - 50 - 45
+  // height 667px - 50 - 45
+  // height 100%
+  position fixed
+  top 45px
+  bottom 50px
+  width 100%
 .moment-null
   text-align center
   padding-top 100px
