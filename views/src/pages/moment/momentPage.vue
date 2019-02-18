@@ -27,6 +27,9 @@ export default {
 
     }
   },
+  activated() {
+    console.log( 'active moment page ' )
+  },
   methods: {
     publish() {
       this.$router.push( '/publish/moment' )

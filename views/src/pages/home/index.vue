@@ -3,11 +3,13 @@
     <div class="content-tabbar">
       <div style="position:relative;height:100%;">
         <mt-tab-container v-model="selected" :swipeable="true">
+          <!-- <keep-alive> -->
           <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
-            <keep-alive>
-              <component :is="item.name"></component>
-            </keep-alive>
+
+            <component :is="item.name"></component>
+
           </mt-tab-container-item>
+          <!-- </keep-alive> -->
         </mt-tab-container>
       </div>
 

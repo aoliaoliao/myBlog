@@ -160,6 +160,11 @@ export default {
       this._initScroll()
     }, 20 )
   },
+  // activated() {
+  //   setTimeout( () => {
+  //     this._initScroll()
+  //   }, 20 )
+  // },
   watch: {
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
     data() {
@@ -226,6 +231,8 @@ export default {
       this.scroll.on( 'pullingDown', () => {
         this.beforePullDown = false
         this.isPullingDown = true
+        // 此处应该计算 hasVerticalScroll
+        //
         this.$emit( 'pullingDown' )
       } )
       this.scroll.on( 'scroll', ( pos ) => {

@@ -28,6 +28,9 @@ export default {
 
     }
   },
+  activated(){
+    console.log('active article page ')
+  }
 
 }
 </script>

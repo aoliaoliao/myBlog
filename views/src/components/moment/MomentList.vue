@@ -1,12 +1,12 @@
 <template>
   <div class="moment-list">
     <template v-if="list.length > 0">
-      <the-scroll v-if="list.length > 0" :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
+      <the-scroll :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
         <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item>
         <div class="list-bottom" v-if="isOver">
-          到底了哦~````
+          到底了哦~
         </div>
       </the-scroll>
     </template>
