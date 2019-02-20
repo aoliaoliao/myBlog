@@ -13,15 +13,36 @@ function getLocalToken() {
   return token
 }
 
+function getLocalUserId() {
+  return localStorage.getItem('user-id') || ''
+}
+
+function getLocalUserName() {
+  return localStorage.getItem('user-name') || ''
+}
 
 export default new Vuex.Store({
   state: {
-    userId: '',
+    userId: getLocalUserId(),
+    userName: getLocalUserName(),
     token: getLocalToken()
   },
   mutations: {
     setUserId(state, id) {
+      if (id) {
+        localStorage.setItem('user-id', id)
+      } else {
+        localStorage.removeItem('user-id')
+      }
       state.userId = id
+    },
+    setUserName(state, name) {
+      if (name) {
+        localStorage.setItem('user-name', name)
+      } else {
+        localStorage.removeItem('user-name')
+      }
+      state.userName = name
     },
     setToken(state, token) {
       if (token) {

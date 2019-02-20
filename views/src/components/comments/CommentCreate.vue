@@ -66,25 +66,25 @@ export default {
     },
 
   },
-  data () {
+  data() {
     return {
       text: '',
       isShowInput: false
     }
   },
   watch: {
-    isShowInput (nv) {
-      if (nv) {
-        this.$nextTick().then(() => {
+    isShowInput( nv ) {
+      if ( nv ) {
+        this.$nextTick().then( () => {
           let ref = this.$refs.textarea
-          let textarea = ref.$el.querySelector('textarea')
+          let textarea = ref.$el.querySelector( 'textarea' )
           textarea.focus()
-        })
+        } )
       }
     }
   },
   methods: {
-    formatParam () {
+    formatParam() {
       const param = {}
       param.text = this.text
       this.articleId ? param.articleId = this.articleId : ''
@@ -92,23 +92,28 @@ export default {
       this.parentId ? param.parentCommentId = this.parentId : ''
       return param
     },
-    submit () {
+    submit() {
       let o = this.formatParam()
-      createComments(o).then(res => {
-        this.$toast({
+      createComments( o ).then( res => {
+        this.$toast( {
           message: '发表成功',
           position: 'middle',
           duration: 1000
-        })
-      }).catch(err => {
-        this.$toast({
+        } )
+        this.isShowInput = false
+        this.$emit( 'push', {
+          text: this.text,
+          createdAt: Date.now()
+        } )
+      } ).catch( err => {
+        this.$toast( {
           message: '发表失败',
           position: 'middle',
           duration: 1000
-        })
-      })
+        } )
+      } )
     },
-    toggle () {
+    toggle() {
       this.isShowInput = !this.isShowInput
     }
 

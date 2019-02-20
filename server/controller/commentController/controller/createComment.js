@@ -2,9 +2,34 @@ const CommentModel = require('../../../Dao').Comment
 const { formatResponse } = require('../../../utils')
 
 
+function validateParam(req, res) {
+    let { text, articleId, momentId, userId, userName } = req.body
+    let right = true
+
+    if (!(userId || userName)) {
+        res.send(formatResponse(0, '请先登录'))
+        right = false
+    } else if (!(text && text.length > 0)) {
+        res.send(formatResponse(0, '评论内容不可为空'))
+        right = false
+    } else if (!(articleId || momentId)) {
+        res.send(formatResponse(0, '评论未关联文章或动态'))
+        right = false
+    } else {
+
+    }
+
+    return right
+}
+
 
 module.exports = async function(req, res, next) {
-    let { text, articleId, momentId, userId, userName, parentCommentId } = req.query
+
+    if (!validateParam(req, res)) {
+        return
+    }
+
+    const { text, articleId, momentId, userId, userName, parentCommentId } = req.body
 
     CommentModel.create({
             text,

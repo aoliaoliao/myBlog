@@ -29,6 +29,7 @@ export default {
   methods: {
     ...mapMutations( [
       'setUserId',
+      'setUserName',
       'setToken'
     ] ),
     login() {
@@ -40,6 +41,7 @@ export default {
         if ( cd == 1 ) {
           this.setToken( rt.accessToken )
           this.setUserId( rt.userId )
+          this.setUserName( rt.userName )
           localStorage.setItem( 'refresh_token', rt.refreshToken )
           this.$router.push( '/home' )
         } else {
@@ -59,6 +61,7 @@ export default {
       } )
       this.setToken( undefined )
       this.setUserId( undefined )
+      this.setUserName( undefined )
     }
   }
 }

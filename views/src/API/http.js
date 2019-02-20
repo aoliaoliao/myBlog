@@ -53,10 +53,8 @@ axios.interceptors.request.use(
     if (![ 'http', 'https' ].includes(protocol)) {
       config.url = baseURL + config.url
     }
-    // const { state } = store
-    // config.headers.authorization = state.token || ''
-    const token = localStorage.getItem('token')
-    config.headers.authorization = token || ''
+    const { state } = store
+    config.headers.authorization = state.token || ''
 
     return config
   },

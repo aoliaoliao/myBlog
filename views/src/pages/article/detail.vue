@@ -11,7 +11,7 @@
       <article-detail :content="articleContent"></article-detail>
       <div class="split-block"></div>
       <article-comments :article-id="articleId" class="comment-margin"></article-comments>
-      <comment-create :article-id="articleId"></comment-create>
+      <comment-create :article-id="articleId" @push="pushComment"></comment-create>
     </div>
   </div>
 </template>
@@ -71,6 +71,9 @@ export default {
     },
     formatArticle( content ) {
       this.articleContent = content
+    },
+    pushComment( comment ) {
+
     }
   }
 }
