@@ -29,7 +29,8 @@ module.exports = {
     },
 
     /* 
-     *   对数据库的查询结果进行格式化
+     * 对数据库的查询结果进行格式化
+     * @param data  { Object } 从数据库中查到的原始数据，如果查到的是列表，应该是列表中具体的一项
      */
     formatDBResult(data) {
         function getDataValues(value) {

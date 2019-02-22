@@ -11,7 +11,7 @@
       <article-detail :content="articleContent"></article-detail>
       <div class="split-block"></div>
       <article-comments :article-id="articleId" class="comment-margin"></article-comments>
-      <comment-create :article-id="articleId" @push="pushComment"></comment-create>
+      <comment-create :article-id="articleId"></comment-create>
     </div>
   </div>
 </template>
@@ -19,10 +19,10 @@
 <script>
 import { formatMyDate } from '@/utils/tool'
 import { getArticleDetail } from '@/API'
-import ArticleDetail from './articleDetail'
-import ArticleTitle from './articleTitle'
-import ArticleComments from '@/components/comments/CommentList'
-import CommentCreate from '@/components/comments/CommentCreate'
+import ArticleDetail from './ArticleDetail'
+import ArticleTitle from './ArticleTitle'
+import ArticleComments from './ArticleComments'
+import CommentCreate from './CommentCreate'
 
 export default {
   name: 'article-index',
@@ -71,9 +71,6 @@ export default {
     },
     formatArticle( content ) {
       this.articleContent = content
-    },
-    pushComment( comment ) {
-
     }
   }
 }

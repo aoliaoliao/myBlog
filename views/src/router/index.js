@@ -29,7 +29,7 @@ export default new Router({
   {
     path: '/article/:id',
     name: 'article',
-    component: () => import('../pages/article/detail')
+    component: () => import('../pages/article')
   },
   {
     path: '/login',

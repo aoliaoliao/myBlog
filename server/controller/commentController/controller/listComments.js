@@ -1,14 +1,27 @@
 const CommentModel = require('../../../Dao').Comment
-const { formatResponse } = require('../../../utils')
+const { formatResponse, formatDBResult } = require('../../../utils')
 
 const commentAttributes = [
     'userId',
     'userName',
+    'articleId',
+    'momentId',
     'parentCommentId',
     'text',
     'id',
     'createdAt'
 ]
+
+const commentParentAttribute = [
+    'id',
+    'userId',
+    'userName'
+]
+
+CommentModel.belongsTo(CommentModel, {
+    as: 'parentComment',
+    foreignKey: 'parentCommentId'
+})
 
 // 设置查询对象中的where条件
 function setFindWhere(articleId, momentId) {
@@ -27,29 +40,44 @@ function createCommentOption(limit, offset, where) {
         limit: limit,
         offset: offset,
         order: [
-            ['createdAt', 'ASC']
+            ['createdAt', 'DESC']
         ],
+        include: [{
+            model: CommentModel,
+            as: 'parentComment',
+            attributes: commentParentAttribute,
+            // on: {
+            //     '$CommentModel.parentCommentId$': { $col: 'parentComment.id' },
+            // }
+        }],
         where
     }
 }
 
 // 对查询结果的格式化，尤其是父子关系的评论
 function formatQueryResult(results) {
-    let commentUser = {}
+    // let commentUser = {}
     const comments = []
-    results.forEach(({ dataValues }) => {
-        if (!dataValues.parentCommentId) {
-            commentUser[dataValues.id] = {
-                userName: dataValues.userName,
-                userId: dataValues.userId
-            }
-        } else {
-            dataValues.parentCommentUserName = commentUser[dataValues.parentCommentId].userName
-            dataValues.parentCommentUserId = commentUser[dataValues.parentCommentId].userId
-        }
-        comments.push(dataValues)
-    })
+    results.forEach(result => {
+        let data = formatDBResult(result)
 
+        if (data && data.parentComment) {
+            data.parentCommentUserName = data.parentComment.userName
+            data.parentCommentUserId = data.parentComment.userId
+            delete data.parentComment
+        }
+
+        // if (!dataValues.parentCommentId) {
+        //     commentUser[dataValues.id] = {
+        //         userName: dataValues.userName,
+        //         userId: dataValues.userId
+        //     }
+        // } else {
+        //     dataValues.parentCommentUserName = commentUser[dataValues.parentCommentId].userName
+        //     dataValues.parentCommentUserId = commentUser[dataValues.parentCommentId].userId
+        // }
+        comments.push(data)
+    })
     return comments
 }
 
@@ -58,7 +86,9 @@ async function listComments(option) {
         .then(result => {
             return result
         })
-        .catch(err => {})
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 module.exports = async function(req, res, next) {

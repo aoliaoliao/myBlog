@@ -1,0 +1,47 @@
+<template>
+  <div class="article-page">
+    <the-page-title>
+      <span>文章</span>
+      <svg slot="right" class="icon title-search" aria-hidden="true">
+        <use xlink:href="#icon-search"></use>
+      </svg>
+    </the-page-title>
+    <div class="article-page-list">
+      <article-list></article-list>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import ArticleList from '@/components/articles/ArticleList'
+import ThePageTitle from '@/components/ThePageTitle'
+
+export default {
+  name: 'article-page',
+  components: {
+    ArticleList,
+    ThePageTitle
+  },
+  data() {
+    return {
+
+    }
+  },
+  activated(){
+    console.log('active article page ')
+  }
+
+}
+</script>
+
+<style lang="stylus" scoped>
+.article-page
+  height 100%
+  position relative
+  .article-page-list
+    margin-top 45px
+  .title-search
+    font-size 18px
+    font-weight bolder
+</style>
