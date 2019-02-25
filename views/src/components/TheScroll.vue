@@ -161,7 +161,6 @@ export default {
     }, 20 )
   },
   activated() {
-    console.log( 'activated the scroll' )
   },
   watch: {
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
@@ -202,7 +201,6 @@ export default {
 
       if ( this.listenScrollEnd ) {
         this.scroll.on( 'scrollEnd', ( pos ) => {
-          console.log( 'scrollEnd', pos )
           this.$emit( 'scroll-end', pos )
         } )
       }

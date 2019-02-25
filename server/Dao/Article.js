@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 1,
             comment: '是否允许评论，1：允许，0：不允许'
-        }
+        },
     }, {
         freezeTableName: true
     })

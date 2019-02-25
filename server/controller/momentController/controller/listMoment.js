@@ -1,14 +1,23 @@
 const path = require('path')
+const Sequelize = require('sequelize')
 const momentModel = require("../../../Dao").Moment;
 const userModel = require("../../../Dao").User;
 const CommentModel = require("../../../Dao").Comment;
-const { formatResponse } = require("../../../utils");
+const LikeModel = require("../../../Dao").Like;
+const { formatResponse, formatDBResult } = require("../../../utils");
 const { staticNetPrefix } = require('../../../conf')['gloableConst']
 
 const momentAttributes = ['id', 'userId', 'text', 'imgs', 'video', 'updatedAt']
 const userAttributes = ['nickName', 'avatar', 'signature', 'id']
 const commentAttributes = ['userId', 'userName', 'parentCommentId', 'text', 'id', 'updatedAt']
+const likeAttributes = [Sequelize.fn("COUNT", Sequelize.col("likeAttributes.momentId")), 'likes']
+
 // const commentUserAttributes = ['nickName']
+
+// attributes: { 
+//   include: [[Sequelize.fn("COUNT", Sequelize.col("sensors.id")), "sensorCount"]] 
+// },
+
 
 function createMomentOption(limit, offset) {
     return {
@@ -24,12 +33,15 @@ function createMomentOption(limit, offset) {
                 model: CommentModel,
                 as: 'momentComments',
                 attributes: commentAttributes,
-                // include: [{
-                //     model: userModel,
-                //     as: 'commentAuthor',
-                //     attributes: commentUserAttributes
-                // }]
             },
+            {
+                model: LikeModel,
+                as: 'momentLikes',
+                // association: LikeModel.belongsTo(momentModel),
+                attributes: {
+                    include: [Sequelize.fn("COUNT", Sequelize.col("LikeModel.momentId")), 'likes']
+                },
+            }
         ]
     }
 }
@@ -38,16 +50,18 @@ function createMomentOption(limit, offset) {
 async function findAllMoment(option) {
     return momentModel.findAll(option).then(result => {
         let rows = result.map(v => {
-            let row = v.dataValues
+            // let row = v.dataValues
+            let row = formatDBResult(v)
             // let { momentAuthor, momentComments } = row
             // momentAuthor = momentAuthor.dataValues
             // momentComments = momentComments.map(mc => mc.dataValues)
             row.imgs = row.imgs.split(',').map(v => staticNetPrefix + v.split(path.sep).join('/'))
+            row.like = row.like || 0
             return row
         })
         return rows
     }).catch(err => {
-
+        console.log(err)
     })
 }
 

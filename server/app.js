@@ -6,6 +6,7 @@ var FileStreamRotator = require('file-stream-rotator')
 var routers = require('./routes')
 const { staticPublicPath } = require('./conf')['gloableConst']
 const parseFormData = require('./middlewares/parseFormData')
+const globalFunction = require('./middlewares/globalFunction')
 const bodyParser = require('body-parser')
 
 var app = express()
@@ -83,6 +84,9 @@ app.use(
 
 // 格式化 FormData 请求
 app.use(parseFormData)
+
+// 注册全局方法
+app.use(globalFunction)
 
 // 路由
 app.use(routers)

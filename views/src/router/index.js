@@ -8,11 +8,7 @@ export default new Router({
     path: '/',
     redirect: '/home'
   },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('../pages/login')
-  },
+
   {
     path: '/home',
     name: 'home',
@@ -34,7 +30,7 @@ export default new Router({
   {
     path: '/login',
     name: 'login',
-    component: () => import('../pages/login/AppLogin')
+    component: () => import('../pages/login')
   },
   {
     path: '/register',

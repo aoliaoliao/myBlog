@@ -12,6 +12,14 @@ export const getArticleList = params => $http.get('article/list', params)
 export const getArticleDetail = params => $http.get('article/content', params)
 
 export const getMomentList = params => $http.get('moment/list', params)
+export const likeMoment = params => $http.post('moment/like', {
+  ...params,
+  userId: store.state.userId,
+})
+export const unlikeMoment = params => $http.post('moment/unlike', {
+  ...params,
+  userId: store.state.userId,
+})
 export const createMoment = params => $http.post('moment/create', params, {
   headers: {
     'Content-type': 'multipart/form-data'

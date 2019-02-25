@@ -9,7 +9,6 @@
     <div class="article-page-list">
       <article-list ref="articleList"></article-list>
     </div>
-
   </div>
 </template>
 
@@ -23,19 +22,12 @@ export default {
     ArticleList,
     ThePageTitle
   },
-  props: {
-    name: {
-      type: String,
-      default: 'ArticlePage'
-    }
-  },
   data() {
     return {
 
     }
   },
   activated() {
-    console.log( 'active article page ' )
   },
   methods: {
   },

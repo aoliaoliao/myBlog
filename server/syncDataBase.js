@@ -1,15 +1,20 @@
 var minimist = require('minimist');
-var args = minimist(process.argv.slice(2), {
-    boolean: ['force']
-});
+const database = require('./Dao')
 
-let isForce = args.force
-let tables = args['_']
-let env = args.env
+var args = minimist(process.argv.slice(2), {
+    boolean: ['force'],
+    string: ['env']
+});
+let isForce = args.force // 强制更新，会删除所有的历史记录
+let tables = args['_'] // 需要被更新的数据表
+let env = args.env // 环境变量 [ 'development', 'production' ]
+
+
+// 使用格式： node syncDataBase.js --force=true --env=development Moment Comment
+console.log('args', args)
+console.log('database.like', database['like'])
 
 process.env.NODE_ENV = env
-
-const database = require('./Dao')
 
 if (tables) {
     // 获取Sequelize的实例
@@ -30,7 +35,7 @@ if (tables) {
             Promise.all(allConstraint).then(res => {
                 database[v].sync({
                     force: isForce,
-                    alter: true,
+                    alter: true, // 改变表格以适合模型。
                     logging: true
                 })
             })

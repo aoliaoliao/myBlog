@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
-            comment: '动态ID，主键',
+            comment: '评论的ID，主键',
             primaryKey: true
         },
         userId: {

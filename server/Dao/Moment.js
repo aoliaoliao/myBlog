@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         video: {
             type: DataTypes.STRING(1000),
             comment: 'moment关联视频的位置，只有一个'
-        }
+        },
     }, {
         freezeTableName: true
     })

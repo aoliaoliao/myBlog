@@ -1,7 +1,7 @@
 <template>
   <div class="comments">
     <div v-if="list.length > 0 ">
-      <span v-for="( item, index ) in list " :key="item.id" @click="selectCurrComment( index )">
+      <span v-for="( item, index ) in list " :key="index" @click="selectCurrComment( index )">
         <comment-item :comment="item"></comment-item>
       </span>
       <div v-if="end" class="null-comments">
@@ -11,18 +11,15 @@
     <div class="null-comments" v-else>
       暂无评论
     </div>
-    <comment-input v-model="isShowInput" @submit="submit"></comment-input>
+    <comment-create ref="commentCreate" :article-id="articleId" :parent="currComment" @submit="submit"></comment-create>
   </div>
 </template>
 
 <script>
-import { getComments } from '@/API'     
+import { getComments, createComments } from '@/API'
 import { createNamespacedHelpers } from 'vuex'
 import CommentItem from './CommentItem'
-
-import { createComments } from '@/API'
-import { mapMutations, mapState, mapActions } from 'vuex'
-import CommentInput from '@/components/comments/commentInput'
+import CommentCreate from './CommentCreate'
 
 export default {
   name: 'article-comment',
@@ -40,42 +37,26 @@ export default {
   },
   data() {
     return {
-      // list: [],
-      // end: false,
       num: 10,
       isShowInput: false,
-      currComment: {}
+      currComment: {},
+      end: false,
+      list: []
     }
   },
   components: {
+    CommentCreate,
     CommentItem,
-    CommentInput
   },
   mounted() {
     this.search()
   },
-  computed: {
-    ...mapState( 'comment', {
-      end: state => state.isEnd,
-      list: state => state.commentList
-    } )
-  },
   methods: {
-    ...mapMutations( 'comment', [
-      'setCommentEnd',
-      'pushCommentList'
-    ] ),
-    ...mapActions( 'comment', [
-      'getCommentList'
-    ] ),
-    ...mapActions( 'comment', [
-      'createOneComment'
-    ] ),
     search() {
       if ( this.end || !( this.articleId || this.momentId ) ) {
         return
       }
-      this.getCommentList( this.foramtOption() )
+      this.getArticleComments( this.foramtOption() )
     },
 
     foramtOption() {
@@ -87,41 +68,27 @@ export default {
       }
     },
 
-    selectCurrComment( index ) {
-      console.log( 'aaaa' )
-      this.currComment = this.list[ index ]
-      this.isShowInput = true
-    },
-
-
-    formatCommentParam( text ) {
-      const param = {}
-      const { articleId, id } = this.currComment
-
-      param.text = text
-      this.articleId ? param.articleId = this.articleId : ''
-      id ? param.parentCommentId = id : ''
-      return param
-    },
-    submit( text ) {
-      this.createOneComment( { param: this.formatCommentParam( text ), parentComment: this.currComment } ).then( cd => {
-        if ( cd ) {
-          this.showToast( '发表成功' )
-          this.isShowInput = false
-        } else {
-          this.showToast( '发表失败' )
+    getArticleComments() {
+      let param = this.foramtOption()
+      getComments( param ).then( res => {
+        if ( res.cd ) {
+          const { rt } = res
+          this.end = rt.end
+          this.list = [ ...this.list, ...rt.list ]
         }
-      } ).catch( err => {
-        this.showToast( '发表失败' )
+      } ).catch( () => {
       } )
     },
-    showToast( message ) {
-      this.$toast( {
-        message,
-        position: 'middle',
-        duration: 1000
-      } )
+
+    selectCurrComment( index ) {
+      this.currComment = this.list[ index ]
+      // this.isShowInput = true
+      this.$refs[ 'commentCreate' ].showCommentInput()
     },
+    submit( comment ) {
+      this.list.unshift( comment )
+    },
+
   }
 }
 </script>

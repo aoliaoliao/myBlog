@@ -2,12 +2,12 @@
   <div class="comment-create">
     <transition name="fade">
       <div class="comment-btn comment-position" v-show="!isShowInput">
-        <div class="comment-input" @click="isShowInput = true">
+        <div class="comment-input" @click="showCommentInput">
           how do you think , baby ?
         </div>
         <div class="comment-count">
           <mt-badge v-if="commentCount > 0" class="badge" size="small" type="error">{{commentCount}}</mt-badge>
-          <svg class="icon social-icon" aria-hidden="true" @click.stop="isShowInput = true">
+          <svg class="icon social-icon" aria-hidden="true" @click.stop="showCommentInput">
             <use xlink:href="#icon-pinglun"></use>
           </svg>
         </div>
@@ -26,7 +26,6 @@
 
 <script>
 import { createComments } from '@/API'
-import { mapMutations, mapState, mapActions } from 'vuex'
 import CommentInput from '@/components/comments/commentInput'
 
 export default {
@@ -37,7 +36,7 @@ export default {
       default: '',
       descipe: '评论所属的文章ID'
     },
-    parentComment: {
+    parent: {
       type: Object,
       default: () => { },
       descipe: '评论的父级评论'
@@ -59,14 +58,11 @@ export default {
     CommentInput
   },
   methods: {
-    ...mapActions( 'comment', [
-      'createOneComment'
-    ] ),
     formatParam() {
       const param = {}
       param.text = this.text
       this.articleId ? param.articleId = this.articleId : ''
-      this.parentComment && this.parentComment.id ? param.parentCommentId = this.parentComment.id : ''
+      this.parent && this.parent.id ? param.parentCommentId = this.parent.id : ''
       return param
     },
     submit( text ) {
@@ -75,10 +71,12 @@ export default {
         return
       }
       let o = this.formatParam()
-      this.createOneComment( { param: o, parentComment: this.parentComment } ).then( ( cd ) => {
-        if ( cd ) {
+
+      createComments( o ).then( res => {
+        if ( res.cd ) {
           this.showToast( '发表成功' )
           this.isShowInput = false
+          this.$emit( 'submit', this.formatCurrentParam( this.text ) )
         } else {
           this.showToast( '发表失败' )
         }
@@ -86,6 +84,20 @@ export default {
         this.showToast( '发表失败' )
       } )
     },
+
+    formatCurrentParam( text ) {
+      const comment = {
+        text,
+        userName: this.$store.state.userName,
+        createdAt: Date.now()
+      }
+      if ( Object.keys( this.parent ).length > 0 ) {
+        const { userId, userName } = this.parent
+        Object.assign( comment, { parentCommentUserId: userId, parentCommentUserName: userName } )
+      }
+      return comment
+    },
+
     showToast( message ) {
       this.$toast( {
         message,
@@ -93,20 +105,8 @@ export default {
         duration: 1000
       } )
     },
-
-    formatComment( text ) {
-      const pComment = {}
-      if ( Object.keys( this.parentComment ).length > 0 ) {
-        const { parentCommentUserId, parentCommentUserName } = this.parentComment
-        Object.assign( pComment, { parentCommentUserId, parentCommentUserName } )
-      }
-
-      return {
-        text,
-        userName: this.$store.state.userName,
-        createdAt: Date.now(),
-        ...pComment
-      }
+    showCommentInput() {
+      this.isShowInput = true
     },
     // 获取文章被点赞和评论的数量
     getSocialStatus() {

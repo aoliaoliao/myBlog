@@ -12,11 +12,8 @@
     <div class="content">
       <p v-if="content.text.length > 0">{{content.text}}</p>
       <template v-if="content.imgs.length > 0">
-        <!-- <img :src="content.imgs[0]" /> -->
         <img class="content-one-image" v-if="content.imgs.length === 1 " v-lazy="content.imgs[0]">
         <div class="content-four-image content-multi-image" v-else-if="content.imgs.length === 4 ">
-          <!-- <div class="content-image-block" v-for="img in content.imgs" :key="img" :style="{backgroundImage: 'url(' + img + ')'}"></div>
-           -->
           <div class="content-image-block" v-for="img in content.imgs" :key="img">
             <the-background-image :src="img"></the-background-image>
           </div>
@@ -25,7 +22,6 @@
           <div class="content-image-block" v-for="img in content.imgs" :key="img">
             <the-background-image :src="img"></the-background-image>
           </div>
-          <!-- <img v-for="img in content.imgs" :key="img" v-lazy="img"> -->
         </div>
       </template>
       <template v-if="content.video && content.video.length > 0">
@@ -34,8 +30,22 @@
     </div>
     <div class="footer">
       <span>{{createDate}}</span>
+      <span class="social">
+        <span class="social-like">
+          <svg class="icon social-icon" aria-hidden="true" @click.stop="toggleMomentLike">
+            <use xlink:href="#icon-like"></use>
+          </svg>
+          <span v-if="likeCount > 0">{{likeCount}}</span>
+        </span>
+        <span class="social-comment">
+          <svg class="icon social-icon" aria-hidden="true">
+            <use xlink:href="#icon-comment"></use>
+          </svg>
+          <span v-if="commentCount > 0">{{commentCount}}</span>
+        </span>
+      </span>
     </div>
-    <div class="comments">
+    <div class="comments" v-if="comments.length">
       <p class="comments-item" v-for="( item, index ) in comments" :key="index">
         <span class="comment-name">{{ item.userName }}</span>
         <span class="comment-content">{{item.text }}</span>
@@ -45,8 +55,9 @@
 </template>
 
 <script>
+import { likeMoment } from '@/API'
 import { formatMyDate } from '@/utils/tool'
-import TheBackgroundImage from '@/components/TheBackgroundImage'
+import TheBackgroundImage from '@/components/BackgroundImage'
 
 export default {
   name: 'moment-item',
@@ -83,7 +94,7 @@ export default {
       return this.item.momentComments || []
     },
     createDate() {
-      let createDate = this.item.createDate
+      let createDate = this.item.updatedAt
       let date = new Date( createDate ).getTime()
       let now = Date.now()
       const period = now - date
@@ -99,13 +110,31 @@ export default {
       } else {
         return formatMyDate( date )
       }
+    },
+    commentCount() {
+      return this.comments.length || 0
+    },
+    likeCount() {
+      return this.item.like || 0
     }
   },
   created() {
 
   },
   methods: {
+    toggleMomentLike() {
+      this.likeOneMoment()
+    },
+    likeOneMoment() {
+      likeMoment( {
+        momentId: this.item.id
+      } ).then( res => {
 
+      } )
+    },
+    unlikeOneMoment() {
+
+    }
   }
 }
 </script>
@@ -162,6 +191,7 @@ export default {
       &:nth-child(3n)
         margin-right 0
 .comments
+  margin-top 5px
   .comments-item
     background #f0f0f0
     margin-bottom 10px
@@ -173,6 +203,15 @@ export default {
   .comment-content
     color #999999
     word-break break-all
-
+.footer
+  color #999
+  font-size 12px
+  display flex
+  justify-content space-between
+  .social
+    >span
+      margin-right 20px
+    .social-icon
+      margin-left 5px
 </style>
 
