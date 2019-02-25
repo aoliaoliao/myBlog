@@ -160,11 +160,9 @@ export default {
       this._initScroll()
     }, 20 )
   },
-  // activated() {
-  //   setTimeout( () => {
-  //     this._initScroll()
-  //   }, 20 )
-  // },
+  activated() {
+    console.log( 'activated the scroll' )
+  },
   watch: {
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
     data() {

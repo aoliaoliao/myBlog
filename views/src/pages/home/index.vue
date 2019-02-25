@@ -6,7 +6,7 @@
           <!-- <keep-alive> -->
           <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
 
-            <component :is="item.name"></component>
+            <component :is="item.name" ref="homeComponent"></component>
 
           </mt-tab-container-item>
           <!-- </keep-alive> -->
@@ -45,10 +45,33 @@ export default {
   created() {
     this.selected = this.tabPanes[ 0 ].id
   },
+  watch: {
+    selected( newVal ) {
+      debugger
+      console.log( 'this', this )
+      let curTab = this.$refs[ 'homeComponent' ] || {}
+      console.log( 'curTab', curTab )
+
+      let curList = {}
+
+      curTab.forEach( tab => {
+        if ( tab.name === 'ArticlePage' && newVal === 0 ) {
+          curList = tab.refs[ 'articleList' ]
+        } else if ( tab.name === 'MomentPage' && newVal === 0 ) {
+          curList = tab.refs[ 'momentList' ]
+        }
+      } )
+
+      let theScroll = curList.$refs[ 'theScroll' ]
+      theScroll && theScroll.refresh()
+
+    }
+  },
   methods: {
     publish() {
       this.$router.push( '/publish/' + this.selected )
-    }
+    },
+
   }
 }
 </script>

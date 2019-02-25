@@ -1,7 +1,7 @@
 <template>
   <div class="article-list">
     <template v-if="list.length > 0">
-      <the-scroll :propbe-type="3" :listen-scroll="true" :listen-scroll-end="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
+      <the-scroll ref="theScroll" :propbe-type="3" :listen-scroll="true" :listen-scroll-end="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
         <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
@@ -37,6 +37,10 @@ export default {
   },
   created() {
     this.loadTop()
+  },
+  activated() {
+    console.log( 'activated articleList ' )
+    // refresh
   },
   methods: {
     loadTop() {

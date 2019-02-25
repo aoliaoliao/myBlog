@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getComments } from '@/API'
+import { getComments } from '@/API'     
 import { createNamespacedHelpers } from 'vuex'
 import CommentItem from './CommentItem'
 

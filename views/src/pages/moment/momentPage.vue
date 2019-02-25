@@ -7,7 +7,7 @@
       </svg>
     </the-page-title>
     <div class="moment-page-list">
-      <moment-list></moment-list>
+      <moment-list ref="momentList"></moment-list>
     </div>
   </div>
 </template>
