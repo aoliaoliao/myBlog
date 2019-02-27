@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    let Moment = sequelize.define('Moment', {
+    let Moments = sequelize.define('Moments', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
@@ -27,10 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true
     })
 
-    Moment.associate = function(models) {
-        // models.User.hasMany(models.Task);
-        models.Moment.belongsTo(models.User, { foreignKey: 'userId', as: 'momentAuthor' })
-        models.Moment.hasMany(models.Comment, { foreignKey: 'momentId', as: 'momentComments' })
+    Moments.associate = function(models) {
+        models.Moments.belongsTo(models.Users, { foreignKey: 'userId', as: 'momentAuthor' })
+        models.Moments.hasMany(models.Comments, { foreignKey: 'momentId', as: 'momentComments' })
+        models.Moments.hasMany(models.Votes, { foreignKey: 'momentId', as: 'momentLikes' })
     };
-    return Moment
+    return Moments
 }

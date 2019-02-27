@@ -1,4 +1,4 @@
-const likeModel = require('../../../Dao').Like
+const likeModel = require('../../../Dao').Votes
 
 module.exports = async function(req, res, next) {
     let { userId, momentId } = req.body

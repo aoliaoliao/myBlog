@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    let Comment = sequelize.define('Comment', {
+    let Comments = sequelize.define('Comments', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
@@ -36,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true
     })
 
-    Comment.associate = function(models) {
-        models.Comment.belongsTo(models.User, {
+    Comments.associate = function(models) {
+        models.Comments.belongsTo(models.Users, {
             foreignKey: 'userId',
             as: 'commentAuthor'
         })
     };
-    return Comment
+    return Comments
 }

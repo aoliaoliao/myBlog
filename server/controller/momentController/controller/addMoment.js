@@ -1,4 +1,4 @@
-const momentModel = require('../../../Dao').Moment
+const momentModel = require('../../../Dao').Moments
 const fs = require('fs')
 const util = require('util')
 const { formatResponse } = require('../../../utils')

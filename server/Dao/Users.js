@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-    let User = sequelize.define('User', {
+    let Users = sequelize.define('Users', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
@@ -80,8 +80,8 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true
     })
 
-    User.associate = function(models) {
-        // models.User.hasMany(models.Task);
+    Users.associate = function(models) {
+        // models.Users.hasMany(models.Task);
     };
-    return User
+    return Users
 }

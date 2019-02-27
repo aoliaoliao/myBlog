@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    let Like = sequelize.define('Like', {
+    let Votes = sequelize.define('Votes', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true
     })
 
-    Like.associate = function(models) {};
-    return Like
+    Votes.associate = function(models) {
+        models.Votes.belongsTo(models.Users, {
+            foreignKey: 'userId',
+            as: 'LikeAuthor'
+        })
+    };
+    return Votes
 }

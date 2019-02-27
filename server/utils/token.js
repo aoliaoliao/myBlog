@@ -30,9 +30,9 @@ function createToken(payload = {}, type) {
 }
 
 /* 
- * 获取token
+ * 获取token的主体内容
  */
-function getTokenData(token) {
+function getTokenBody(token) {
 
     if (!token) {
         return null
@@ -63,7 +63,7 @@ function validateRefreshToken(token) {
             reject('invalid token')
             return
         }
-        token = getTokenData(token)
+        token = getTokenBody(token)
         jwt.verify(token, cert, function(err, decoded) {
             if (err) {
                 reject('invalid token')
@@ -76,7 +76,7 @@ function validateRefreshToken(token) {
 
 // 验证access_token，为了处理并发请求有个10秒的缓存期
 function validateAccessToken(req, res, next) {
-    let token = getTokenData(req.get('authorization'))
+    let token = getTokenBody(req.get('authorization'))
 
     if (!token) {
         setFailedResponse(res)
@@ -104,7 +104,7 @@ function validateAccessToken(req, res, next) {
 
 // 解码token，获取其中的载荷信息
 function decodedToken(token) {
-    token = getTokenData(token)
+    token = getTokenBody(token)
     let data = jwt.decode(token)
     return data || {}
 }
@@ -114,7 +114,6 @@ module.exports = {
     validateAccessToken,
     validateRefreshToken,
     createToken,
-    getTokenData,
     tokenList,
     decodedToken
 }

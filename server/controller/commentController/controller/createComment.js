@@ -1,4 +1,4 @@
-const CommentModel = require('../../../Dao').Comment
+const CommentModel = require('../../../Dao').Comments
 const { formatResponse } = require('../../../utils')
 
 

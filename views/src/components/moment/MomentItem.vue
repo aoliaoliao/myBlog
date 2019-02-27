@@ -32,7 +32,7 @@
       <span>{{createDate}}</span>
       <span class="social">
         <span class="social-like">
-          <svg class="icon social-icon" aria-hidden="true" @click.stop="toggleMomentLike">
+          <svg class="icon social-icon" :class="{ 'red-text': item.momentLikes.melike > 0 }" aria-hidden="true" @click.stop="toggleMomentLike">
             <use xlink:href="#icon-like"></use>
           </svg>
           <span v-if="likeCount > 0">{{likeCount}}</span>
@@ -115,7 +115,7 @@ export default {
       return this.comments.length || 0
     },
     likeCount() {
-      return this.item.like || 0
+      return this.item.momentLikes.likes || 0
     }
   },
   created() {
@@ -213,5 +213,7 @@ export default {
       margin-right 20px
     .social-icon
       margin-left 5px
+    .red-text
+      color red
 </style>
 
