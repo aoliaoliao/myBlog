@@ -7,7 +7,7 @@
       </svg>
     </the-page-title>
     <div class="article-page-list">
-      <article-list></article-list>
+      <article-list ref="articleList"></article-list>
     </div>
 
   </div>
@@ -23,14 +23,22 @@ export default {
     ArticleList,
     ThePageTitle
   },
+  props: {
+    name: {
+      type: String,
+      default: 'ArticlePage'
+    }
+  },
   data() {
     return {
 
     }
   },
-  activated(){
-    console.log('active article page ')
-  }
+  activated() {
+    console.log( 'active article page ' )
+  },
+  methods: {
+  },
 
 }
 </script>
