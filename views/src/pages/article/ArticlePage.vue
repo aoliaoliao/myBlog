@@ -9,7 +9,6 @@
     <div class="article-page-list">
       <article-list ref="articleList"></article-list>
     </div>
-
   </div>
 </template>
 
@@ -35,7 +34,6 @@ export default {
     }
   },
   activated() {
-    console.log( 'active article page ' )
   },
   methods: {
   },

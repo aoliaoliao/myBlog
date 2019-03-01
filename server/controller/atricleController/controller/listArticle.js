@@ -1,7 +1,7 @@
 const path = require('path')
-const articletModel = require("../../../Dao").Article;
-const userModel = require("../../../Dao").User;
-const CommentModel = require("../../../Dao").Comment;
+const articletModel = require("../../../Dao").Articles;
+const userModel = require("../../../Dao").Users;
+const CommentModel = require("../../../Dao").Comments;
 const { formatResponse } = require("../../../utils");
 const { staticNetPrefix } = require('../../../conf')['gloableConst']
 

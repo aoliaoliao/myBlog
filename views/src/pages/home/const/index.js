@@ -12,7 +12,7 @@ export const tabPanes = [ {
 },
 {
   id: 2,
-  name: 'my',
+  name: 'My',
   icon: 'my',
   label: '我的'
 }

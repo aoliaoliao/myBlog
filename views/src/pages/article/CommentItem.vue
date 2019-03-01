@@ -10,9 +10,6 @@
 </template>
 
 <script>
-import CommentInput from '@/components/comments/commentInput'
-import { createComments } from '@/API'
-import { mapMutations, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'comment-item',
@@ -27,40 +24,8 @@ export default {
     }
   },
   components: {
-    CommentInput
   },
   methods: {
-    ...mapActions( 'comment', [
-      'createOneComment'
-    ] ),
-    formatParam() {
-      const param = {}
-      const { articleId, id } = this.comment
-
-      param.text = this.text
-      articleId ? param.articleId = articleId : ''
-      id ? param.parentCommentId = id : ''
-      return param
-    },
-    submit( text ) {
-      this.createOneComment( { param: this.formatParam(), parentComment: this.comment } ).then( cd => {
-        if ( cd ) {
-          this.showToast( '发表成功' )
-          this.isShowInput = false
-        } else {
-          this.showToast( '发表失败' )
-        }
-      } ).catch( err => {
-        this.showToast( '发表失败' )
-      } )
-    },
-    showToast( message ) {
-      this.$toast( {
-        message,
-        position: 'middle',
-        duration: 1000
-      } )
-    },
   }
 }
 </script>

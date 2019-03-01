@@ -1,18 +1,11 @@
 <template>
   <div class="home">
     <div class="content-tabbar">
-      <div style="position:relative;height:100%;">
-        <mt-tab-container v-model="selected" :swipeable="true">
-          <!-- <keep-alive> -->
-          <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
-
-            <component :is="item.name" ref="homeComponent"></component>
-
-          </mt-tab-container-item>
-          <!-- </keep-alive> -->
-        </mt-tab-container>
-      </div>
-
+      <mt-tab-container v-model="selected" :swipeable="true">
+        <mt-tab-container-item v-for="item in tabPanes" :key="item.name" :id="item.id">
+          <component :is="item.name" ref="homeComponent"></component>
+        </mt-tab-container-item>
+      </mt-tab-container>
     </div>
     <mt-tabbar class="menu-tabbar" v-model="selected">
       <mt-tab-item class="menu-tab-item" v-for="item in tabPanes" :key="item.name" :id="item.id">
@@ -26,8 +19,8 @@
 </template>
 
 <script>
-import ArticlePage from '@/pages/article/articlePage'
-import MomentPage from '@/pages/moment/momentPage'
+import ArticlePage from '@/pages/article/ArticlePage'
+import MomentPage from '@/pages/moment/MomentPage'
 import My from '@/pages/my'
 import { tabPanes } from './const'
 
@@ -47,23 +40,21 @@ export default {
   },
   watch: {
     selected( newVal ) {
-      debugger
-      console.log( 'this', this )
       let curTab = this.$refs[ 'homeComponent' ] || {}
-      console.log( 'curTab', curTab )
 
       let curList = {}
 
-      curTab.forEach( tab => {
-        if ( tab.name === 'ArticlePage' && newVal === 0 ) {
-          curList = tab.refs[ 'articleList' ]
-        } else if ( tab.name === 'MomentPage' && newVal === 0 ) {
-          curList = tab.refs[ 'momentList' ]
-        }
+      if ( newVal === 0 ) {
+        curList = curTab[ newVal ].$refs[ 'articleList' ]
+      } else if ( newVal === 1 ) {
+        curList = curTab[ newVal ].$refs[ 'momentList' ]
+      }
+
+      this.$nextTick( () => {
+        let theScroll = curList.$refs[ 'theScroll' ]
+        theScroll && theScroll.refresh()
       } )
 
-      let theScroll = curList.$refs[ 'theScroll' ]
-      theScroll && theScroll.refresh()
 
     }
   },

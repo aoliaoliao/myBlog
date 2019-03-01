@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const articleModel = require('../../../Dao').Article
-const userModel = require('../../../Dao').User
+const articleModel = require('../../../Dao').Articles
+const userModel = require('../../../Dao').Users
 const { formatResponse, formatDBResult } = require('../../../utils')
 
 const articleAttributes = [

@@ -7,7 +7,7 @@
 <script>
 
 export default {
-  name: 'the-background-image',
+  name: 'background-image',
   props: {
     src: {
       type: String,

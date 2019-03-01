@@ -1,4 +1,4 @@
-const userModel = require('"../../../Dao').User
+const userModel = require('"../../../Dao').Users
 const { formatResponse, formatDBResult, cryptoPasswordByMD5 } = require('../../../utils')
 const { createToken } = require('../../../utils/token')
 

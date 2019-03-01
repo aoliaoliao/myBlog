@@ -15,5 +15,13 @@ module.exports = [{
         meta: {
             token: true
         }
+    },
+    {
+        method: 'post',
+        path: '/like',
+        handler: momentController.likeMoment,
+        meta: {
+            token: true
+        }
     }
 ]

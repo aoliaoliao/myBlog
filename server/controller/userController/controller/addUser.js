@@ -1,4 +1,4 @@
-const userModel = require('"../../../Dao').User
+const userModel = require('"../../../Dao').Users
 const { formatResponse, cryptoPasswordByMD5 } = require('../../../utils')
 
 function validateNickName(res, nickName) {

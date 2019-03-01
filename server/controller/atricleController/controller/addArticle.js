@@ -1,7 +1,7 @@
 const validator = require('validator')
 const fs = require('fs')
 const fsPromises = fs.promises;
-const articleModel = require("../../../Dao").Article;
+const articleModel = require("../../../Dao").Articles;
 const { formatResponse, createUUID, getFileExt, getFileDir } = require("../../../utils");
 const { articleConst } = require('../../../conf')['gloableConst']
 

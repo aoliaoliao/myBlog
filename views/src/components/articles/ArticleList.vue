@@ -4,7 +4,7 @@
       <the-scroll ref="theScroll" :propbe-type="3" :listen-scroll="true" :listen-scroll-end="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
-        <article-item v-for="item in list " :key="item.id" :item="item"></article-item>
+        <article-item v-for="(item,index) in list " :key="index" :item="item"></article-item>
         <div class="list-bottom" v-if="isOver">
           到底了哦~
         </div>
@@ -39,8 +39,6 @@ export default {
     this.loadTop()
   },
   activated() {
-    console.log( 'activated articleList ' )
-    // refresh
   },
   methods: {
     loadTop() {

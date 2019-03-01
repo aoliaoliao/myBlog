@@ -1,4 +1,4 @@
-const userModel = require('"../../../Dao').User
+const userModel = require('"../../../Dao').Users
 const { formatResponse } = require("../../../utils");
 
 module.exports = async function listUser(req, res, next) {

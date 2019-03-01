@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    let Article = sequelize.define('Article', {
+    let Articles = sequelize.define('Articles', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
@@ -45,14 +45,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 1,
             comment: '是否允许评论，1：允许，0：不允许'
-        }
+        },
     }, {
         freezeTableName: true
     })
 
-    Article.associate = function(models) {
-        models.Article.belongsTo(models.User, { foreignKey: 'author', as: 'articleAuthor' })
-        models.Article.hasMany(models.Comment, { foreignKey: 'articleId', as: 'articleComments' })
+    Articles.associate = function(models) {
+        models.Articles.belongsTo(models.Users, { foreignKey: 'author', as: 'articleAuthor' })
+        models.Articles.hasMany(models.Comments, { foreignKey: 'articleId', as: 'articleComments' })
     };
-    return Article
+    return Articles
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="my">
-    <user-info>
-    </user-info>
+    <user-info></user-info>
     <div>
       <mt-cell v-for="menu in menus " :key="menu.title" :title="menu.title" :is-link="!!menu.to" :to="menu.to">
         <span v-if="menu.explain">{{menu.explain}}</span>
@@ -9,7 +8,6 @@
           <use :xlink:href="`#icon-${menu.icon}`"></use>
         </svg>
       </mt-cell>
-
       <div class="app-logout">
         <app-logout>
           <mt-button type="danger" size="large">退出</mt-button>
