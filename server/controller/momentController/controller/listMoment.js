@@ -52,7 +52,7 @@ const queryStr = 'SELECT' +
     '`Moment`.`updatedAt` DESC;'
 
 // 每次查询的时候修正偏移量，防止分页的时候可能出现的数据重复
-function fixOffset( option ) {
+function fixOffset(option) {
 
 }
 
@@ -89,7 +89,7 @@ async function listMomentContent(limit = 10, offset = 0, userId = '') {
 
     try {
         let total = countMoment()
-        
+
         let [list, total] = await Promise.all([findAllMoment(findOption), countMoment()])
         if (list === undefined) {
             return false
