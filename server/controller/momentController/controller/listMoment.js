@@ -1,13 +1,20 @@
 const path = require('path')
 const Sequelize = require('sequelize')
-const { decodedToken } = require("../../../utils/token")
+const {
+    decodedToken
+} = require("../../../utils/token")
 const database = require("../../../Dao")
 const momentModel = require("../../../Dao").Moments;
 const userModel = require("../../../Dao").Users;
 const CommentModel = require("../../../Dao").Comments;
 const LikeModel = require("../../../Dao").Votes;
-const { formatResponse, formatDBResult } = require("../../../utils");
-const { staticNetPrefix } = require('../../../conf')['gloableConst']
+const {
+    formatResponse,
+    formatDBResult
+} = require("../../../utils");
+const {
+    staticNetPrefix
+} = require('../../../conf')['gloableConst']
 
 const momentAttributes = ['id', 'userId', 'text', 'imgs', 'video', 'updatedAt']
 const userAttributes = ['nickName', 'avatar', 'signature', 'id']
@@ -52,14 +59,19 @@ const queryStr = 'SELECT' +
     '`Moment`.`updatedAt` DESC;'
 
 // 每次查询的时候修正偏移量，防止分页的时候可能出现的数据重复
-function fixOffset(option) {
-
+function fixOffset(oldCount, newCount) {
+    let offset = newCount - oldCount // 偏移量
+    return offset
 }
 
 
 
 async function findAllMoment(option) {
-    return database.sequelize.query(queryStr, { replacements: option, type: Sequelize.QueryTypes.SELECT, nest: true }).then(result => {
+    return database.sequelize.query(queryStr, {
+        replacements: option,
+        type: Sequelize.QueryTypes.SELECT,
+        nest: true
+    }).then(result => {
         let rows = result.map(v => {
             let row = formatDBResult(v)
             row.imgs = row.imgs.split(',').map(v => staticNetPrefix + v.split(path.sep).join('/'))
@@ -79,18 +91,31 @@ async function countMoment(opiton) {
 }
 
 
-async function listMomentContent(limit = 10, offset = 0, userId = '') {
+async function listMomentContent(limit = 10, offset = 0, count = 0, userId = '') {
     // let momentContent = new momentContent()
     let end = false
     limit = +limit
     offset = +offset
-
-    let findOption = { limit, offset, userId }
+    count = +count
 
     try {
+        <<
+        << << < HEAD
         let total = countMoment()
 
-        let [list, total] = await Promise.all([findAllMoment(findOption), countMoment()])
+        let [list, total] = await Promise.all([findAllMoment(findOption), countMoment()]) ===
+            === =
+            let total = await countMoment()
+
+        offset = offset + fixOffset(count, total)
+
+        let findOption = { limit, offset, userId }
+
+        let list = await findAllMoment(findOption)
+
+            // let [list, total] = await Promise.all([findAllMoment(findOption), countMoment()])
+            >>>
+            >>> > 5 ca16760247cb4a74590a0084e847e230c565fa5
         if (list === undefined) {
             return false
         }
@@ -108,13 +133,17 @@ async function listMomentContent(limit = 10, offset = 0, userId = '') {
 }
 
 module.exports = async function(req, res, next) {
-    const { num, start } = req.query
+    const {
+        num,
+        start,
+        count
+    } = req.query
     const token = req.get('authorization')
 
     if (token) {
         const userId = decodedToken(token).userId
 
-        let rt = await listMomentContent(num, start, userId)
+        let rt = await listMomentContent(num, start, count, userId)
         if (rt) {
             res.send(formatResponse(1, rt))
         } else {

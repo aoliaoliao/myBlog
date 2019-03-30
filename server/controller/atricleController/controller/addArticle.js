@@ -103,15 +103,14 @@ module.exports = async function(req, res, next) {
     content = await formatModelData(content)
 
     articleModel.create(content).then(rt => {
-            res.send(formatResponse(1, '发表成功'))
+        res.send(formatResponse(1, '发表成功'))
+    }).catch(err => {
+        console.log('article发表失败，', err)
+        res.send(formatResponse(0, '发表失败'))
+        deleteLocalFile({
+            articleAddress: content.articleAddress,
+            summaryImage: content.summaryImage
         })
-        .catch(err => {
-            console.log('article发表失败，', err)
-            res.send(formatResponse(0, '发表失败'))
-            deleteLocalFile({
-                articleAddress: content.articleAddress,
-                summaryImage: content.summaryImage
-            })
-        })
+    })
 
 }
