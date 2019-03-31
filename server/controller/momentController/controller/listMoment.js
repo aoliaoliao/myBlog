@@ -99,13 +99,7 @@ async function listMomentContent(limit = 10, offset = 0, count = 0, userId = '')
     count = +count
 
     try {
-        <<
-        << << < HEAD
-        let total = countMoment()
-
-        let [list, total] = await Promise.all([findAllMoment(findOption), countMoment()]) ===
-            === =
-            let total = await countMoment()
+        let total = await countMoment()
 
         offset = offset + fixOffset(count, total)
 
@@ -113,9 +107,7 @@ async function listMomentContent(limit = 10, offset = 0, count = 0, userId = '')
 
         let list = await findAllMoment(findOption)
 
-            // let [list, total] = await Promise.all([findAllMoment(findOption), countMoment()])
-            >>>
-            >>> > 5 ca16760247cb4a74590a0084e847e230c565fa5
+        // let [list, total] = await Promise.all([findAllMoment(findOption), countMoment()])
         if (list === undefined) {
             return false
         }

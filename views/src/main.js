@@ -7,6 +7,8 @@ import store from './vuex'
 import router from './router'
 import http from './API/http'
 import App from './App'
+
+import './libs/vuxUI'
 import './libs/elementUI'
 import '@/assets/font/iconfont.js'
 import '@/assets/styles/globalStyles.styl'
