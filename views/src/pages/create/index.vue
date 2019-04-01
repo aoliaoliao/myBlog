@@ -23,16 +23,16 @@ export default {
     CreateMoment,
     CreateArticle
   },
-  data() {
+  data () {
     return {
       publishType: ''
     }
   },
   computed: {
-    componentObj() {
+    componentObj () {
       const id = this.publishType
       let comp = {}
-      switch ( id ) {
+      switch (id) {
         case 'article':
           comp = {
             name: 'CreateArticle',
@@ -49,13 +49,13 @@ export default {
       return comp
     }
   },
-  created() {
+  created () {
     // id 发布内容的类型： 0: 发布文章，1：发布动态
     this.publishType = this.$route.params.id || 0
 
   },
   methods: {
-    publish() {
+    publish () {
       this.$refs.curComponent.publish()
     }
   }

@@ -50,5 +50,7 @@ export default {
     height 100%
     opacity 0
     z-index 2
+    top 0
+    left 0
 </style>
 
