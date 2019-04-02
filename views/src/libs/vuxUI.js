@@ -13,6 +13,7 @@ import {
   ViewBox,
   Tabbar,
   TabbarItem,
+  Previewer
 } from 'vux'
 
 Vue.component( 'vux-group', Group )
@@ -26,6 +27,6 @@ Vue.component( 'vux-flexboxitem', FlexboxItem )
 Vue.component( 'vux-viewbox', ViewBox )
 Vue.component( 'vux-tabbar', Tabbar )
 Vue.component( 'vux-tabbaritem', TabbarItem )
-
+Vue.component( 'vux-previewer', Previewer )
 
 Vue.component( 'b-icon', Icon )

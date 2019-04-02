@@ -6,17 +6,13 @@
     <div class="moment-img">
       <img class="size" v-for="( img, index) in showImgs" @click="showImg(index)" :key="img" :src="img">
       <the-file-btn class="size create-btn" @change="changeImageList" :accept="fileTypes" :multiple="true" v-show="showImgBtn">
-        <svg class="icon addIcon" aria-hidden="true">
-          <use xlink:href="#icon-jiahao"></use>
-        </svg>
+        <b-icon class="addIcon" icon="jiahao"></b-icon>
       </the-file-btn>
     </div>
     <div class="config">
       <div class="item">
         <div class="title">
-          <svg class="icon private" aria-hidden="true">
-            <use xlink:href="#icon-yinsi"></use>
-          </svg>
+          <b-icon class="private" icon="yinsi"></b-icon>
           <span>仅自己可见</span>
         </div>
         <mt-switch v-model="moment.isPrivate"></mt-switch>
@@ -40,7 +36,7 @@ export default {
     TheFileBtn,
     PreviewImg
   },
-  data() {
+  data () {
     return {
       moment: {
         text: '',
@@ -54,88 +50,88 @@ export default {
     }
   },
   computed: {
-    showImgBtn() {
+    showImgBtn () {
       return this.moment.imgs.length < maxImgCount
     }
   },
-  created() {
+  created () {
 
   },
   methods: {
-    formatImg( img ) {
+    formatImg (img) {
       // if ( img.size > maxImgSize ) return
 
-      return new Promise( function ( resolve, reject ) {
+      return new Promise(function (resolve, reject) {
         var reader = new FileReader();
         // reader.readAsDataURL( img )
-        reader.readAsBinaryString( img )
-        reader.onloadend = ( e ) => {
-          resolve( e.target.result )
+        reader.readAsBinaryString(img)
+        reader.onloadend = (e) => {
+          resolve(e.target.result)
         }
-      } )
+      })
 
     },
-    changeImageList( ev ) {
-      const files = Array.from( ev.target.files )
-      if ( files.length > maxImgCount ) {
-        this.$toast( {
+    changeImageList (ev) {
+      const files = Array.from(ev.target.files)
+      if (files.length > maxImgCount) {
+        this.$toast({
           message: `最多允许上传${maxImgCount}张图片`,
           position: 'bottom',
           duration: 2000
-        } )
+        })
         return
       }
       let inValidate = []
-      for ( let i = 0, len = files.length; i < len; i++ ) {
+      for (let i = 0, len = files.length; i < len; i++) {
         let v = files[ i ]
-        if ( this.fileTypes.split( ',' ).indexOf( v.type ) === -1 ) {
+        if (this.fileTypes.split(',').indexOf(v.type) === -1) {
           let name = v.name
-          inValidate.push( name )
+          inValidate.push(name)
           continue
         }
-        this.moment.imgs.push( v )
-        this.showImgs.push( URL.createObjectURL( v ) )
+        this.moment.imgs.push(v)
+        this.showImgs.push(URL.createObjectURL(v))
 
         // this.formatImg( v ).then( img => {
         //   // this.moment.imgs.push( img )
         //   // this.showImgs.push( URL.createObjectURL( img ) )
         // } )
       }
-      if ( inValidate.length > 0 ) {
-        this.$toast( {
-          message: `${inValidate.join( ' ' )}不符合格式`,
+      if (inValidate.length > 0) {
+        this.$toast({
+          message: `${inValidate.join(' ')}不符合格式`,
           position: 'bottom',
           duration: 5000
-        } )
+        })
       }
     },
-    showImg( index ) {
+    showImg (index) {
       this.imgIndex = index || 0
       this.componentName = 'PreviewImg'
     },
-    hideImg() {
+    hideImg () {
       this.componentName = ''
     },
-    publish() {
+    publish () {
       let param = new FormData()
-      for ( const [ key, value ] of Object.entries( this.moment ) ) {
-        if ( Array.isArray( value ) ) {
-          value.forEach( v => {
-            param.append( key, v )
-          } )
+      for (const [ key, value ] of Object.entries(this.moment)) {
+        if (Array.isArray(value)) {
+          value.forEach(v => {
+            param.append(key, v)
+          })
         } else {
-          param.append( key, value )
+          param.append(key, value)
         }
       }
-      createMoment( param ).then( res => {
+      createMoment(param).then(res => {
         this.$router.back()
-      } ).catch( err => {
-        this.$toast( {
+      }).catch(err => {
+        this.$toast({
           message: `发表失败，请重试`,
           position: 'bottom',
           duration: 2000
-        } )
-      } )
+        })
+      })
     }
   }
 }

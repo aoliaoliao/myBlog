@@ -4,9 +4,7 @@
     <div>
       <mt-cell v-for="menu in menus " :key="menu.title" :title="menu.title" :is-link="!!menu.to" :to="menu.to">
         <span v-if="menu.explain">{{menu.explain}}</span>
-        <svg class="icon" slot="icon">
-          <use :xlink:href="`#icon-${menu.icon}`"></use>
-        </svg>
+        <b-icon class="icon" slot="icon" :icon="menu.icon"></b-icon>
       </mt-cell>
       <div class="app-logout">
         <app-logout>
@@ -27,7 +25,7 @@ export default {
     UserInfo,
     AppLogout
   },
-  data() {
+  data () {
     return {
       menus: [
         {
@@ -86,6 +84,9 @@ export default {
   .app-logout
     margin 10px 5px
     border-top 1px solid #cccccc
+  .icon
+    width w = 14px
+    height w
 
 </style>
 

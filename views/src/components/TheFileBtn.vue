@@ -8,16 +8,13 @@
 
 <script>
 
-const maxImgCount = 9
-const maxImgSize = 3 * 1024 * 1024
-
 export default {
   name: 'the-file-btn',
   props: {
     accept: {
       type: String,
       default: '',
-      descript: '上传文件的限制类型'
+      descript: '上传文件的限制类型, 逗号分隔的 MIME 类型字符串'
     },
     multiple: {
       type: Boolean,

@@ -27,6 +27,7 @@ export default {
 .b-icon
   width 1em
   height 1em
+  display inline-flex
   .icon
     width 100%
     height 100%

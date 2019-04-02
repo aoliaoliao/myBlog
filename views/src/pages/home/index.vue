@@ -9,9 +9,7 @@
     </div>
     <mt-tabbar class="menu-tabbar" v-model="selected">
       <mt-tab-item class="menu-tab-item" v-for="item in tabPanes" :key="item.name" :id="item.id">
-        <svg class="icon menu" :class="item.icon" aria-hidden="true">
-          <use :xlink:href="`#icon-${item.icon}`"></use>
-        </svg>
+        <b-icon class="menu" :class="item.icon" :icon="item.icon"></b-icon>
         <span class="menu-name">{{item.label}}</span>
       </mt-tab-item>
     </mt-tabbar>
@@ -26,41 +24,41 @@ import { tabPanes } from './const'
 
 export default {
   name: 'home',
-  data: () => ( {
+  data: () => ({
     tabPanes,
     selected: '',
-  } ),
+  }),
   components: {
     MomentPage,
     ArticlePage,
     My,
   },
-  created() {
+  created () {
     this.selected = this.tabPanes[ 0 ].id
   },
   watch: {
-    selected( newVal ) {
+    selected (newVal) {
       let curTab = this.$refs[ 'homeComponent' ] || {}
 
       let curList = {}
 
-      if ( newVal === 0 ) {
+      if (newVal === 0) {
         curList = curTab[ newVal ].$refs[ 'articleList' ]
-      } else if ( newVal === 1 ) {
+      } else if (newVal === 1) {
         curList = curTab[ newVal ].$refs[ 'momentList' ]
       }
 
-      this.$nextTick( () => {
+      this.$nextTick(() => {
         let theScroll = curList.$refs[ 'theScroll' ]
         theScroll && theScroll.refresh()
-      } )
+      })
 
 
     }
   },
   methods: {
-    publish() {
-      this.$router.push( '/publish/' + this.selected )
+    publish () {
+      this.$router.push('/publish/' + this.selected)
     },
 
   }

@@ -2,9 +2,7 @@
   <div class="moment-page">
     <the-page-title>
       <span>动态</span>
-      <svg slot="right" class="icon title-search" aria-hidden="true" @click.stop="publish">
-        <use xlink:href="#icon-add"></use>
-      </svg>
+      <b-icon slot="right" class="title-search" icon="search" @click.stop="publish"></b-icon>
     </the-page-title>
     <div class="moment-page-list">
       <moment-list ref="momentList"></moment-list>
@@ -22,16 +20,16 @@ export default {
     MomentList,
     ThePageTitle
   },
-  data() {
+  data () {
     return {
 
     }
   },
-  activated() {
+  activated () {
   },
   methods: {
-    publish() {
-      this.$router.push( '/publish/moment' )
+    publish () {
+      this.$router.push('/publish/moment')
     }
   }
 

@@ -2,9 +2,10 @@
   <div class="article-page">
     <the-page-title>
       <span>文章</span>
-      <svg slot="right" class="icon title-search" aria-hidden="true">
+      <!-- <svg slot="right" class="icon title-search" aria-hidden="true">
         <use xlink:href="#icon-search"></use>
-      </svg>
+      </svg> -->
+      <b-icon slot="right" class="title-search" icon="search"></b-icon>
     </the-page-title>
     <div class="article-page-list">
       <article-list ref="articleList"></article-list>
@@ -28,12 +29,12 @@ export default {
       default: 'ArticlePage'
     }
   },
-  data() {
+  data () {
     return {
 
     }
   },
-  activated() {
+  activated () {
   },
   methods: {
   },
