@@ -15,9 +15,9 @@ import { updateRefreshToken } from './utils/token'
 
 export default {
   name: 'App',
-  created() {
+  created () {
     const notUpdateRoute = [ '/', '/login' ]
-    if ( !notUpdateRoute.includes( this.$route.path ) ) {
+    if (!notUpdateRoute.includes(this.$route.path)) {
       updateRefreshToken()
     }
   }

@@ -15,8 +15,6 @@ import '@/assets/styles/globalStyles.styl'
 
 import errorImg from './assets/images/user_avatar.jpg'
 
-console.log( 'main-store', store )
-
 Vue.prototype.$http = http
 Vue.use( vueLazy, {
   preLoad: 1.1, // 预加载的宽高比

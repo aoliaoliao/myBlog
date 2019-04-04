@@ -3,12 +3,13 @@
     <vux-group>
       <vux-input class="title" :min="1" :max="50" :required="true" :show-counter="true" placeholder="请输入标题"></vux-input>
       <vux-textarea class="summary" :required="true" :show-counter="true" :max="300" :autosize="true" placeholder="文章简介"></vux-textarea>
-      <vux-previewer v-if="summaryImages" ref="previewer" :list="summaryImages" :options="perviewOptions">
-        <template slot="button-after">
-          <b-icon class="image-close" icon="close" @click.prevent.stop="removeImg"></b-icon>
-        </template>
-      </vux-previewer>
     </vux-group>
+    <div class="summaryImage" v-if="formData.summaryImage != null">
+      <img :src="summaryImages[0].src" @click="$refs.previewer.show(0)" />
+      <b-icon class="image-close" icon="close" @click.prevent.stop="removeImg"></b-icon>
+      <vux-previewer ref="previewer" :list="summaryImages"></vux-previewer>
+    </div>
+
     <div class="bottom flex-center">
       <span class="bottom-item" :class="{'success-item': formData.articleAddress != null }">
         <the-file-btn class="icon-position" @change="selectedArticle" :accept="articleMIME" :multiple="false">
@@ -55,31 +56,19 @@ export default {
         summaryImage: null
       },
       articleMIME: '*',
-      imageMIME: 'image/jpeg,image/pjpeg,image/png',
-      perviewOptions: {
-        isClickableElement: function (el) {
-          return /image-close/.test(el.className)
-        }
-      },
-      summaryImages: [
-        {
-          src: 'https://placekitten.com/800/400',
-          h: 600,
-          w: 400
-        }
-      ]
+      imageMIME: 'image/jpeg,image/pjpeg,image/png'
     }
   },
   computed: {
-    // summaryImages () {
-    //   let img = this.formData.summaryImage
-    //   if (!img) return []
-    //   return [ {
-    //     src: URL.createObjectURL(img),
-    //     h: 120,
-    //     w: 120
-    //   } ]
-    // }
+    summaryImages () {
+      let img = this.formData.summaryImage
+      if (!img) return [ { src: '' } ]
+      return [ {
+        src: URL.createObjectURL(img),
+        h: '100%',
+        w: '100%'
+      } ]
+    }
   },
   methods: {
     togglePrivate () {
@@ -146,7 +135,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-
+@import '~styles/variable'
 .create-article
   position relative
   height 100%
@@ -179,7 +168,21 @@ export default {
   @extend .flex-center
   flex-direction column
 .success-item
-  color #09bb07
+  color $success
+.summaryImage
+  padding 15px
+  position relative
+  >img
+    width 100px
+  .image-close
+    position absolute
+    right 10px
+    top 10px
+    color $error
+    width 20px
+    height 20px
+    z-index 10
+
 </style>
 
 <style lang="stylus">
