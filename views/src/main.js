@@ -12,9 +12,10 @@ import './libs/vuxUI'
 import './libs/elementUI'
 import '@/assets/font/iconfont.js'
 import '@/assets/styles/globalStyles.styl'
-
+import TheScroll from './components/TheScroll.vue'
 import errorImg from './assets/images/user_avatar.jpg'
 
+Vue.component( TheScroll.name, TheScroll )
 Vue.prototype.$http = http
 Vue.use( vueLazy, {
   preLoad: 1.1, // 预加载的宽高比

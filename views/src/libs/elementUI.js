@@ -18,10 +18,6 @@ import {
   TabItem
 } from 'mint-ui'
 
-import TheScroll from '../components/TheScroll.vue'
-
-Vue.component( TheScroll.name, TheScroll )
-
 Vue.component( Cell.name, Cell )
 Vue.component( Navbar.name, Navbar )
 Vue.component( TabContainer.name, TabContainer )

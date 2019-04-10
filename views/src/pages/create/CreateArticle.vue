@@ -4,12 +4,27 @@
       <vux-input class="title" :min="1" :max="50" :required="true" :show-counter="true" placeholder="请输入标题"></vux-input>
       <vux-textarea class="summary" :required="true" :show-counter="true" :max="300" :autosize="true" placeholder="文章简介"></vux-textarea>
     </vux-group>
-    <div class="summaryImage" v-if="formData.summaryImage != null">
-      <img :src="summaryImages[0].src" @click="$refs.previewer.show(0)" />
-      <b-icon class="image-close" icon="close" @click.prevent.stop="removeImg"></b-icon>
-      <vux-previewer ref="previewer" :list="summaryImages"></vux-previewer>
-    </div>
 
+    <vux-table class="file-table" :cell-bordered="false" :content-bordered="false" v-show="hasShowTable">
+      <tr>
+        <td width="60%">
+          <div class="article-file file-block" v-if="formData.articleAddress != null">
+            <div class="file-bg">{{fileName}}</div>
+            <b-icon class="close-btn" icon="close" @click.stop="removeArticle"></b-icon>
+          </div>
+        </td>
+        <td width="30%">
+          <div class="summary-image file-block" v-if="formData.summaryImage != null">
+            <div class="image-block" :style="`background-image: url(${summaryImages[0].src})`" @click.stop="$refs.previewer.show(0)"></div>
+            <!-- <div></div> -->
+            <b-icon class="close-btn" icon="close" @click="removeImg"></b-icon>
+            <div v-transfer-dom>
+              <vux-previewer ref="previewer" :list="summaryImages"></vux-previewer>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </vux-table>
     <div class="bottom flex-center">
       <span class="bottom-item" :class="{'success-item': formData.articleAddress != null }">
         <the-file-btn class="icon-position" @change="selectedArticle" :accept="articleMIME" :multiple="false">
@@ -38,6 +53,7 @@
 <script>
 import TheFileBtn from '@/components/TheFileBtn'
 import TheHeader from '@/components/TheHeader'
+import { createNewArticle } from '@/API'
 
 export default {
   name: 'create-article',
@@ -56,18 +72,23 @@ export default {
         summaryImage: null
       },
       articleMIME: '*',
-      imageMIME: 'image/jpeg,image/pjpeg,image/png'
+      imageMIME: 'image/jpeg,image/pjpeg,image/png',
+      fileName: ''
     }
   },
   computed: {
     summaryImages () {
       let img = this.formData.summaryImage
-      if (!img) return [ { src: '' } ]
+      if (!img) {
+
+        return [ { src: '' } ]
+      }
       return [ {
         src: URL.createObjectURL(img),
-        h: '100%',
-        w: '100%'
       } ]
+    },
+    hasShowTable () {
+      return this.formData.summaryImage || this.formData.articleAddress
     }
   },
   methods: {
@@ -83,6 +104,7 @@ export default {
         this.formData.articleAddress = null
         return
       }
+      this.fileName = file.name
       this.formData.articleAddress = file
     },
     selectedImage (ev) {
@@ -100,7 +122,6 @@ export default {
       if (!('text/html'.includes(file.type || 'none') || /\.*\.md$/gi.test(name))) {
         msg = '仅支持HTML和MD文件'
       } else {
-
       }
       if (msg.length) {
         this.$toast({
@@ -114,9 +135,10 @@ export default {
     },
     validateImage (file) {
       let msg = ''
+      const maxImage = 3 * 1024 * 1024
       if (!this.imageMIME.includes(file.type)) {
         msg = '请上传PNG，JPG或JPEG格式的图片'
-      } else if (file.size > 1000000) {
+      } else if (file.size > maxImage) {
         msg = '图片最大为10000'
       } else { }
       if (msg.length > 0) {
@@ -127,6 +149,47 @@ export default {
         })
       }
       return !msg.length
+    },
+    validateName (name) {
+      let msg = ''
+      const maxName = 50
+      if (!name) {
+        msg = '文章标题不可为空'
+      } else if (name.length > 50) {
+        msg = `文章标题最多为${maxName}字`
+      }
+      if (msg.length > 0) {
+        this.$toast({
+          message: msg,
+          position: 'center',
+          duration: 2000
+        })
+      }
+      return !msg.length
+    },
+    removeArticle () {
+      this.formData.articleAddress = null
+    },
+    removeImg () {
+      this.formData.summaryImage = null
+    },
+    submit () {
+      const { name, articleAddress, summaryImage } = this.formData
+      if (this.validateName(name) || this.validateArticle(articleAddress) || this.validateImage(summaryImage)) {
+        return
+      }
+      createNewArticle(this.formData).then(res => {
+        this.$vux.toast.show({
+          text: '新建成功',
+          time: 1000
+        })
+      }).catch(err => {
+        this.$vux.toast.show({
+          text: '发表失败，请重试',
+          time: 1000
+        })
+      })
+
     }
   }
 
@@ -169,19 +232,35 @@ export default {
   flex-direction column
 .success-item
   color $success
-.summaryImage
-  padding 15px
+.file-table
+  margin-top 20px
+.file-block
   position relative
-  >img
-    width 100px
-  .image-close
+  height 80px
+  margin-right 10px
+  .close-btn
     position absolute
-    right 10px
-    top 10px
+    right -10px
+    top -10px
     color $error
     width 20px
     height 20px
     z-index 10
+.summary-image
+  .image-block
+    width 100%
+    height 100%
+    background-size cover
+
+.article-file
+  .file-bg
+    height 100%
+    background linear-gradient(to right, #4BFF1F, #09bb07)
+    color #fff
+    font-size 16px
+    display flex
+    align-items center
+    justify-content center
 
 </style>
 

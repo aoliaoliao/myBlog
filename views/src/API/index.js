@@ -12,9 +12,13 @@ export const loginUser = params => $http.post( 'user/login', params )
 
 export const getArticleList = params => $http.get( 'article/list', params )
 export const getArticleDetail = params => $http.get( 'article/content', params )
-export const createNewArticle = params => $http.get( 'article/crate', {
+export const createNewArticle = params => $http.post( 'article/crate', {
   ...params,
   author: store.state.userId,
+}, {
+  headers: {
+    'Content-type': 'multipart/form-data'
+  }
 } )
 
 export const getMomentList = params => $http.get( 'moment/list', params )
