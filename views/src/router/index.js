@@ -6,26 +6,46 @@ Vue.use( Router )
 export default new Router( {
   routes: [ {
     path: '/',
-    redirect: '/home'
+    redirect: '/articles'
   },
-
   {
-    path: '/home',
-    name: 'home',
-    component: () => import( '../pages/home' ),
+    path: '/publish/moment',
+    name: 'createMoment',
+    component: () => import( '../pages/create/CreateMoment' )
+  },
+  {
+    path: '/publish/article',
+    name: 'createArticle',
+    component: () => import( '../pages/create/CreateArticle' )
+  },
+  {
+    path: '/articles',
+    name: 'article',
     meta: {
       keepAlive: true
-    }
-  },
-  {
-    path: '/publish/:id',
-    name: 'publish',
-    component: () => import( '../pages/create' )
+    },
+    component: () => import( '../pages/article/ArticleList' )
   },
   {
     path: '/article/:id',
     name: 'article',
-    component: () => import( '../pages/article' )
+    component: () => import( '../pages/article/ArticleDetail' )
+  },
+  {
+    path: '/moments',
+    name: 'moments',
+    meta: {
+      keepAlive: true
+    },
+    component: () => import( '../pages/moment/MomentList' )
+  },
+  {
+    path: '/my',
+    name: 'my',
+    meta: {
+      keepAlive: true
+    },
+    component: () => import( '../pages/my/Index' )
   },
   {
     path: '/login',

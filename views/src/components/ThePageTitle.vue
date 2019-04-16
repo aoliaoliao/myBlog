@@ -16,6 +16,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
 .page-title
   position fixed
   top 0
@@ -23,7 +25,7 @@ export default {
   right 0
   height 45px - 1
   z-index 9
-  background #ffffff
+  background $white
   border-bottom 1px solid #cccccc
 .page-title
   display flex

@@ -43,7 +43,7 @@ export default {
     },
 
   },
-  data() {
+  data () {
     return {
       text: '',
       isShowInput: false,
@@ -51,72 +51,72 @@ export default {
       commentCount: 0
     }
   },
-  created() {
+  created () {
 
   },
   components: {
     CommentInput
   },
   methods: {
-    formatParam() {
+    formatParam () {
       const param = {}
       param.text = this.text
       this.articleId ? param.articleId = this.articleId : ''
       this.parent && this.parent.id ? param.parentCommentId = this.parent.id : ''
       return param
     },
-    submit( text ) {
+    submit (text) {
       this.text = text
-      if ( this.text === '' ) {
+      if (this.text === '') {
         return
       }
       let o = this.formatParam()
 
-      createComments( o ).then( res => {
-        if ( res.cd ) {
-          this.showToast( '发表成功' )
+      createComments(o).then(res => {
+        if (res.cd) {
+          this.showToast('发表成功')
           this.isShowInput = false
-          this.$emit( 'submit', this.formatCurrentParam( this.text ) )
+          this.$emit('submit', this.formatCurrentParam(this.text))
         } else {
-          this.showToast( '发表失败' )
+          this.showToast('发表失败')
         }
-      } ).catch( err => {
-        this.showToast( '发表失败' )
-      } )
+      }).catch(err => {
+        this.showToast('发表失败')
+      })
     },
 
-    formatCurrentParam( text ) {
+    formatCurrentParam (text) {
       const comment = {
         text,
         userName: this.$store.state.userName,
         createdAt: Date.now()
       }
-      if ( Object.keys( this.parent ).length > 0 ) {
+      if (Object.keys(this.parent).length > 0) {
         const { userId, userName } = this.parent
-        Object.assign( comment, { parentCommentUserId: userId, parentCommentUserName: userName } )
+        Object.assign(comment, { parentCommentUserId: userId, parentCommentUserName: userName })
       }
       return comment
     },
 
-    showToast( message ) {
-      this.$toast( {
+    showToast (message) {
+      this.$toast({
         message,
         position: 'middle',
         duration: 1000
-      } )
+      })
     },
-    showCommentInput() {
+    showCommentInput () {
       this.isShowInput = true
     },
     // 获取文章被点赞和评论的数量
-    getSocialStatus() {
-      if ( !this.articleId ) {
+    getSocialStatus () {
+      if (!this.articleId) {
         return
       }
       // TODO:
     },
     // 对文章点赞
-    addLikes() {
+    addLikes () {
 
     },
   }
@@ -124,6 +124,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
 .comment-position
   position fixed
   bottom 0
@@ -134,7 +136,7 @@ export default {
   display flex
   justify-content space-between
   border-top 1px solid #cccccc
-  background-color #ffffff
+  background-color $white
   padding 10px
   height 30px
   >div
@@ -147,7 +149,7 @@ export default {
     top -5px
     right -8px
     z-index 2
-    border 1px solid #fff
+    border 1px solid $white
 .comment-input
   background #dddddd
   border-radius 15px

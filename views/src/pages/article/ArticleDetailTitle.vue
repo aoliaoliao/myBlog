@@ -11,7 +11,7 @@
 <script>
 
 export default {
-  name: 'article-title',
+  name: 'article-detail-title',
   props: {
     title: {
       type: Object,
@@ -26,13 +26,13 @@ export default {
   components: {
 
   },
-  data() {
+  data () {
     return {
     }
   },
   computed: {
   },
-  created() {
+  created () {
   },
   methods: {
   }

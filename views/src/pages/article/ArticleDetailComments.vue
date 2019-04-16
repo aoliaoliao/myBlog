@@ -22,7 +22,7 @@ import CommentItem from './CommentItem'
 import CommentCreate from './CommentCreate'
 
 export default {
-  name: 'article-comment',
+  name: 'article-detail-comments',
   props: {
     articleId: {
       type: String,
@@ -35,7 +35,7 @@ export default {
       descripe: '动态ID'
     },
   },
-  data() {
+  data () {
     return {
       num: 10,
       isShowInput: false,
@@ -48,18 +48,18 @@ export default {
     CommentCreate,
     CommentItem,
   },
-  mounted() {
+  mounted () {
     this.search()
   },
   methods: {
-    search() {
-      if ( this.end || !( this.articleId || this.momentId ) ) {
+    search () {
+      if (this.end || !(this.articleId || this.momentId)) {
         return
       }
-      this.getArticleComments( this.foramtOption() )
+      this.getArticleComments(this.foramtOption())
     },
 
-    foramtOption() {
+    foramtOption () {
       return {
         num: this.num,
         start: this.list.length,
@@ -68,25 +68,25 @@ export default {
       }
     },
 
-    getArticleComments() {
+    getArticleComments () {
       let param = this.foramtOption()
-      getComments( param ).then( res => {
-        if ( res.cd ) {
+      getComments(param).then(res => {
+        if (res.cd) {
           const { rt } = res
           this.end = rt.end
           this.list = [ ...this.list, ...rt.list ]
         }
-      } ).catch( () => {
-      } )
+      }).catch(() => {
+      })
     },
 
-    selectCurrComment( index ) {
+    selectCurrComment (index) {
       this.currComment = this.list[ index ]
       // this.isShowInput = true
       this.$refs[ 'commentCreate' ].showCommentInput()
     },
-    submit( comment ) {
-      this.list.unshift( comment )
+    submit (comment) {
+      this.list.unshift(comment)
     },
 
   }

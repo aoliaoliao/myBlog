@@ -64,13 +64,13 @@ export default {
   props: {
     moment: {
       type: Object,
-      default: () => ( {} )
+      default: () => ({})
     }
   },
   components: {
     TheBackgroundImage
   },
-  data() {
+  data () {
     return {
       item: this.moment
     }
@@ -79,10 +79,10 @@ export default {
     // item() {
     //   return this.moment
     // },
-    user() {
+    user () {
       return this.item.momentAuthor || {}
     },
-    content() {
+    content () {
       let { text = '', imgs = [], video = '' } = this.item
       return {
         text,
@@ -90,49 +90,49 @@ export default {
         video
       }
     },
-    comments() {
+    comments () {
       return this.item.momentComments || []
     },
-    createDate() {
+    createDate () {
       let createDate = this.item.updatedAt
-      let date = new Date( createDate ).getTime()
+      let date = new Date(createDate).getTime()
       let now = Date.now()
       const period = now - date
 
-      if ( period < 1000 * 60 * 3 ) {
+      if (period < 1000 * 60 * 3) {
         return '刚刚'
-      } else if ( period < 1000 * 60 * 60 ) {
-        return Math.floor( period / 1000 / 60 ) + '分钟前'
-      } else if ( period < 1000 * 60 * 60 * 24 ) {
-        return Math.floor( period / 1000 / 60 / 60 ) + '小时前'
-      } else if ( period < 1000 * 60 * 60 * 24 * 30 ) {
-        return Math.floor( period / 1000 / 60 / 60 / 24 ) + '天前'
+      } else if (period < 1000 * 60 * 60) {
+        return Math.floor(period / 1000 / 60) + '分钟前'
+      } else if (period < 1000 * 60 * 60 * 24) {
+        return Math.floor(period / 1000 / 60 / 60) + '小时前'
+      } else if (period < 1000 * 60 * 60 * 24 * 30) {
+        return Math.floor(period / 1000 / 60 / 60 / 24) + '天前'
       } else {
-        return formatMyDate( date )
+        return formatMyDate(date)
       }
     },
-    commentCount() {
+    commentCount () {
       return this.comments.length || 0
     },
-    likeCount() {
+    likeCount () {
       return this.item.momentLikes.likes || 0
     }
   },
-  created() {
+  created () {
 
   },
   methods: {
-    toggleMomentLike() {
+    toggleMomentLike () {
       this.likeOneMoment()
     },
-    likeOneMoment() {
-      likeMoment( {
+    likeOneMoment () {
+      likeMoment({
         momentId: this.item.id
-      } ).then( res => {
+      }).then(res => {
 
-      } )
+      })
     },
-    unlikeOneMoment() {
+    unlikeOneMoment () {
 
     }
   }
@@ -140,12 +140,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
 [w-35-35]
   aspect-ratio '35:35'
 .moment-item
   margin-bottom 10px
   padding 10px
-  background #ffffff
+  background $white
   text-align left
 .header
   margin-bottom 10px

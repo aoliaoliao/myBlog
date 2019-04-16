@@ -17,9 +17,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
 .login-index
   height 100%
-  background #ffffff
+  background $white
   .title
     margin 100px 0 20px
     font-size 24px

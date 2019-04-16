@@ -1,5 +1,5 @@
 <template>
-  <div class="moment-list">
+  <the-tab-page-frame>
     <template v-if="list.length > 0">
       <the-scroll :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
@@ -13,19 +13,21 @@
     <div class="moment-null" v-else @click="loadTop">
       暂无数据, 点击刷新
     </div>
-  </div>
+  </the-tab-page-frame>
 </template>
 
 <script>
 import { getMomentList } from '@/API'
 import MomentItem from './MomentItem'
+import TheTabPageFrame from '@/components/TheTabPageFrame'
 
 export default {
   name: 'moment-list',
   components: {
-    MomentItem
+    MomentItem,
+    TheTabPageFrame
   },
-  data() {
+  data () {
     return {
       isOver: false,
       list: [],
@@ -35,33 +37,33 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.loadTop()
   },
-  activated() {
+  activated () {
     // this.getData().then( res => {
     //   this.list = [ ...res ]
     // } )
   },
   methods: {
-    loadBottom() {
-      if ( this.isOver ) {
+    loadBottom () {
+      if (this.isOver) {
         return
       }
       this.page.cur = this.page.cur + 1
-      this.getData().then( res => {
+      this.getData().then(res => {
         this.list = [ ...this.list, ...res ]
-      } )
+      })
     },
-    loadTop() {
+    loadTop () {
       this.page.cur = 1
-      this.getData().then( res => {
+      this.getData().then(res => {
         this.list = [ ...res ]
-      } )
+      })
     },
-    getData() {
-      return getMomentList( this.formatParam() ).then( res => {
-        if ( res.cd === 1 ) {
+    getData () {
+      return getMomentList(this.formatParam()).then(res => {
+        if (res.cd === 1) {
           const { rt } = res
           this.isOver = rt.end
           return rt.list
@@ -69,16 +71,16 @@ export default {
           this.isOver = true
           return []
         }
-      } ).catch( res => {
+      }).catch(res => {
         this.isOver = true
         return []
-      } )
+      })
     },
-    formatParam() {
+    formatParam () {
       let { cur, num } = this.page
       return {
         num,
-        start: ( cur - 1 ) * num
+        start: (cur - 1) * num
       }
     }
   }

@@ -1,8 +1,8 @@
 <template>
   <div class="create-article">
     <vux-group>
-      <vux-input class="title" :min="1" :max="50" :required="true" :show-counter="true" placeholder="请输入标题"></vux-input>
-      <vux-textarea class="summary" :required="true" :show-counter="true" :max="300" :autosize="true" placeholder="文章简介"></vux-textarea>
+      <vux-input class="title" v-model="formData.name" :min="1" :max="50" :required="true" :show-counter="true" placeholder="请输入标题"></vux-input>
+      <vux-textarea class="summary" v-model="formData.summary" :required="true" :show-counter="true" :max="300" :autosize="true" placeholder="文章简介"></vux-textarea>
     </vux-group>
 
     <vux-table class="file-table" :cell-bordered="false" :content-bordered="false" v-show="hasShowTable">
@@ -54,6 +54,7 @@
 import TheFileBtn from '@/components/TheFileBtn'
 import TheHeader from '@/components/TheHeader'
 import { createNewArticle } from '@/API'
+import { mapState } from 'vuex'
 
 export default {
   name: 'create-article',
@@ -69,7 +70,7 @@ export default {
         isPrivate: true,
         isComment: true,
         articleAddress: null,
-        summaryImage: null
+        summaryImage: null,
       },
       articleMIME: '*',
       imageMIME: 'image/jpeg,image/pjpeg,image/png',
@@ -77,6 +78,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      author: state => state.userId,
+    }),
     summaryImages () {
       let img = this.formData.summaryImage
       if (!img) {
@@ -173,16 +177,30 @@ export default {
     removeImg () {
       this.formData.summaryImage = null
     },
-    submit () {
+    publish () {
       const { name, articleAddress, summaryImage } = this.formData
-      if (this.validateName(name) || this.validateArticle(articleAddress) || this.validateImage(summaryImage)) {
+      if (!(this.validateName(name) && this.validateArticle(articleAddress) && this.validateImage(summaryImage))) {
         return
       }
-      createNewArticle(this.formData).then(res => {
+      let param = new FormData()
+      param.append('author', this.author)
+      for (let [ key, value ] of Object.entries(this.formData)) {
+        if ([ 'isPrivate', 'isComment' ].includes(key)) {
+          value = +value
+        }
+        param.append(key, value)
+      }
+
+      createNewArticle(param).then(res => {
+        let msg = res.rt
+        res.cd && !msg ? msg = '新建成功' : '发表失败'
         this.$vux.toast.show({
-          text: '新建成功',
+          text: msg,
           time: 1000
         })
+        if (res.cd) {
+          this.$router.replace('/home')
+        }
       }).catch(err => {
         this.$vux.toast.show({
           text: '发表失败，请重试',
@@ -199,9 +217,11 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~styles/variable'
+
 .create-article
   position relative
   height 100%
+  background $white
   .title input[type="text"]
     font-size 24px
   .summary textarea
@@ -256,7 +276,7 @@ export default {
   .file-bg
     height 100%
     background linear-gradient(to right, #4BFF1F, #09bb07)
-    color #fff
+    color $white
     font-size 16px
     display flex
     align-items center

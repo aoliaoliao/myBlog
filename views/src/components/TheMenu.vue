@@ -15,7 +15,7 @@
 <script>
 export default {
   name: 'TheMenu',
-  data() {
+  data () {
     return {
       isShowItems: false,
       menus: [
@@ -26,18 +26,18 @@ export default {
       ]
     }
   },
-  created() {
-    document.removeEventListener( 'click', this.hideItems )
-    document.addEventListener( 'click', this.hideItems )
+  created () {
+    document.removeEventListener('click', this.hideItems)
+    document.addEventListener('click', this.hideItems)
   },
   methods: {
-    changeItems() {
+    changeItems () {
       this.isShowItems = !this.isShowItems
     },
-    showItems() {
+    showItems () {
       this.isShowItems = true
     },
-    hideItems() {
+    hideItems () {
       this.isShowItems = false
     }
   }
@@ -45,16 +45,17 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
 .menu-wrap
   position relative
   text-align left
   .menu
     width w = 25px
     height w
-    color #ffffff
+    color $white
 .items
-  background #ffffff
-  box-shadow 0px 0px 2px #ffffff
+  background $white
+  box-shadow 0px 0px 2px $white
   border-radius 5px
   li
     list-style-type none

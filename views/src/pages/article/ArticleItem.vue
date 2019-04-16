@@ -12,7 +12,6 @@
           <img v-lazy="item.summaryImage" />
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -25,15 +24,15 @@ export default {
       default: () => { }
     }
   },
-  data() {
+  data () {
     return {
 
     }
   },
   methods: {
-    goDetail() {
+    goDetail () {
       // this.$router.push()
-      this.$router.push( `/article/${this.item.id}` )
+      this.$router.push(`/article/${this.item.id}`)
     }
   }
 }
@@ -41,11 +40,13 @@ export default {
 
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
 .article-item
   padding 10px
   text-align left
   margin-bottom 10px
-  background #ffffff
+  background $white
 
 .item
   margin-bottom 15px

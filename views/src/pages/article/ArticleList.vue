@@ -1,5 +1,5 @@
 <template>
-  <div class="article-list">
+  <The-tab-page-frame>
     <template v-if="list.length > 0">
       <the-scroll ref="theScroll" :propbe-type="3" :listen-scroll="true" :listen-scroll-end="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
@@ -11,17 +11,18 @@
       </the-scroll>
     </template>
     <div v-else class="article-null">暂无数据 </div>
-  </div>
+  </The-tab-page-frame>
 </template>
 
 <script>
 import { getArticleList } from '@/API'
-import ArticleItem from './articleItem'
+import ArticleItem from './ArticleItem'
+import TheTabPageFrame from '@/components/TheTabPageFrame'
 // import Scroll from './scroll'
 
 export default {
   name: 'article-list',
-  data() {
+  data () {
     return {
       list: [],
       isOver: false,
@@ -33,43 +34,44 @@ export default {
   },
   components: {
     ArticleItem,
+    TheTabPageFrame
     // Scroll
   },
-  created() {
+  created () {
     this.loadTop()
   },
-  activated() {
+  activated () {
   },
   methods: {
-    loadTop() {
+    loadTop () {
       this.page.cur = 1
-      this.getData().then( data => {
+      this.getData().then(data => {
         this.list = [ ...data ]
-      } )
+      })
     },
-    loadBottom() {
-      if ( this.isOver ) {
+    loadBottom () {
+      if (this.isOver) {
         return
       }
       this.page.cur = this.page.cur + 1
-      this.getData().then( data => {
+      this.getData().then(data => {
         this.list = [ ...this.list, ...data ]
-      } )
+      })
     },
-    getData() {
-      return getArticleList( this.formatParam() ).then( ( { rt } ) => {
+    getData () {
+      return getArticleList(this.formatParam()).then(({ rt }) => {
         this.isOver = rt.end
         return rt.list
-      } ).catch( err => {
+      }).catch(err => {
         this.isOver = true
         return []
-      } )
+      })
     },
-    formatParam() {
+    formatParam () {
       let { cur, num } = this.page
       return {
         num,
-        start: ( cur - 1 ) * num
+        start: (cur - 1) * num
       }
     }
   }

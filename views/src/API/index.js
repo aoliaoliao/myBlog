@@ -12,10 +12,7 @@ export const loginUser = params => $http.post( 'user/login', params )
 
 export const getArticleList = params => $http.get( 'article/list', params )
 export const getArticleDetail = params => $http.get( 'article/content', params )
-export const createNewArticle = params => $http.post( 'article/crate', {
-  ...params,
-  author: store.state.userId,
-}, {
+export const createNewArticle = params => $http.post( 'article/create', params, {
   headers: {
     'Content-type': 'multipart/form-data'
   }

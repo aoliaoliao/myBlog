@@ -11,12 +11,13 @@
 </template>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
 .the-header
   height 30px
   padding 10px
   display flex
   align-items center
-  background #ffffff
+  background $white
   border-bottom 1px solid #999999
   .title
     color #333333
@@ -43,7 +44,7 @@ export default {
     }
   },
   methods: {
-    back() {
+    back () {
       this.$router.back()
     }
   }

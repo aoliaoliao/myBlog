@@ -1,53 +1,90 @@
 <template>
-  <div class="article-detail">
-    <div class="markdown-body" v-html="articleContent"></div>
+  <div class="index-article">
+    <div class="article-error" v-if="reqStatus === -1">
+      暂无内容
+    </div>
+    <div class="article-loading" v-else-if="reqStatus === 0">
+      加载中。。。
+    </div>
+    <div class="article-success " v-else>
+      <article-title :title='articleMsg'></article-title>
+      <article-detail :content="articleContent"></article-detail>
+      <div class="split-block"></div>
+      <article-comments :article-id="articleId" class="comment-margin"></article-comments>
+      <!-- <comment-create :article-id="articleId"></comment-create> -->
+    </div>
   </div>
 </template>
 
 <script>
-import myMarked from 'marked'
-import hljs from 'highlight.js/lib/highlight'
-import javascript from 'highlight.js/lib/languages/javascript'
-import 'github-markdown-css'
-import 'highlight.js/styles/github.css'
+import { formatMyDate } from '@/utils/tool'
 import { getArticleDetail } from '@/API'
-
+import ArticleDetailContent from './ArticleDetailContent'
+import ArticleDetailTitle from './ArticleDetailTitle'
+import ArticleDetailComments from './ArticleDetailComments'
+import CommentCreate from './CommentCreate'
 
 export default {
-  props: {
-    content: {
-      type: String,
-      default: '',
-      descript: '文章内容'
-    }
+  name: 'article-detail',
+  components: {
+    ArticleDetail,
+    ArticleTitle,
+    ArticleComments,
+    CommentCreate
   },
   data () {
     return {
+      articleId: '',
+      reqStatus: 0,
+      articleMsg: {},
+      articleContent: ''
     }
   },
   computed: {
-    articleContent () {
-      myMarked.setOptions({
-        gfm: true,
-        breaks: true,
-        tables: true,
-        sanitize: true,
-        headerIds: true,
-        highlight (code, lang, callback) {
-          return hljs.highlightAuto(code).value;
-        }
-      })
-      return myMarked(this.content)
-    }
   },
   created () {
-    hljs.registerLanguage('javascript', javascript)
+    this.articleId = this.$route.params.id || ''
+    if (!this.articleId) {
+      this.$router.back()
+    } else {
+      this.getArticle(this.articleId)
+    }
   },
   methods: {
+    getArticle (id) {
+      getArticleDetail({
+        id
+      }).then(res => {
+        if (res.cd === 1) {
+          this.reqStatus = 1
+          this.formatContent(res.rt)
+          this.formatArticle(res.rt.article)
+        } else {
+          this.reqStatus = -1
+        }
+      })
+    },
+    formatContent (result) {
+      this.articleMsg.articleTitle = result.name
+      this.articleMsg.articleAuthor = result.articleAuthor.nickName
+      this.articleMsg.articleDate = formatMyDate(result.updatedAt, 'yyyy-MM-dd')
+    },
+    formatArticle (content) {
+      this.articleContent = content
+    }
   }
-
 }
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
+.index-article
+  background $white
+.article-success
+  margin 0 12px
+.split-block
+  margin 12px auto 0
+.comment-margin
+  margin-bottom 60px
 </style>

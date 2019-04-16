@@ -16,35 +16,37 @@ import { createNamespacedHelpers } from 'vuex'
 
 import TheHeader from './TheHeader'
 
-const { mapState, mapActions } = createNamespacedHelpers( 'user' )
+const { mapState, mapActions } = createNamespacedHelpers('user')
 
 export default {
   name: 'user-info',
-  data() {
+  data () {
     return {}
   },
   components: {
     TheHeader
   },
   computed: {
-    ...mapState( {
+    ...mapState({
       avatar: state => state.avatar,
       signature: state => state.signature
-    } ),
-    userAvatar() {
+    }),
+    userAvatar () {
       return this.avatar || '/static/images/user_avatar.jpg'
     }
   },
-  created() {
+  created () {
     this.getUserInfo()
   },
   methods: {
-    ...mapActions( [ 'getUserInfo' ] ),
+    ...mapActions([ 'getUserInfo' ]),
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
 [w-375-375]
   aspect-ratio '375:375'
 .user-wrap
@@ -65,6 +67,6 @@ export default {
     overflow hidden
     font-size 18px
     line-height 32px
-    color #ffffff
+    color $white
 
 </style>
