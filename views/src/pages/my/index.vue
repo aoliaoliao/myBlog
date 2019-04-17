@@ -1,20 +1,18 @@
 <template>
-  <the-tab-page-frame :has-header="false">
-    <div class="my">
-      <user-info></user-info>
-      <div>
-        <mt-cell v-for="menu in menus " :key="menu.title" :title="menu.title" :is-link="!!menu.to" :to="menu.to">
-          <span v-if="menu.explain">{{menu.explain}}</span>
-          <b-icon class="icon" slot="icon" :icon="menu.icon"></b-icon>
-        </mt-cell>
-        <div class="app-logout">
-          <app-logout>
-            <mt-button type="danger" size="large">退出</mt-button>
-          </app-logout>
-        </div>
+  <div class="my">
+    <user-info></user-info>
+    <div>
+      <mt-cell v-for="menu in menus " :key="menu.title" :title="menu.title" :is-link="!!menu.to" :to="menu.to">
+        <span v-if="menu.explain">{{menu.explain}}</span>
+        <b-icon class="icon" slot="icon" :icon="menu.icon"></b-icon>
+      </mt-cell>
+      <div class="app-logout">
+        <app-logout>
+          <mt-button type="danger" size="large">退出</mt-button>
+        </app-logout>
       </div>
     </div>
-  </the-tab-page-frame>
+  </div>
 </template>
 
 <script>

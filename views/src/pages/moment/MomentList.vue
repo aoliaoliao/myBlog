@@ -1,5 +1,5 @@
 <template>
-  <the-tab-page-frame>
+  <div>
     <template v-if="list.length > 0">
       <the-scroll :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
@@ -13,7 +13,7 @@
     <div class="moment-null" v-else @click="loadTop">
       暂无数据, 点击刷新
     </div>
-  </the-tab-page-frame>
+  </div>
 </template>
 
 <script>
