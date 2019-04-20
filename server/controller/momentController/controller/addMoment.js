@@ -3,7 +3,6 @@ const fs = require('fs')
 const util = require('util')
 const { formatResponse } = require('../../../utils')
 const { momentConst } = require('../../../conf')['gloableConst']
-const userId = '0120f580-f92a-11e8-8db7-791c9005fcff'
 
 // 请求内容的验证
 function validateMoment(moment) {
@@ -34,11 +33,11 @@ function validateMoment(moment) {
 // 格式化新增moment的请求
 function formatRequest(req) {
     let { fields, files } = req.formData
-    const text = fields.text
+    const { text, userId } = fields
     const imgs = Array.isArray(files.imgs) ?
         files.imgs :
         files.imgs ? [files.imgs] : []
-    return { text, imgs }
+    return { text, imgs, userId }
 }
 
 module.exports = async function(req, res, next) {
@@ -58,7 +57,7 @@ module.exports = async function(req, res, next) {
 
     momentModel.create({
         text: content.text,
-        userId: userId,
+        userId: content.userId,
         imgs: localImgs.join(',')
     }).then(rt => {
         res.send(formatResponse(1, '发表成功'))
@@ -66,7 +65,10 @@ module.exports = async function(req, res, next) {
         res.send(formatResponse(0, '发表失败'))
         // 删除已储存的图片
         localImgs.forEach(img => {
-            fs.unlink(img)
+            fs.unlink(img, (err) => {
+                if (err) throw err;
+                console.log(`文件已删除`);
+            })
         })
     })
 }

@@ -1,8 +1,11 @@
 <template>
   <div class="create-article">
+    <the-header title="发布文章">
+      <a @click="publish" class="publish">发表</a>
+    </the-header>
     <vux-group>
-      <vux-input class="title" v-model="formData.name" :min="1" :max="50" :required="true" :show-counter="true" placeholder="请输入标题"></vux-input>
-      <vux-textarea class="summary" v-model="formData.summary" :required="true" :show-counter="true" :max="300" :autosize="true" placeholder="文章简介"></vux-textarea>
+      <vux-input class="title" v-model="formData.name" :min="1" :max="maxArticleTitleLength" :required="true" :show-counter="true" placeholder="请输入标题"></vux-input>
+      <vux-textarea class="summary" v-model="formData.summary" :required="true" :show-counter="true" :max="maxArticleSummaryLength" :autosize="true" placeholder="文章简介"></vux-textarea>
     </vux-group>
 
     <vux-table class="file-table" :cell-bordered="false" :content-bordered="false" v-show="hasShowTable">
@@ -55,6 +58,7 @@ import TheFileBtn from '@/components/TheFileBtn'
 import TheHeader from '@/components/TheHeader'
 import { createNewArticle } from '@/API'
 import { mapState } from 'vuex'
+import { maxArticleSummaryLength, maxArticleTitleLength } from './const'
 
 export default {
   name: 'create-article',
@@ -74,7 +78,9 @@ export default {
       },
       articleMIME: '*',
       imageMIME: 'image/jpeg,image/pjpeg,image/png',
-      fileName: ''
+      fileName: '',
+      maxArticleSummaryLength: maxArticleSummaryLength,
+      maxArticleTitleLength: maxArticleTitleLength
     }
   },
   computed: {
@@ -156,10 +162,10 @@ export default {
     },
     validateName (name) {
       let msg = ''
-      const maxName = 50
+      const maxName = maxArticleTitleLength
       if (!name) {
         msg = '文章标题不可为空'
-      } else if (name.length > 50) {
+      } else if (name.length > maxName) {
         msg = `文章标题最多为${maxName}字`
       }
       if (msg.length > 0) {
@@ -227,7 +233,8 @@ export default {
   .summary textarea
     font-size 14px
     line-height 20px
-    color blue
+.publish
+  color $success
 .bottom
   background #eee
   position absolute

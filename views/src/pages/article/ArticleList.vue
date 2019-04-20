@@ -1,5 +1,4 @@
 <template>
-  <!-- <The-tab-page-frame> -->
   <div>
     <template v-if="list.length > 0">
       <the-scroll ref="theScroll" :propbe-type="3" :listen-scroll="true" :listen-scroll-end="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
@@ -13,13 +12,11 @@
     </template>
     <div v-else class="article-null">暂无数据 </div>
   </div>
-  <!-- </The-tab-page-frame> -->
 </template>
 
 <script>
 import { getArticleList } from '@/API'
 import ArticleItem from './ArticleItem'
-import TheTabPageFrame from '@/components/TheTabPageFrame'
 // import Scroll from './scroll'
 
 export default {
@@ -36,13 +33,14 @@ export default {
   },
   components: {
     ArticleItem,
-    TheTabPageFrame
     // Scroll
   },
   created () {
+    console.log('created articleList')
     this.loadTop()
   },
   activated () {
+    console.log('activated articleList')
   },
   methods: {
     loadTop () {

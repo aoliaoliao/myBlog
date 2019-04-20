@@ -60,6 +60,9 @@ const queryStr = 'SELECT' +
 
 // 每次查询的时候修正偏移量，防止分页的时候可能出现的数据重复
 function fixOffset(oldCount, newCount) {
+    if (oldCount === 0) {
+        return 0
+    }
     let offset = newCount - oldCount // 偏移量
     return offset
 }

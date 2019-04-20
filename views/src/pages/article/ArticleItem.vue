@@ -5,7 +5,7 @@
     </div> -->
     <div class="item" @click.stop="goDetail">
       <h1 class="title ellipsis">{{item.name}}</h1>
-      <div class="date">{{item.updatedAt}}</div>
+      <div class="date">{{ updateTime }}</div>
       <div class="summary-wrap">
         <p class="summary ellipsis">{{item.summary}}</p>
         <div class="img">
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { formatMyDate } from '@/utils/tool'
+
 export default {
   props: {
     item: {
@@ -26,7 +28,12 @@ export default {
   },
   data () {
     return {
-
+    }
+  },
+  computed: {
+    updateTime () {
+      let { updatedAt } = this.item
+      return formatMyDate(updatedAt)
     }
   },
   methods: {

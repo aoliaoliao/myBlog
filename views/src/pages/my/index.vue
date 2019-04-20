@@ -18,14 +18,12 @@
 <script>
 import UserInfo from '@/components/UserInfo'
 import AppLogout from '@/pages/login/AppLogout'
-import TheTabPageFrame from '@/components/TheTabPageFrame'
 
 export default {
   name: 'my',
   components: {
     UserInfo,
     AppLogout,
-    TheTabPageFrame
   },
   data () {
     return {

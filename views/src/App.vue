@@ -1,11 +1,10 @@
 <template>
   <div id="app">
     <keep-alive>
-      <router-view v-if="$route.meta.keepAlive">
-        <!-- 这里是会被缓存的视图组件，比如 Home！ -->
-      </router-view>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <!-- <router-view></router-view> -->
   </div>
 </template>
 

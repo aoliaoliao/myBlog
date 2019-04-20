@@ -32,15 +32,11 @@
       <span>{{createDate}}</span>
       <span class="social">
         <span class="social-like">
-          <svg class="icon social-icon" :class="{ 'red-text': item.momentLikes.melike > 0 }" aria-hidden="true" @click.stop="toggleMomentLike">
-            <use xlink:href="#icon-like"></use>
-          </svg>
+          <b-icon icon="like" :class="{ 'red-text': item.momentLikes.melike > 0 }" @click.stop="toggleMomentLike"></b-icon>
           <span v-if="likeCount > 0">{{likeCount}}</span>
         </span>
         <span class="social-comment">
-          <svg class="icon social-icon" aria-hidden="true">
-            <use xlink:href="#icon-comment"></use>
-          </svg>
+          <b-icon icon="comment"></b-icon>
           <span v-if="commentCount > 0">{{commentCount}}</span>
         </span>
       </span>

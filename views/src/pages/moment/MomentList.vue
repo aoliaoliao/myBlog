@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="moment-list">
     <template v-if="list.length > 0">
       <the-scroll :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
@@ -19,13 +19,11 @@
 <script>
 import { getMomentList } from '@/API'
 import MomentItem from './MomentItem'
-import TheTabPageFrame from '@/components/TheTabPageFrame'
 
 export default {
   name: 'moment-list',
   components: {
-    MomentItem,
-    TheTabPageFrame
+    MomentItem
   },
   data () {
     return {
@@ -38,9 +36,11 @@ export default {
     }
   },
   created () {
+    console.log('created momentList')
     this.loadTop()
   },
   activated () {
+    console.log('activated momentList')
     // this.getData().then( res => {
     //   this.list = [ ...res ]
     // } )

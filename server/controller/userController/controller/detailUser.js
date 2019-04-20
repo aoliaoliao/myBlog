@@ -6,10 +6,9 @@ const { formatResponse } = require("../../../utils");
 // 查询用户详情
 module.exports = async function detailUser(req, res, next) {
     let query = req.query
-    userModel.findById('0120f580-f92a-11e8-8db7-791c9005fcff', {
+    userModel.findById(query, {
             attributes: ['id', 'nickName', 'avatar', 'signature', 'userHome']
-        })
-        .then(result => {
+        }).then(result => {
             if (result.id && result.id.length > 0) {
                 res.send(formatResponse(1, result.dataValues))
             } else {

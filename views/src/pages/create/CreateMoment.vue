@@ -1,7 +1,12 @@
 <template>
   <div class="create-moment">
+    <the-header title="发布动态">
+      <a @click="publish" class="publish">发表</a>
+    </the-header>
     <div class="moment-text">
-      <mt-field type="textarea" rows="5" placeholder="For Your Moment" v-model="moment.text"></mt-field>
+      <vux-group>
+        <vux-textarea placeholder="For Your Moment" :rows="5" :autosize="true" :show-counter="true" :max="maxTextLength" v-model.trim="moment.text"></vux-textarea>
+      </vux-group>
     </div>
     <div class="moment-img">
       <img class="size" v-for="( img, index) in showImgs" @click="showImg(index)" :key="img" :src="img">
@@ -17,24 +22,26 @@
         </div>
         <mt-switch v-model="moment.isPrivate"></mt-switch>
       </div>
-
     </div>
     <component :is="componentName" :imgs="showImgs" :index="imgIndex" @close="hideImg"></component>
   </div>
 </template>
 
 <script>
-
-const maxImgCount = 9
-import { createMoment } from '@/API'
+import { mapState } from 'vuex'
 import TheFileBtn from '@/components/TheFileBtn'
 import PreviewImg from '@/components/PreviewImg'
+import TheHeader from '@/components/TheHeader'
+import BackgroundImage from '@/components/BackgroundImage'
+import { createMoment } from '@/API'
+import { maxImgCount, maxMomentTextLength } from './const'
 
 export default {
   name: 'create-moment',
   components: {
     TheFileBtn,
-    PreviewImg
+    PreviewImg,
+    TheHeader
   },
   data () {
     return {
@@ -46,16 +53,23 @@ export default {
       showImgs: [],
       imgIndex: 0,
       componentName: '',
+      maxTextLength: maxMomentTextLength,
       fileTypes: 'image/jpeg,image/pjpeg,image/png',
     }
   },
   computed: {
+    ...mapState({
+      userId: state => state.userId,
+    }),
     showImgBtn () {
       return this.moment.imgs.length < maxImgCount
     }
   },
   created () {
-
+    console.log('created createMoment')
+  },
+  activated () {
+    console.log('activated createMoment')
   },
   methods: {
     formatImg (img) {
@@ -123,13 +137,22 @@ export default {
           param.append(key, value)
         }
       }
+      param.append('userId', this.userId)
       createMoment(param).then(res => {
-        this.$router.back()
+        if (res.cd) {
+          this.$router.back()
+        } else {
+          this.$vux.toast.show({
+            text: res.rt || '发表失败，请重试',
+            type: 'warn',
+            time: 2000
+          })
+        }
       }).catch(err => {
-        this.$toast({
-          message: `发表失败，请重试`,
-          position: 'bottom',
-          duration: 2000
+        this.$vux.toast.show({
+          text: res.rt || '发表失败，请重试',
+          type: 'warn',
+          time: 2000
         })
       })
     }
@@ -138,10 +161,18 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/variable'
+
 imgSize = 115px
 .create-moment
+  background $white
+  height 100%
   .moment-text
     margin 10px 0
+    border-bottom 1px solid #eeeeee
+.publish
+  color $success
+
 .moment-img
   display flex
   flex-wrap wrap

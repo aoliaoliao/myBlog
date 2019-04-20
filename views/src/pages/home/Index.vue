@@ -1,10 +1,13 @@
 <template>
-  <div class="the-tab-page-frame">
+  <div class="home-index">
     <vux-viewbox :body-padding-top="hasHeader ? `45px` : ``" body-padding-bottom="50px">
       <div class="header" slot="header" v-if="hasHeader">
         <the-page-title>
           <span>{{title}}</span>
-          <b-icon slot="right" class="title-search" icon="search"></b-icon>
+          <span slot="right">
+            <b-icon v-if="hasCreateMoment" @click="goCreateMoment" class="title-right-icon" icon="add"></b-icon>
+            <b-icon class="title-right-icon" icon="search"></b-icon>
+          </span>
         </the-page-title>
       </div>
       <router-view></router-view>
@@ -38,20 +41,22 @@ export default {
       }
       return true
     },
+    hasCreateMoment () {
+      if ([ '/home/moments' ].includes(this.routerPath)) {
+        return true
+      }
+      return false
+    },
     title () {
       let title = ''
-      switch (this.routerPath) {
-        case '/home/articles':
-          title = '文章'
-          break
-        case '/home/moments':
-          title = '动态'
-          break
-        default:
-          break
-      }
+      this.tabPanes.some(v => {
+        let equire = v.link === this.routerPath
+        equire ? title = v.label : ''
+        return equire
+      })
       return title
-    }
+    },
+
   },
   data () {
     return {
@@ -72,6 +77,11 @@ export default {
       }
       ]
     }
+  },
+  methods: {
+    goCreateMoment () {
+      this.$router.push('/publish/moment')
+    }
   }
 }
 </script>
@@ -79,7 +89,7 @@ export default {
 <style lang="stylus" scoped>
 @import '~styles/variable'
 
-.the-tab-page-frame
+.home-index
   height 100%
   .header
     top 0
@@ -90,6 +100,12 @@ export default {
     bottom 0
     width 100%
     position absolute
+  .title-right-icon
+    // width 14px
+    // height @width
+    font-size 16px
+    color #333
+    margin-left 10px
 .menu-tab-item
   .menu
     width 20px
