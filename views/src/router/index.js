@@ -11,6 +11,7 @@ export default new Router( {
   {
     path: '/home',
     name: 'home',
+    redirect: '/home/articles',
     component: () => import( '../pages/home/Index' ),
     children: [ {
       path: 'articles',
@@ -52,6 +53,9 @@ export default new Router( {
   {
     path: '/article/:id',
     name: 'article',
+    meta: {
+      keepAlive: true,
+    },
     component: () => import( '../pages/article/ArticleDetail' ),
   },
 

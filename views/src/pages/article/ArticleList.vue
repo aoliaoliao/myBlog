@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article-list">
     <template v-if="list.length > 0">
       <the-scroll ref="theScroll" :propbe-type="3" :listen-scroll="true" :listen-scroll-end="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
@@ -10,17 +10,19 @@
         </div>
       </the-scroll>
     </template>
-    <div v-else class="article-null">暂无数据 </div>
+    <div v-else class="article-null">暂无数据</div>
   </div>
 </template>
 
 <script>
 import { getArticleList } from '@/API'
 import ArticleItem from './ArticleItem'
-// import Scroll from './scroll'
 
 export default {
   name: 'article-list',
+  components: {
+    ArticleItem,
+  },
   data () {
     return {
       list: [],
@@ -31,16 +33,10 @@ export default {
       }
     }
   },
-  components: {
-    ArticleItem,
-    // Scroll
-  },
   created () {
-    console.log('created articleList')
     this.loadTop()
   },
   activated () {
-    console.log('activated articleList')
   },
   methods: {
     loadTop () {
@@ -80,12 +76,7 @@ export default {
 
 <style lang="stylus" scoped>
 .article-list
-  // height 667px - 50 - 45
-  // height 100%
-  position fixed
-  top 45px
-  bottom 50px
-  width 100%
+  height 100%
   .list-bottom
     display flex
     justify-content center

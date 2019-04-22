@@ -4,6 +4,7 @@ import Icon from '@/components/Icon'
 import {
   Group,
   Cell,
+  Divider,
   XInput,
   XTextarea,
   XSwitch,
@@ -24,6 +25,7 @@ import {
 
 Vue.component( 'vux-group', Group )
 Vue.component( 'vux-cell', Cell )
+Vue.component( 'vux-divider', Divider )
 Vue.component( 'vux-input', XInput )
 Vue.component( 'vux-textarea', XTextarea )
 Vue.component( 'vux-switch', XSwitch )

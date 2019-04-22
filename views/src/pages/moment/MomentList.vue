@@ -1,5 +1,5 @@
 <template>
-  <div class="moment-list">
+  <div id="blog-moment-list" class="moment-list">
     <template v-if="list.length > 0">
       <the-scroll :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
@@ -36,14 +36,9 @@ export default {
     }
   },
   created () {
-    console.log('created momentList')
     this.loadTop()
   },
   activated () {
-    console.log('activated momentList')
-    // this.getData().then( res => {
-    //   this.list = [ ...res ]
-    // } )
   },
   methods: {
     loadBottom () {
@@ -90,12 +85,13 @@ export default {
 
 <style lang="stylus" scoped>
 .moment-list
-  // height 667px - 50 - 45
-  // height 100%
-  position fixed
-  top 45px
-  bottom 50px
-  width 100%
+  height 100%
+.list-bottom
+  display flex
+  justify-content center
+  align-items center
+  font-size 12px
+  color #999999
 .moment-null
   text-align center
   padding-top 100px
@@ -104,10 +100,5 @@ export default {
 </style>
 
 <style lang="stylus">
-.moment-list .list-bottom
-    display flex
-    justify-content center
-    align-items center
-    font-size 12px
-    color #999999
+
 </style>

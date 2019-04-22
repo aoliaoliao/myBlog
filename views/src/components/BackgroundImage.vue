@@ -1,10 +1,10 @@
 <template>
-  <div class="the-background-image" :style="`backgroundImage:url(${img})`">
-
-  </div>
+  <!-- <vux-img></vux-img> -->
+  <img v-lazy="src" class="the-image" :style="{'width': imgWidth, 'height': imgHeight}" />
 </template>
 
 <script>
+import defaultImg from '@/assets/images/blog_default.jpg'
 
 export default {
   name: 'background-image',
@@ -13,34 +13,57 @@ export default {
       type: String,
       required: true,
       default: ''
+    },
+    container: {
+      type: String
+    },
+    width: {
+      type: Number | String
+    },
+    height: {
+      type: Number | String
     }
   },
-  data() {
+  data () {
     return {
       img: null,
-      defaultImg: './static/images/user_avatar.jpg'
+      defaultImg: defaultImg
     }
   },
-  created() {
-    const self = this
-    const image = new Image()
-    image.onload = function () {
-      self.img = self.src
+  computed: {
+    imgWidth () {
+      if (typeof this.width === 'number') {
+        return `${this.width}px`
+      } else if (typeof this.width === 'string') {
+        return `${this.width}`
+      } else {
+        return ''
+      }
+    },
+    imgHeight () {
+      if (typeof this.height === 'number') {
+        return `${this.height}px`
+      } else if (typeof this.height === 'string') {
+        return `${this.height}`
+      } else {
+        return ''
+      }
     }
-    image.onerror = function () {
-      self.img = self.defaultImg
-    }
-    image.src = this.src
+  },
+  created () {
 
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.the-background-image
+.the-image
   width 100%
   height 100%
-  background-color #999
-  background-size cover
+  background-color #ccc
+  // background-size cover
+  object-fit cover
+
+
 </style>
 

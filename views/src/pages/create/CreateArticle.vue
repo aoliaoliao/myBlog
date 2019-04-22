@@ -205,7 +205,7 @@ export default {
           time: 1000
         })
         if (res.cd) {
-          this.$router.replace('/home')
+          this.$router.replace('/home/articles')
         }
       }).catch(err => {
         this.$vux.toast.show({

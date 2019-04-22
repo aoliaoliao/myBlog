@@ -10,7 +10,13 @@
           </span>
         </the-page-title>
       </div>
-      <router-view></router-view>
+      <div class="content">
+        <transition>
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </transition>
+      </div>
       <div class="footer" slot="bottom">
         <vux-tabbar>
           <vux-tabbaritem class="menu-tab-item" v-for="item in tabPanes" :key="item.label" :link="item.link">
@@ -95,14 +101,14 @@ export default {
     top 0
     height 45px
     position absolute
+  .content
+    height 100%
   .footer
     height 50px
     bottom 0
     width 100%
     position absolute
   .title-right-icon
-    // width 14px
-    // height @width
     font-size 16px
     color #333
     margin-left 10px

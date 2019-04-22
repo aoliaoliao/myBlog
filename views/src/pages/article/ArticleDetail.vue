@@ -7,10 +7,10 @@
       加载中。。。
     </div>
     <div class="article-success " v-else>
-      <article-title :title='articleMsg'></article-title>
-      <article-detail :content="articleContent"></article-detail>
-      <div class="split-block"></div>
-      <article-comments :article-id="articleId" class="comment-margin"></article-comments>
+      <article-detail-title :title='articleMsg'></article-detail-title>
+      <article-detail-content :content="articleContent"></article-detail-content>
+      <vux-divider> the end </vux-divider>
+      <article-detail-comments :article-id="articleId" class="comment-margin"></article-detail-comments>
       <!-- <comment-create :article-id="articleId"></comment-create> -->
     </div>
   </div>
@@ -27,9 +27,9 @@ import CommentCreate from './CommentCreate'
 export default {
   name: 'article-detail',
   components: {
-    ArticleDetail,
-    ArticleTitle,
-    ArticleComments,
+    ArticleDetailTitle,
+    ArticleDetailContent,
+    ArticleDetailComments,
     CommentCreate
   },
   data () {
@@ -83,8 +83,6 @@ export default {
   background $white
 .article-success
   margin 0 12px
-.split-block
-  margin 12px auto 0
 .comment-margin
   margin-bottom 60px
 </style>

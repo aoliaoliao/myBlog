@@ -32,7 +32,6 @@ import { mapState } from 'vuex'
 import TheFileBtn from '@/components/TheFileBtn'
 import PreviewImg from '@/components/PreviewImg'
 import TheHeader from '@/components/TheHeader'
-import BackgroundImage from '@/components/BackgroundImage'
 import { createMoment } from '@/API'
 import { maxImgCount, maxMomentTextLength } from './const'
 

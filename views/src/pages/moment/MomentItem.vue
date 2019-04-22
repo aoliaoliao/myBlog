@@ -10,20 +10,20 @@
       </div>
     </div>
     <div class="content">
-      <p v-if="content.text.length > 0">{{content.text}}</p>
-      <template v-if="content.imgs.length > 0">
-        <img class="content-one-image" v-if="content.imgs.length === 1 " v-lazy="content.imgs[0]">
+      <p class="content-text" v-if="content.text.length > 0">{{content.text}}</p>
+      <div v-if="content.imgs.length > 0" @click="showPreviewImg">
+        <img class="content-one-image" :data-index="0" v-if="content.imgs.length === 1 " v-lazy="content.imgs[0]" />
         <div class="content-four-image content-multi-image" v-else-if="content.imgs.length === 4 ">
-          <div class="content-image-block" v-for="img in content.imgs" :key="img">
-            <the-background-image :src="img"></the-background-image>
+          <div class="content-image-block" v-for="(img, index) in content.imgs" :key="img">
+            <img v-lazy="img" :data-index="index" />
           </div>
         </div>
         <div class="content-multi-image" v-else>
-          <div class="content-image-block" v-for="img in content.imgs" :key="img">
-            <the-background-image :src="img"></the-background-image>
+          <div class="content-image-block" v-for="(img, index) in content.imgs" :key="img">
+            <img v-lazy="img" :data-index="index" />
           </div>
         </div>
-      </template>
+      </div>
       <template v-if="content.video && content.video.length > 0">
         <img :src="content.video" />
       </template>
@@ -47,13 +47,15 @@
         <span class="comment-content">{{item.text }}</span>
       </p>
     </div>
+    <div v-transfer-dom>
+      <vux-previewer ref="previewer" :list="previewImages"></vux-previewer>
+    </div>
   </div>
 </template>
 
 <script>
 import { likeMoment } from '@/API'
 import { formatMyDate } from '@/utils/tool'
-import TheBackgroundImage from '@/components/BackgroundImage'
 
 export default {
   name: 'moment-item',
@@ -64,17 +66,14 @@ export default {
     }
   },
   components: {
-    TheBackgroundImage
   },
   data () {
     return {
-      item: this.moment
+      item: this.moment,
+      previewImages: []
     }
   },
   computed: {
-    // item() {
-    //   return this.moment
-    // },
     user () {
       return this.item.momentAuthor || {}
     },
@@ -86,6 +85,14 @@ export default {
         video
       }
     },
+    // previewImages () {
+    //   let imgs = this.content.imgs
+    //   return imgs.map(v => {
+    //     return {
+    //       src: v
+    //     }
+    //   })
+    // },
     comments () {
       return this.item.momentComments || []
     },
@@ -112,7 +119,8 @@ export default {
     },
     likeCount () {
       return this.item.momentLikes.likes || 0
-    }
+    },
+
   },
   created () {
 
@@ -129,6 +137,16 @@ export default {
       })
     },
     unlikeOneMoment () {
+
+    },
+    showPreviewImg (ev) {
+      console.log(ev)
+      const { target = {} } = ev
+
+      if (target.nodeName.toLowerCase() === 'img') {
+        const index = parseInt(target.dataset.index)
+        this.$refs.previewer.show(index)
+      }
 
     }
   }
@@ -165,9 +183,14 @@ export default {
       color #999999
 .content
   margin-bottom 10px
-  p
+  img
+    object-fit cover
+    width 100%
+    height 100%
+  .content-text
     line-height 20px
     margin-bottom 10px
+    word-break break-word
   .content-one-image
     max-width 100%
     max-height 150px
