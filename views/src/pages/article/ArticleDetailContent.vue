@@ -24,27 +24,67 @@ export default {
   },
   data () {
     return {
+      allImages: []
     }
   },
   computed: {
     articleContent () {
-      myMarked.setOptions({
+      //
+      const options = {
         gfm: true,
         breaks: true,
         tables: true,
         sanitize: true,
         headerIds: true,
+        renderer: this.createRenderer(),
         highlight (code, lang, callback) {
           return hljs.highlightAuto(code).value;
         }
+      }
+      myMarked.setOptions(options)
+      return myMarked(this.content, () => {
+        console.log(arguments)
+        console.log( 'this.content', this)
       })
-      return myMarked(this.content)
     }
   },
   created () {
+    // this.createRenderer()
     hljs.registerLanguage('javascript', javascript)
+
   },
   methods: {
+    createRenderer () {
+      let index = 0
+      const renderer = new myMarked.Renderer()
+      this.allImages.length = 0
+
+      renderer.image = (href, title, text) => {
+        this.allImages.push(href)
+        const img = `
+        <img src="${href}" alt="${text}" class="$blog-customer-image$" data-index="${index}"/>
+        `
+        index++
+
+        return img
+      }
+      return renderer
+    },
+
+    addImageListener () {
+      this.$nextTick(() => {
+        // const doms = document.querySelectorAll('.$blog-customer-image$')
+        // doms.forEach( dom => {
+        //   dom.addEventListener('click', this.previewImage)
+
+        // })
+      })
+
+    },
+
+    previewImage (ev) {
+      console.log(ev)
+    }
   }
 
 }

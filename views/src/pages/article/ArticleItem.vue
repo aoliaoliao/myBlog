@@ -52,9 +52,8 @@ export default {
 .article-item
   padding 10px
   text-align left
-  margin-bottom 10px
+  border-bottom 10px solid #eee
   background $white
-
 .item
   margin-bottom 15px
   h1

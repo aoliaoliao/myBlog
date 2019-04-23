@@ -48,7 +48,7 @@
       </p>
     </div>
     <div v-transfer-dom>
-      <vux-previewer ref="previewer" :list="previewImages"></vux-previewer>
+      <vux-previewer ref="previewer" :list="previewImages" @on-close="closePreivewer"></vux-previewer>
     </div>
   </div>
 </template>
@@ -85,14 +85,7 @@ export default {
         video
       }
     },
-    // previewImages () {
-    //   let imgs = this.content.imgs
-    //   return imgs.map(v => {
-    //     return {
-    //       src: v
-    //     }
-    //   })
-    // },
+
     comments () {
       return this.item.momentComments || []
     },
@@ -140,14 +133,29 @@ export default {
 
     },
     showPreviewImg (ev) {
-      console.log(ev)
+      let imgs = []
+      let index = 0
       const { target = {} } = ev
+      const lazy = target.getAttribute('lazy')
 
-      if (target.nodeName.toLowerCase() === 'img') {
-        const index = parseInt(target.dataset.index)
-        this.$refs.previewer.show(index)
+      if (lazy === 'error') {
+        imgs = [ target.src ]
+      } else {
+        imgs = this.content.imgs
+        index = parseInt(target.dataset.index)
       }
 
+      this.previewImages = imgs.map(item => {
+        return {
+          src: item
+        }
+      })
+      this.$nextTick().then(res => {
+        this.$refs.previewer.show(index)
+      })
+    },
+    closePreivewer () {
+      this.previewImages = null
     }
   }
 }
@@ -159,7 +167,7 @@ export default {
 [w-35-35]
   aspect-ratio '35:35'
 .moment-item
-  margin-bottom 10px
+  border-bottom 10px solid #eee
   padding 10px
   background $white
   text-align left

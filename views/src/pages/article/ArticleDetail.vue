@@ -1,19 +1,21 @@
 <template>
-  <div class="index-article">
-    <div class="article-error" v-if="reqStatus === -1">
-      暂无内容
+  <transition name="zoom">
+    <div class="index-article">
+      <div class="article-error" v-if="reqStatus === -1">
+        暂无内容
+      </div>
+      <div class="article-loading" v-else-if="reqStatus === 0">
+        加载中。。。
+      </div>
+      <div class="article-success " ref="article-success" v-else>
+        <article-detail-title :title='articleMsg'></article-detail-title>
+        <article-detail-content :content="articleContent"></article-detail-content>
+        <vux-divider> the end </vux-divider>
+        <article-detail-comments :article-id="articleId" class="comment-margin"></article-detail-comments>
+        <!-- <comment-create :article-id="articleId"></comment-create> -->
+      </div>
     </div>
-    <div class="article-loading" v-else-if="reqStatus === 0">
-      加载中。。。
-    </div>
-    <div class="article-success " v-else>
-      <article-detail-title :title='articleMsg'></article-detail-title>
-      <article-detail-content :content="articleContent"></article-detail-content>
-      <vux-divider> the end </vux-divider>
-      <article-detail-comments :article-id="articleId" class="comment-margin"></article-detail-comments>
-      <!-- <comment-create :article-id="articleId"></comment-create> -->
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -42,12 +44,41 @@ export default {
   },
   computed: {
   },
-  created () {
+  activated () {
     this.articleId = this.$route.params.id || ''
-    if (!this.articleId) {
-      this.$router.back()
-    } else {
-      this.getArticle(this.articleId)
+  },
+  beforeRouteEnter (to, from, next) {
+    // ...
+    next(vm => {
+      const path = vm.$route.path
+      let top = sessionStorage.getItem(path)
+      if (top && +top > 0) {
+        window.scrollTo({
+          top,
+          behavior: "smooth"
+        })
+        sessionStorage.removeItem(path)
+      }
+    })
+  },
+  beforeRouteLeave (to, from, next) {
+    // ...
+    let dom = this.$refs[ 'article-success' ]
+    if (dom) {
+      const rect = dom.getClientRects()[ 0 ]
+      if (+rect.top < 0) {
+        sessionStorage.setItem(this.$route.path, Math.abs(rect.top))
+      }
+    }
+    next()
+  },
+  watch: {
+    articleId (newVal, oldVal) {
+      if (!newVal) {
+        this.reqStatus = -1
+        return
+      }
+      this.getArticle(newVal)
     }
   },
   methods: {
@@ -64,10 +95,10 @@ export default {
         }
       })
     },
-    formatContent (result) {
-      this.articleMsg.articleTitle = result.name
-      this.articleMsg.articleAuthor = result.articleAuthor.nickName
-      this.articleMsg.articleDate = formatMyDate(result.updatedAt, 'yyyy-MM-dd')
+    formatContent (result = {}) {
+      this.$set(this.articleMsg, 'articleTitle', result.name)
+      this.$set(this.articleMsg, 'articleAuthor', result.articleAuthor.nickName)
+      this.$set(this.articleMsg, 'articleDate', formatMyDate(result.updatedAt, 'yyyy-MM-dd'))
     },
     formatArticle (content) {
       this.articleContent = content
@@ -85,4 +116,27 @@ export default {
   margin 0 12px
 .comment-margin
   margin-bottom 60px
+
+.zoom-enter-active,
+.zoom-leave-active {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-name: zoom;
+}
+
+.zoom-leave-active {
+  animation-direction: reverse;
+}
+
+@keyframes zoom {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 </style>

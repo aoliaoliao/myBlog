@@ -11,7 +11,7 @@
         </the-page-title>
       </div>
       <div class="content">
-        <transition>
+        <transition :name="transtionName">
           <keep-alive>
             <router-view></router-view>
           </keep-alive>
@@ -62,10 +62,10 @@ export default {
       })
       return title
     },
-
   },
   data () {
     return {
+      transtionName: 'slide-left',
       tabPanes: [ {
         icon: 'article',
         label: '文章',
@@ -84,6 +84,20 @@ export default {
       ]
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    let paths = this.tabPanes.map(v => v.link)
+    let toIndex = paths.indexOf(to.path)
+    let fromIndex = paths.indexOf(from.path)
+    if (toIndex < fromIndex) {
+      this.transtionName = 'slide-right'
+    } else if (toIndex > fromIndex) {
+      this.transtionName = 'slide-left'
+    } else {
+      this.transtionName = ''
+    }
+    next()
+
+  },
   methods: {
     goCreateMoment () {
       this.$router.push('/publish/moment')
@@ -97,6 +111,7 @@ export default {
 
 .home-index
   height 100%
+  background $white
   .header
     top 0
     height 45px
@@ -121,4 +136,28 @@ export default {
   font-size 12px
 .item-select
   color $success
+
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  // transition-duration: 0.5s;
+  // transition-property: height, opacity, transform;
+  // transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+  transition all 0.5s ease-in
+  overflow: hidden
+}
+
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate(1em, 0);
+}
+
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(-1em, 0);
+}
+
 </style>
