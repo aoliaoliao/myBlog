@@ -144,7 +144,7 @@ export default {
   // transition-duration: 0.5s;
   // transition-property: height, opacity, transform;
   // transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
-  transition all 0.5s ease-in
+  transition all 0.3s ease-in
   overflow: hidden
 }
 

@@ -18,6 +18,8 @@
 import { getArticleList } from '@/API'
 import ArticleItem from './ArticleItem'
 
+const refreshRouter = [ 'createArticle' ]
+
 export default {
   name: 'article-list',
   components: {
@@ -38,7 +40,19 @@ export default {
   },
   activated () {
   },
+  beforeRouteEnter (to, from, next) {
+    // 上一个路由如果是指定路由，则刷新滚动列表
+    next(vm => {
+      if (refreshRouter.includes(from.name)) {
+        vm.autoPullDownRefresh()
+      }
+    })
+  },
   methods: {
+    autoPullDownRefresh () {
+      const theScroll = this.$refs[ 'theScroll' ]
+      theScroll.autoPullDownRefresh()
+    },
     loadTop () {
       this.page.cur = 1
       this.getData().then(data => {
@@ -77,15 +91,19 @@ export default {
 <style lang="stylus" scoped>
 .article-list
   height 100%
-  .list-bottom
-    display flex
-    justify-content center
-    align-items center
-    font-size 12px
-    color #999999
 .article-null
   text-align center
   padding-top 100px
   font-size 16px
   color #999
+</style>
+
+<style lang="stylus">
+.article-list .list-bottom
+  display flex
+  justify-content center
+  align-items center
+  font-size 12px
+  color #999999
+  padding 20px 0
 </style>

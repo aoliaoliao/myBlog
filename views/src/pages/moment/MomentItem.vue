@@ -155,7 +155,7 @@ export default {
       })
     },
     closePreivewer () {
-      this.previewImages = null
+      this.previewImages = []
     }
   }
 }

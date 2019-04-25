@@ -1,7 +1,7 @@
 <template>
   <div id="blog-moment-list" class="moment-list">
     <template v-if="list.length > 0">
-      <the-scroll :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
+      <the-scroll ref="theScroll" :propbe-type="3" :listen-scroll="true" :pull-up-load="!isOver" :data="list" @pullingUp="loadBottom" @pullingDown="loadTop">
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
         <moment-item v-for="item in list" :key="item.id" :moment="item"></moment-item>
@@ -19,6 +19,8 @@
 <script>
 import { getMomentList } from '@/API'
 import MomentItem from './MomentItem'
+
+const refreshRouter = [ 'createMoment' ]
 
 export default {
   name: 'moment-list',
@@ -40,7 +42,19 @@ export default {
   },
   activated () {
   },
+  beforeRouteEnter (to, from, next) {
+    // 上一个路由如果是指定路由，则刷新滚动列表
+    next(vm => {
+      if (refreshRouter.includes(from.name)) {
+        vm.autoPullDownRefresh()
+      }
+    })
+  },
   methods: {
+    autoPullDownRefresh () {
+      const theScroll = this.$refs[ 'theScroll' ]
+      theScroll.autoPullDownRefresh()
+    },
     loadBottom () {
       if (this.isOver) {
         return
@@ -86,12 +100,6 @@ export default {
 <style lang="stylus" scoped>
 .moment-list
   height 100%
-.list-bottom
-  display flex
-  justify-content center
-  align-items center
-  font-size 12px
-  color #999999
 .moment-null
   text-align center
   padding-top 100px
@@ -100,5 +108,11 @@ export default {
 </style>
 
 <style lang="stylus">
-
+.moment-list .list-bottom
+  display flex
+  justify-content center
+  align-items center
+  font-size 12px
+  padding 20px 0
+  color #999999
 </style>

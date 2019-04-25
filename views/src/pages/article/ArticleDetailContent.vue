@@ -1,6 +1,9 @@
 <template>
   <div class="article-detail">
     <div class="markdown-body" v-html="articleContent"></div>
+    <div v-transfer-dom>
+      <vux-previewer ref="previewer" :list="previewImages"></vux-previewer>
+    </div>
   </div>
 </template>
 
@@ -11,7 +14,6 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import 'github-markdown-css'
 import 'highlight.js/styles/github.css'
 import { getArticleDetail } from '@/API'
-
 
 export default {
   name: 'article-detail-content',
@@ -42,48 +44,61 @@ export default {
         }
       }
       myMarked.setOptions(options)
-      return myMarked(this.content, () => {
-        console.log(arguments)
-        console.log( 'this.content', this)
+      return myMarked(this.content)
+    },
+    previewImages () {
+      return this.allImages.map(item => {
+        return {
+          src: item
+        }
       })
     }
   },
   created () {
     // this.createRenderer()
     hljs.registerLanguage('javascript', javascript)
-
+  },
+  mounted () {
+    this.addImageListener()
   },
   methods: {
     createRenderer () {
-      let index = 0
       const renderer = new myMarked.Renderer()
       this.allImages.length = 0
 
-      renderer.image = (href, title, text) => {
+      renderer.image = this.reRenderImage()
+      return renderer
+    },
+
+    reRenderImage () {
+      let index = 0
+      const imageRender = (href, title, text) => {
         this.allImages.push(href)
         const img = `
-        <img src="${href}" alt="${text}" class="$blog-customer-image$" data-index="${index}"/>
+        <img src="${href}" alt="${text}" class="__blog-customer-image__" data-index="${index}"/>
         `
         index++
 
         return img
       }
-      return renderer
+      return imageRender
     },
 
     addImageListener () {
       this.$nextTick(() => {
-        // const doms = document.querySelectorAll('.$blog-customer-image$')
-        // doms.forEach( dom => {
-        //   dom.addEventListener('click', this.previewImage)
-
-        // })
+        const doms = document.querySelectorAll('.__blog-customer-image__')
+        doms.forEach(dom => {
+          dom.addEventListener('click', this.previewImage)
+        })
       })
-
     },
 
     previewImage (ev) {
-      console.log(ev)
+      const { target } = ev
+      if (target) {
+        const index = target.dataset.index
+        this.$refs.previewer.show(+index)
+      }
     }
   }
 

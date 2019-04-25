@@ -77,7 +77,7 @@ async function findAllMoment(option) {
     }).then(result => {
         let rows = result.map(v => {
             let row = formatDBResult(v)
-            row.imgs = row.imgs.split(',').map(v => staticNetPrefix + v.split(path.sep).join('/'))
+            row.imgs = row.imgs.length > 0 ? row.imgs.split(',').map(v => staticNetPrefix + v.split(path.sep).join('/')) : []
             row.like = row.like || 0
             return row
         })
@@ -114,7 +114,7 @@ async function listMomentContent(limit = 10, offset = 0, count = 0, userId = '')
         if (list === undefined) {
             return false
         }
-        if (total < limit + offset) {
+        if (total <= limit + offset) {
             end = true
         }
         return {

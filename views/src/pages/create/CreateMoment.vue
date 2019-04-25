@@ -23,14 +23,15 @@
         <mt-switch v-model="moment.isPrivate"></mt-switch>
       </div>
     </div>
-    <component :is="componentName" :imgs="showImgs" :index="imgIndex" @close="hideImg"></component>
+    <div v-transfer-dom>
+      <vux-previewer ref="previewer" :list="previewImages"></vux-previewer>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import TheFileBtn from '@/components/TheFileBtn'
-import PreviewImg from '@/components/PreviewImg'
 import TheHeader from '@/components/TheHeader'
 import { createMoment } from '@/API'
 import { maxImgCount, maxMomentTextLength } from './const'
@@ -39,7 +40,6 @@ export default {
   name: 'create-moment',
   components: {
     TheFileBtn,
-    PreviewImg,
     TheHeader
   },
   data () {
@@ -50,7 +50,6 @@ export default {
         isPrivate: false
       },
       showImgs: [],
-      imgIndex: 0,
       componentName: '',
       maxTextLength: maxMomentTextLength,
       fileTypes: 'image/jpeg,image/pjpeg,image/png',
@@ -62,13 +61,20 @@ export default {
     }),
     showImgBtn () {
       return this.moment.imgs.length < maxImgCount
+    },
+    previewImages () {
+      return this.showImgs.map(src => {
+        return {
+          src
+        }
+      })
     }
   },
   created () {
-    console.log('created createMoment')
+    console.log('createMoment created')
   },
   activated () {
-    console.log('activated createMoment')
+    console.log('createMoment activated')
   },
   methods: {
     formatImg (img) {
@@ -104,11 +110,6 @@ export default {
         }
         this.moment.imgs.push(v)
         this.showImgs.push(URL.createObjectURL(v))
-
-        // this.formatImg( v ).then( img => {
-        //   // this.moment.imgs.push( img )
-        //   // this.showImgs.push( URL.createObjectURL( img ) )
-        // } )
       }
       if (inValidate.length > 0) {
         this.$toast({
@@ -119,11 +120,7 @@ export default {
       }
     },
     showImg (index) {
-      this.imgIndex = index || 0
-      this.componentName = 'PreviewImg'
-    },
-    hideImg () {
-      this.componentName = ''
+      this.$refs.previewer.show(index)
     },
     publish () {
       let param = new FormData()

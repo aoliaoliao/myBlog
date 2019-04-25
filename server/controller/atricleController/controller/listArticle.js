@@ -1,5 +1,5 @@
 const path = require('path')
-const articletModel = require("../../../Dao").Articles;
+const articleModel = require("../../../Dao").Articles;
 const userModel = require("../../../Dao").Users;
 const CommentModel = require("../../../Dao").Comments;
 const { formatResponse } = require("../../../utils");
@@ -24,9 +24,9 @@ function createArticleOption(limit, offset) {
 }
 
 async function listAllArticle(option) {
-    return articletModel.findAndCount(option).then(result => {
-        console.log('result', result)
-        let rows = result.rows;
+    return articleModel.findAll(option).then(result => {
+        console.log('listAllArticle result', result)
+        let rows = result || [];
         rows = rows.map(v => {
             let row = v.dataValues
             row.summaryImage = staticNetPrefix + row.summaryImage.split(path.sep).join('/')
@@ -38,24 +38,48 @@ async function listAllArticle(option) {
     })
 }
 
+// 文章总数量
+async function totalArticles(opiton) {
+    return articleModel.count(opiton).then(res => {
+        return res
+    }).catch(err => {})
+}
 
-async function listArticleContent(limit = 10, offset = 0) {
+// 每次查询的时候修正偏移量，防止分页的时候可能出现的数据重复
+function fixOffset(oldCount, newCount) {
+    if (oldCount === 0) {
+        return 0
+    }
+    let offset = newCount - oldCount // 偏移量
+    return offset
+}
+
+async function listArticleContent(limit = 10, offset = 0, count = 0) {
     let end = false
     limit = +limit
     offset = +offset
+    count = +count
+
+    let total = await totalArticles()
+
+    offset = offset + fixOffset(count, total)
 
     let findOption = createArticleOption(limit, offset)
 
     try {
-        let result = await listAllArticle(findOption)
-        let { rows, count } = result
-        if (count < limit + offset) {
+        let list = await listAllArticle(findOption)
+
+        if (list === undefined) {
+            return false
+        }
+        if (total <= limit + offset) {
             end = true
         }
         return {
             end,
-            list: rows
+            list
         }
+
     } catch (error) {
         console.log('error', error)
         return false
