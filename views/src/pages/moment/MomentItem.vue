@@ -32,7 +32,7 @@
       <span>{{createDate}}</span>
       <span class="social">
         <span class="social-like">
-          <b-icon icon="like" :class="{ 'red-text': item.momentLikes.melike > 0 }" @click.stop="toggleMomentLike"></b-icon>
+          <b-icon icon="like" :class="{ 'red-text': isMyLike }" @click.stop="toggleMomentLike"></b-icon>
           <span v-if="likeCount > 0">{{likeCount}}</span>
         </span>
         <span class="social-comment">
@@ -111,8 +111,13 @@ export default {
       return this.comments.length || 0
     },
     likeCount () {
-      return this.item.momentLikes.likes || 0
+      const { momentLikes = {} } = this.item
+      return momentLikes.likes || 0
     },
+    isMyLike(){
+      const { momentLikes = {} } = this.item
+      return !!momentLikes.myLike
+    }
 
   },
   created () {

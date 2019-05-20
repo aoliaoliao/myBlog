@@ -8,9 +8,11 @@ let curTryTokenRequest = 0
 
 // let baseURL = 'https://easy-mock.com/mock/5bc440f3f8cdf063243f379b/views/'
 // let baseURL = 'http://localhost:3000/'
-// let baseURL = 'http://192.168.0.106:3000/'
-let baseURL = 'http://192.168.188.216:3000/'
+// let baseURL = 'http://192.168.0.107:3000/'
+// let baseURL = 'http://192.168.188.216:3000/'
 // let baseURL = 'http://47.101.150.40:3000/'
+
+let baseURL = process.env.NODE_ENV === 'production' ? 'http://47.101.150.40:3000/production/' : 'http://47.101.150.40:3000/development/'
 
 async function doRequest( error ) {
   // await store.dispatch('replaceAccessToken')
