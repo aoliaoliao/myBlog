@@ -11,7 +11,6 @@ const basename = path.basename(__filename)
 const sequelize = new Sequelize(dbConfig[env.trim()])
 
 
-
 // 测试是否连接成功
 sequelize
     .authenticate()

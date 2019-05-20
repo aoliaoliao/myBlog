@@ -28,7 +28,7 @@ module.exports = {
         host: 'localhost',
         username: 'root',
         password: '123456',
-        database: 'nodejs',
+        database: 'blogProduction',
         port: '3306',
         dialect: 'mysql',
         pool: {
