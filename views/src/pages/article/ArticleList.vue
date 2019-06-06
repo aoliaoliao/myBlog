@@ -40,48 +40,48 @@ export default {
   },
   activated () {
   },
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter ( to, from, next ) {
     // 上一个路由如果是指定路由，则刷新滚动列表
-    next(vm => {
-      if (refreshRouter.includes(from.name)) {
+    next( vm => {
+      if ( refreshRouter.includes( from.name ) ) {
         vm.autoPullDownRefresh()
       }
-    })
+    } )
   },
   methods: {
     autoPullDownRefresh () {
-      const theScroll = this.$refs[ 'theScroll' ]
+      const theScroll = this.$refs.theScroll
       theScroll.autoPullDownRefresh()
     },
     loadTop () {
       this.page.cur = 1
-      this.getData().then(data => {
+      this.getData().then( data => {
         this.list = [ ...data ]
-      })
+      } )
     },
     loadBottom () {
-      if (this.isOver) {
+      if ( this.isOver ) {
         return
       }
       this.page.cur = this.page.cur + 1
-      this.getData().then(data => {
+      this.getData().then( data => {
         this.list = [ ...this.list, ...data ]
-      })
+      } )
     },
     getData () {
-      return getArticleList(this.formatParam()).then(({ rt }) => {
+      return getArticleList( this.formatParam() ).then( ( { rt } ) => {
         this.isOver = rt.end
         return rt.list
-      }).catch(err => {
+      } ).catch( err => {
         this.isOver = true
         return []
-      })
+      } )
     },
     formatParam () {
       let { cur, num } = this.page
       return {
         num,
-        start: (cur - 1) * num
+        start: ( cur - 1 ) * num
       }
     }
   }
