@@ -1,10 +1,10 @@
 const path = require('path')
+const { URL } = require('url');
 const articleModel = require("../../../Dao").Articles;
 const userModel = require("../../../Dao").Users;
 const CommentModel = require("../../../Dao").Comments;
 const { formatResponse } = require("../../../utils");
 const { staticNetPrefix } = require('../../../conf')['gloableConst']
-
 
 const articleAttributes = ['id', 'author', 'name', 'summary', 'summaryImage', 'updatedAt']
 const userAttributes = ['nickName', 'avatar', 'signature']
@@ -25,11 +25,11 @@ function createArticleOption(limit, offset) {
 
 async function listAllArticle(option) {
     return articleModel.findAll(option).then(result => {
-        console.log('listAllArticle result', result)
         let rows = result || [];
         rows = rows.map(v => {
             let row = v.dataValues
-            row.summaryImage = staticNetPrefix + row.summaryImage.split(path.sep).join('/')
+            // row.summaryImage = staticNetPrefix + row.summaryImage.split(path.sep).join('/')
+            row.summaryImage = new URL( row.summaryImage.split(path.sep).join('/') , staticNetPrefix )
             return row
         })
         return result

@@ -1,15 +1,17 @@
 const formidable = require('formidable')
 const fs = require('fs')
+const path = require('path')
 const fsPromises = fs.promises;
 const { formatResponse } = require("../utils/index.js");
 const { staticPublicPath } = require('../conf')['gloableConst']
 
 // 文件暂存路径
-async function createTargetDir() {
+async function createTargetDir( req ) {
     const date = new Date()
     // TODO: 在路径中添加用户的ID
-    targetDir = `${staticPublicPath}/${date.getFullYear()}_${date.getMonth() + 1}/${date.getDate()}/`
-
+    
+    // let targetDir =  `${staticPublicPath}/${date.getFullYear()}_${date.getMonth() + 1}/${date.getDate()}/`
+    let targetDir = path.join( staticPublicPath, `${date.getFullYear()}_${date.getMonth() + 1}`,`${date.getDate()}` )
     if (!fs.existsSync(targetDir)) {
         try {
             await fsPromises.mkdir(targetDir, {
@@ -20,7 +22,7 @@ async function createTargetDir() {
             正确路径应该为：${targetDir},
             当前暂存路径为：${staticPublicPath}
             `)
-            targetDir = `${staticPublicPath}/`
+            targetDir = path.join( staticPublicPath )
         }
     }
     return targetDir
@@ -28,7 +30,7 @@ async function createTargetDir() {
 
 async function formatRequest(req) {
     const form = new formidable.IncomingForm()
-    form.uploadDir = await createTargetDir()
+    form.uploadDir = await createTargetDir( req )
     form.keepExtensions = true
     form.multiples = true
     return new Promise((resolve, reject) => {

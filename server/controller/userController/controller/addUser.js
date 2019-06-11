@@ -1,21 +1,17 @@
 const userModel = require('"../../../Dao').Users
 const { formatResponse, cryptoPasswordByMD5 } = require('../../../utils')
 
-function validateNickName(res, nickName) {
+function validateNickName(nickName) {
     let msg
     if (typeof nickName === 'undefined') {
         msg = '用户昵称不可为空'
     } else if (nickName.length < 2 || nickName.length > 10) {
         msg = '用户昵称的长度为2到10个字符'
     } else {}
-    if (msg) {
-        res.send(formatResponse(0, msg))
-        return false
-    }
-    return true
+    return msg
 }
 
-function validatePwd(res, pwd) {
+function validatePwd(pwd) {
     let msg
     let regex = /^.*(?=.{9,})(?=.*\d)(?=.*[a-z]).*$/
 
@@ -25,14 +21,10 @@ function validatePwd(res, pwd) {
         msg = '密码长度不少于9位，必须包含字母和数字'
     }
 
-    if (msg) {
-        res.send(formatResponse(0, msg))
-        return false
-    }
-    return true
+    return msg
 }
 
-function validateEmail(res, email) {
+function validateEmail(email) {
     let msg
     let regex = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+.)+[A-Za-z]{2,14}/g
 
@@ -41,31 +33,19 @@ function validateEmail(res, email) {
     } else if (!regex.test(email)) {
         msg = '请输入正确的邮箱格式'
     }
-
-    if (msg) {
-        res.send(formatResponse(0, msg))
-        return false
-    }
-    return true
+    return msg
 }
 
-function validateUser(res, user) {
-    try {
-        let validate =
-            validateNickName(res, user.nickName) &&
-            validatePwd(res, user.password) &&
-            validateEmail(res, user.linkedEMail)
+function validateUser( user) {
+  let validate = validateNickName(user.nickName) || validatePwd( user.password) || validateEmail( user.linkedEMail)
 
-        return validate
-    } catch (error) {
-        console.log('error', error)
-        res.send(formatResponse(0, error))
-    }
+  return validate
 }
 
 module.exports = async function addUser(req, res, next) {
     let body = req.body
-    if (validateUser(res, body)) {
+    let msg = validateUser( body)
+    if ( !msg ) {
         body.password = cryptoPasswordByMD5(body.password)
         userModel.create(body)
             .then(rt => {
@@ -77,6 +57,6 @@ module.exports = async function addUser(req, res, next) {
                 res.send(formatResponse(0, err.message))
             })
     } else {
-        res.send(formatResponse(0, '请填写正确的用户信息'))
+        res.send(formatResponse(0, msg || '请填写正确的用户信息'))
     }
 }

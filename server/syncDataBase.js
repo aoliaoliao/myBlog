@@ -6,7 +6,7 @@ var args = minimist(process.argv.slice(2), {
     string: ['env']
 });
 let isForce = args.force // 强制更新，会删除所有的历史记录
-let tables = args['_'] // 需要被更新的数据表
+let tables = args['_'] || [] // 需要被更新的数据表
 let env = args.env // 环境变量 [ 'development', 'production' ]
 process.env.NODE_ENV = env
 const database = require('./Dao')
@@ -14,7 +14,7 @@ const database = require('./Dao')
 // 使用格式： node syncDataBase.js --force=true --env=development Moment Comment
 console.log('args', args)
 
-if (tables) {
+if (tables.length > 0) {
     // 获取Sequelize的实例
     const queryInterface = database.sequelize.getQueryInterface();
 
@@ -42,8 +42,8 @@ if (tables) {
 
     })
 } else {
-    database.sequelize.sync({
-        force: isForce,
-        logging: true
-    })
+  database.sequelize.sync({
+    force: isForce,
+    logging: true
+  })
 }

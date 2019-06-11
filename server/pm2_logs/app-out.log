@@ -1,0 +1,23 @@
+env.split [ 'p', 'r', 'o', 'd', 'u', 'c', 't', 'i', 'o', 'n' ]
+Executing (default): SELECT 1+1 AS result
+Connection has been established successfully undefined
+Executing (default): SELECT count(*) AS `count` FROM `Moments` AS `Moments`;
+Executing (default): SELECT`Moment`.*, `momentAuthor`.`nickName` AS `momentAuthor.nickName`,`momentAuthor`.`avatar` AS `momentAuthor.avatar`,`momentAuthor`.`signature` AS `momentAuthor.signature`,`momentAuthor`.`id` AS `momentAuthor.id`,`momentComments`.`userId` AS `momentComments.userId`,`momentComments`.`userName` AS `momentComments.userName`,`momentComments`.`parentCommentId` AS `momentComments.parentCommentId`,`momentComments`.`text` AS `momentComments.text`,`momentComments`.`id` AS `momentComments.id`,`momentComments`.`updatedAt` AS `momentComments.updatedAt`,`momentLikes`.`userId` AS `momentLikes.userId`,COUNT(`momentLikes`.`id`) AS `momentLikes.likes`,COUNT( IF( `momentLikes`.`userId` = '3bdc0290-7c6b-11e9-9792-5900f187f30b', `momentLikes`.`userId`, NULL )  ) as `momentLikes.melike`FROM(  SELECT  `Moment`.`id`,  `Moment`.`userId`,  `Moment`.`text`,  `Moment`.`imgs`,  `Moment`.`video`,  `Moment`.`updatedAt`FROM  `Moments` AS `Moment`ORDER BY  `Moment`.`updatedAt` DESC LIMIT 0 ,10) AS `Moment`LEFT OUTER JOIN `Users` AS `momentAuthor` ON `Moment`.`userId` = `momentAuthor`.`id`LEFT OUTER JOIN `Comments` AS `momentComments` ON `Moment`.`id` = `momentComments`.`momentId`LEFT OUTER JOIN `Votes` AS `momentLikes` ON `Moment`.`id` = `momentLikes`.`momentId`GROUP BY Moment.id ORDER BY `Moment`.`updatedAt` DESC;
+ReferenceError: URL is not defined
+    at row.imgs.row.imgs.length.row.imgs.split.map.v (/usr/blog/myBlogServer/v1/server/controller/momentController/controller/listMoment.js:118:75)
+    at Array.map (<anonymous>)
+    at result.map.v (/usr/blog/myBlogServer/v1/server/controller/momentController/controller/listMoment.js:118:66)
+    at Array.map (<anonymous>)
+    at database.sequelize.query.then.result (/usr/blog/myBlogServer/v1/server/controller/momentController/controller/listMoment.js:116:27)
+    at tryCatcher (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/util.js:16:23)
+    at Promise._settlePromiseFromHandler (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/promise.js:512:31)
+    at Promise._settlePromise (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/promise.js:569:18)
+    at Promise._settlePromise0 (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/promise.js:614:10)
+    at Promise._settlePromises (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/promise.js:694:18)
+    at _drainQueueStep (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/async.js:138:12)
+    at _drainQueue (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/async.js:131:9)
+    at Async._drainQueues (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/async.js:147:5)
+    at Immediate.Async.drainQueues (/usr/blog/myBlogServer/v1/server/node_modules/bluebird/js/release/async.js:17:14)
+    at runCallback (timers.js:810:20)
+    at tryOnImmediate (timers.js:768:5)
+    at processImmediate [as _immediateCallback] (timers.js:745:5)

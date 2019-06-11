@@ -3,9 +3,11 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "set NODE_ENV=production && node ./bin/www",
-        "dev": "set NODE_ENV=development && node-dev ./bin/www",
-        "product": "set NODE_ENV=production && node ./bin/www",
+        "start": "set NODE_ENV=production&&node ./bin/www",
+        "dev": "set NODE_ENV=development&&node-dev ./bin/www",
+        "product": "set NODE_ENV=production&&node ./bin/www",
+        "pm2": "pm2 start pm2.json",
+        "pm2:dev": "pm2 start pm2.json --env dev",
         "syncdb": "node ./syncDataBase.js "
     },
     "dependencies": {

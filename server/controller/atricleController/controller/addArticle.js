@@ -35,43 +35,17 @@ function validateArticle(article) {
 function formatRequest(req) {
     let { fields, files } = req.formData
     let { name = '', author = '', summary = '', isPrivate = 1, isComment = 1 } = fields
-    let { articleAddress = '', summaryImage = '' } = files
+    let { articleAddress = {}, summaryImage = {} } = files
 
     return { name, author, summary, articleAddress, summaryImage, isPrivate, isComment }
 }
 
 async function formatModelData(article) {
-    const uuid = createUUID()
-
     if (article.summary.length === 0) {
         // TODO： 读取文章内容并截取最多300个字符
         article.summary = ''
     }
-    if (article.summaryImage) {
-        const path = article.summaryImage.path
-        const newPath = getFileDir(path) + article.name + '_' + uuid + getFileExt(path)
-        try {
-            await fsPromises.rename(path, newPath)
-            article.summaryImage = newPath
-        } catch (error) {
-            console.log(`${path}文件的重命名失败，新名字应为${newPath}`)
-            article.summaryImage = path
-        }
-    } else {
-        // TODO： 读取文章内容并选择第一张合规的图片（类似微信分享）
-        article.summaryImage = ''
-    }
-    if (article.articleAddress) {
-        const path = article.articleAddress.path
-        const newPath = getFileDir(path) + article.name + '_' + uuid + getFileExt(path)
-        try {
-            await fsPromises.rename(path, newPath)
-            article.articleAddress = newPath
-        } catch (error) {
-            console.log(`${path}文件的重命名失败，新名字应为${newPath}`)
-            article.articleAddress = path
-        }
-    }
+
     delete article.id
     return article
 }

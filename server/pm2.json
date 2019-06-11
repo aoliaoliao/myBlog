@@ -1,0 +1,22 @@
+{
+  "name": "blog",
+  "script": "./bin/www",
+  "cwd": "./",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "env_dev": {
+    "NODE_ENV": "development"
+  },
+  "watch": true,
+  "ignore_watch" : [
+    "node_modules", 
+    "logs"
+  ],
+  "watch_options": {
+    "followSymlinks": false
+  },
+  "error_file" : "./pm2_logs/app-err.log",
+  "out_file" : "./pm2_logs/app-out.log",
+  "merge_logs": true
+}

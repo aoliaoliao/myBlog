@@ -19,10 +19,7 @@ const userRouters = [{
     {
         method: 'post',
         path: '/create',
-        handler: userController.addUser,
-        meta: {
-            token: true
-        }
+        handler: userController.addUser
     },
     {
         method: 'post',
