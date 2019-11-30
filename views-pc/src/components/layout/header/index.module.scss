@@ -1,0 +1,27 @@
+.header-wrap {
+  width: 100%;
+  background: #fff;
+  padding-top: 10px;
+  margin-bottom: 20px;
+}
+.header-limit {
+  min-width: 768px;
+  max-width: 1440px;
+}
+.header-container {
+  display: inline-block;
+  @media screen and (min-width: 992px) {
+    width: 960px;
+  }
+}
+.header-logo {
+  font-size: 22px;
+  line-height: 30px;
+  font-size: 600;
+  color: #222222;
+}
+.header-user {
+  min-width: 160px;
+}
+
+
