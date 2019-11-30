@@ -46,7 +46,19 @@ async function formatModelData(article) {
         article.summary = ''
     }
 
-    delete article.id
+    if (article.summaryImage) {
+        const path = article.summaryImage.path
+        article.summaryImage = path
+    } else {
+        // TODO： 读取文章内容并选择第一张合规的图片（类似微信分享）
+        article.summaryImage = ''
+    }
+    if (article.articleAddress) {
+        const path = article.articleAddress.path
+        article.articleAddress = path
+    }
+
+    article.id = createUUID()
     return article
 }
 

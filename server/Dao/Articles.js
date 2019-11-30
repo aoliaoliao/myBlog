@@ -1,8 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     let Articles = sequelize.define('Articles', {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV1,
+            type: DataTypes.CHAR(18),
             comment: '动态ID，主键',
             primaryKey: true
         },
@@ -32,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
             comment: '.html / .htm 文件所在的位置'
         },
         author: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             allowNull: false,
             comment: '作者，外键关联 Users 表',
         },

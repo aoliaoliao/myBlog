@@ -1,14 +1,18 @@
 var minimist = require('minimist');
 
-
+/**
+ * force: 是否删除原表, 默认 false
+ * env：选择需要同步的环境， 默认development
+ * others: 指定同步的数据表，默认全部
+ */
 var args = minimist(process.argv.slice(2), {
     boolean: ['force'],
     string: ['env']
 });
 let isForce = args.force // 强制更新，会删除所有的历史记录
 let tables = args['_'] || [] // 需要被更新的数据表
-let env = args.env // 环境变量 [ 'development', 'production' ]
-process.env.NODE_ENV = env
+let env = args.env || false  // 环境变量 [ 'development', 'production' ]
+process.env.NODE_ENV = env || 'development'
 const database = require('./Dao')
 
 // 使用格式： node syncDataBase.js --force=true --env=development Moment Comment

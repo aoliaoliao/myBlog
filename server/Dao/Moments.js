@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
     let Moments = sequelize.define('Moments', {
         id: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             defaultValue: DataTypes.UUIDV1,
             comment: '动态ID，主键',
             primaryKey: true
         },
         userId: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             allowNull: false,
             comment: '关联的用户ID',
         },

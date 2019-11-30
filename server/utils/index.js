@@ -1,6 +1,6 @@
 const crypto = require('crypto')
 const uuidv1 = require('uuid/v1')
-
+const uniqId = require('uniqid')
 
 module.exports = {
     /* 
@@ -66,7 +66,8 @@ module.exports = {
      * 生成唯一的UUID
      */
     createUUID() {
-        return uuidv1()
+        // return uuidv1()
+        return uniqId()
     },
 
     /* 

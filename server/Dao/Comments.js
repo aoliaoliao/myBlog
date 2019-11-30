@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
     let Comments = sequelize.define('Comments', {
         id: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             defaultValue: DataTypes.UUIDV1,
             comment: '评论的ID，主键',
             primaryKey: true
         },
         userId: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             allowNull: false,
             comment: '关联的用户ID',
         },
@@ -17,15 +17,15 @@ module.exports = (sequelize, DataTypes) => {
             comment: '关联用户的昵称'
         },
         articleId: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             comment: '关联的文章ID',
         },
         momentId: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             comment: '关联的动态ID',
         },
         parentCommentId: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(18),
             comment: '父评论ID'
         },
         text: {

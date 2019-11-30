@@ -76,7 +76,7 @@ export default {
         articleAddress: null,
         summaryImage: null,
       },
-      articleMIME: '*',
+      articleMIME: '.md, .html, .htm',
       imageMIME: 'image/jpeg,image/pjpeg,image/png',
       fileName: '',
       maxArticleSummaryLength: maxArticleSummaryLength,
@@ -125,11 +125,12 @@ export default {
       }
       this.formData.summaryImage = file
     },
-    validateArticle (file) {
+    validateArticle (file = {}) {
       let msg = ''
 
-      let name = file.name
-      if (!('text/html'.includes(file.type || 'none') || /\.*\.md$/gi.test(name))) {
+      if (!file ) {
+        msg = '请选择要上传的文章'
+      } else if (!('text/html'.includes(file.type || 'none') || /\.*\.md$/gi.test(file.name))) {
         msg = '仅支持HTML和MD文件'
       } else {
       }
@@ -143,10 +144,12 @@ export default {
 
       return !msg.length
     },
-    validateImage (file) {
+    validateImage (file = {}) {
       let msg = ''
       const maxImage = 3 * 1024 * 1024
-      if (!this.imageMIME.includes(file.type)) {
+      if ( !file ) {
+        msg = '请选择要上传的图片'
+      } else if (!this.imageMIME.includes(file.type)) {
         msg = '请上传PNG，JPG或JPEG格式的图片'
       } else if (file.size > maxImage) {
         msg = '图片最大为10000'
@@ -198,19 +201,28 @@ export default {
       }
 
       createNewArticle(param).then(res => {
-        let msg = res.rt
-        res.cd && !msg ? msg = '新建成功' : '发表失败'
-        this.$vux.toast.show({
-          text: msg,
-          time: 1000
-        })
-        if (res.cd) {
+        if ( res.cd ) {
+          this.$vux.toast.show({
+            text: res.rt || '新建成功',
+            time: 1000
+          })
           this.$router.replace('/home/articles')
+        } else {
+          this.$vux.toast.show({
+            text: res.msg || '发表失败，请重试',
+            type: 'warn',
+            time: 1500
+          })
+        }
+        
+        if (res.cd) {
+          
         }
       }).catch(err => {
         this.$vux.toast.show({
           text: '发表失败，请重试',
-          time: 1000
+          type: 'warn',
+          time: 1500
         })
       })
 

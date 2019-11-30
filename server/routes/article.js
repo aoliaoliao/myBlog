@@ -6,7 +6,7 @@ module.exports = [{
         handler: articleController.listArticle,
     },
     {
-        /*
+        /**
          * 获取文章列表
          * @param { number } start - 查询的起始位置
          * @param { number } num - 查询的数量·
@@ -16,7 +16,7 @@ module.exports = [{
         handler: articleController.listArticle
     },
     {
-        /*
+        /**
          * 获取文章的首屏内容，包括作者信息，可供首屏展示的文章内容
          * @param { string } id - 文章ID
          */
@@ -25,7 +25,7 @@ module.exports = [{
         handler: articleController.detailArticle
     },
     {
-        /*
+        /**
          * 获取文章的评论
          * @param { string } id - 文章ID
          * @param { number } start - 查询的起始位置
@@ -37,7 +37,7 @@ module.exports = [{
     },
 
     {
-        /* 
+        /**
          * 新建文章，FormData, 表单提交
          * @param { string } name - 文章标题
          * @param { string } author - 文章作者

@@ -1,6 +1,6 @@
 const env = process.env.NODE_ENV || 'development'
 
-const staticNetPrefix = env.trim() === 'production' ? 'http://47.101.150.40:3000/' : 'http://localhost:3000/'
+const staticNetPrefix = env.trim() === 'production' ? 'http://101.132.139.198:3000/' : 'http://localhost:3000/'
 
 module.exports = {
     staticPublicPath: 'static', // 静态资源的本地目录

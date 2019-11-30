@@ -1,10 +1,10 @@
 module.exports = {
     development: {
-        host: '47.101.150.40',
+        host: '101.132.139.198',
         // host: 'localhost',
-        username: 'root',
-        password: '123456',
-        database: 'nodejs',
+        username: 'mysql-admin',
+        password: '(blogMysql888)',
+        database: 'blog-dev',
         port: '3306',
         dialect: 'mysql',
         pool: {
@@ -25,10 +25,10 @@ module.exports = {
         // benchmark: true
     },
     test: {
-        host: 'localhost',
-        username: 'root',
-        password: '123456',
-        database: 'blogProduction',
+        host: '101.132.139.198',
+        username: 'mysql-admin',
+        password: '(blogMysql888)',
+        database: 'blog-pro',
         port: '3306',
         dialect: 'mysql',
         pool: {
@@ -42,10 +42,10 @@ module.exports = {
         // benchmark: true
     },
     production: {
-        host: '47.101.150.40',
-        username: 'root',
-        password: '123456',
-        database: 'blogProduction',
+        host: '101.132.139.198',
+        username: 'mysql-admin',
+        password: '(blogMysql888)',
+        database: 'blog-pro',
         port: '3306',
         dialect: 'mysql',
         pool: {

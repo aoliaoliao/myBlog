@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "start": "set NODE_ENV=production&&node ./bin/www",
-        "dev": "set NODE_ENV=development&&node-dev ./bin/www",
+        "dev": "set NODE_ENV=development&&node ./bin/www",
         "product": "set NODE_ENV=production&&node ./bin/www",
         "pm2": "pm2 start pm2.json",
         "pm2:dev": "pm2 start pm2.json --env dev",
@@ -24,6 +24,7 @@
         "mysql2": "^1.6.1",
         "pug": "2.0.0-beta11",
         "sequelize": "^4.38.1",
+        "uniqid": "^5.2.0",
         "uuid": "^3.3.2"
     },
     "devDependencies": {
