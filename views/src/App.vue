@@ -10,15 +10,27 @@
 
 <script>
 // import '@/assets/styles/github.css'
-import { updateRefreshToken } from './utils/token'
+// import { updateRefreshToken } from './utils/token'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'App',
   created () {
     const notUpdateRoute = [ '/', '/login' ]
-    if (!notUpdateRoute.includes(this.$route.path)) {
-      updateRefreshToken()
+    if ( !notUpdateRoute.includes( this.$route.path ) ) {
+      // updateRefreshToken()
+      // 获取登陆用户信息
+      this.$http.get( this.$API.user.self ).then( res => {
+        if ( res.cd ) {
+          this.setUserMsg( res.rt )
+        }
+      } )
     }
+  },
+  methods: {
+    ...mapMutations( 'user', [
+      'setUserMsg'
+    ] )
   }
 }
 </script>

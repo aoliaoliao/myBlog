@@ -1,5 +1,5 @@
 const userModel = require('"../../../Dao').Users
-const { formatResponse, cryptoPasswordByMD5 } = require('../../../utils')
+const { formatResponse, cryptoPasswordByMD5, createUUID } = require('../../../utils')
 
 function validateNickName(nickName) {
     let msg
@@ -47,6 +47,7 @@ module.exports = async function addUser(req, res, next) {
     let msg = validateUser( body)
     if ( !msg ) {
         body.password = cryptoPasswordByMD5(body.password)
+        body.id = createUUID()
         userModel.create(body)
             .then(rt => {
                 console.log('新增单个用户: rt', rt)

@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
     let Votes = sequelize.define('Votes', {
         id: {
             type: DataTypes.CHAR(18),
-            defaultValue: DataTypes.UUIDV1,
             comment: '点赞的ID，主键',
             primaryKey: true
         },

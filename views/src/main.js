@@ -6,6 +6,7 @@ import vueLazy from 'vue-lazyload'
 import store from './vuex'
 import router from './router'
 import http from './API/http'
+import API from './API'
 import App from './App'
 
 import './libs/vuxUI'
@@ -17,6 +18,8 @@ import errorImg from './assets/images/blog_default.jpg'
 
 Vue.component( TheScroll.name, TheScroll )
 Vue.prototype.$http = http
+Vue.prototype.$API = API
+
 Vue.use( vueLazy, {
   preLoad: 1.1, // 预加载的宽高比
   error: errorImg, // 图片加载失败时使用的图片源

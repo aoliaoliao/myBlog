@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
     let Comments = sequelize.define('Comments', {
         id: {
             type: DataTypes.CHAR(18),
-            defaultValue: DataTypes.UUIDV1,
             comment: '评论的ID，主键',
             primaryKey: true
         },

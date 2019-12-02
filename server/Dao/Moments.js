@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
     let Moments = sequelize.define('Moments', {
         id: {
             type: DataTypes.CHAR(18),
-            defaultValue: DataTypes.UUIDV1,
             comment: '动态ID，主键',
             primaryKey: true
         },

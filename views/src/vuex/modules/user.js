@@ -1,32 +1,38 @@
 import { getUserInfo } from '@/API'
 
-
 let state = {
+  user: {
+  },
+  userId: '',
   avatar: '',
   nickname: '',
   signature: ''
 }
 
 let mutations = {
-  setUserAvatar(state, avatar = '') {
-    state.avatar = avatar
+  setUserMsg( state, msg = {} ) {
+    state.user = Object.assign( state.user, msg )
   },
-  setUserNickname(state, nickname = '') {
-    state.nickname = nickname
+  setUserAvatar( state, avatar = '' ) {
+    state.user.avatar = avatar
   },
-  setUserSignature(state, signature = '') {
-    state.signature = signature
+  setUserNickname( state, nickname = '' ) {
+    state.user.nickname = nickname
+  },
+  setUserSignature( state, signature = '' ) {
+    state.user.signature = signature
+  },
+  setUserId( state, id ) {
+    state.user.id = id
   }
 }
 
 let actions = {
-  getUserInfo({ commit }, param) {
-    getUserInfo(param).then(res => {
+  getUserInfo( { commit }, param ) {
+    getUserInfo( param ).then( res => {
       let { rt } = res
-      commit('setUserAvatar', rt.avatar)
-      commit('setUserNickname', rt.nickname)
-      commit('setUserSignature', rt.signature)
-    })
+      commit( 'setUserMsg', rt )
+    } )
   }
 }
 

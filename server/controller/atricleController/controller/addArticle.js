@@ -1,4 +1,3 @@
-const validator = require('validator')
 const fs = require('fs')
 const fsPromises = fs.promises;
 const articleModel = require("../../../Dao").Articles;
@@ -24,8 +23,6 @@ function validateArticle(article) {
         errMsg = '文章标题不可超过50个字'
     } else if (!author) {
         errMsg = '文章作者不可为空'
-    } else if (!validator.isUUID(author)) {
-        errMsg = '请先登录'
     } else if (summary.length > articleConst.summaryLength) {
         errMsg = '文章简介最多300个字符'
     } else {}

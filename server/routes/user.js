@@ -33,6 +33,11 @@ const userRouters = [{
     },
     {
         method: 'get',
+        path: '/self',
+        handler: userController.detailLoginUser,        
+    },
+    {
+        method: 'get',
         path: '/replaceAccessToken',
         handler: userController.accessToken,
     },

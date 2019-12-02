@@ -7,7 +7,7 @@ export const updateRefreshToken = () => {
   if ( lastedLogin ) {
     const lastedLoginTimestamp = new Date( lastedLogin ).setHours( 0, 0, 0, 0 )
     const now = new Date().setHours( 0, 0, 0, 0 )
-    now - lastedLoginTimestamp > 0 ? isUpdate = true : isUpdate = false
+    isUpdate = now - lastedLoginTimestamp > 0
   } else {
     isUpdate = true
   }

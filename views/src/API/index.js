@@ -1,5 +1,6 @@
 import $http from './http'
 import store from '@/vuex/index'
+import user from './models/user'
 
 // const { userId, userName } = store.state  // 和 @/vuex/index 存在循环引用
 
@@ -39,3 +40,7 @@ export const createComments = params => $http.post( 'comment/create', {
   userId: store.state.userId,
   userName: store.state.userName,
 } )
+
+export default {
+  user
+}

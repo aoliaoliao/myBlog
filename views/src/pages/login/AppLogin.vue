@@ -4,7 +4,7 @@
       <input type="text" placeholder="请输入用户账号" v-model="account" />
     </div>
     <div class="input-text">
-      <input type="password" placeholder="请输入密码" v-model="password" @input="encryptPwd" />
+      <input type="password" placeholder="请输入密码" v-model="password" />
     </div>
     <div>
       <mt-button size="large" @click="login">登陆</mt-button>
@@ -15,11 +15,10 @@
 <script>
 import { encryptByMd5 } from '@/utils/tool'
 import { loginUser } from '@/API'
-import { mapMutations, Store } from 'vuex'
+import { mapMutations } from 'vuex'
 
-let encryptPwd = ''
 export default {
-  name: 'login-wrap',
+  name: 'LoginWrap',
   data() {
     return {
       account: '',
@@ -28,31 +27,37 @@ export default {
   },
   methods: {
     ...mapMutations( [
-      'setUserId',
-      'setUserName',
       'setToken'
+    ] ),
+    ...mapMutations( 'user', [
+      'setUserMsg'
     ] ),
     login() {
       loginUser( {
         account: this.account,
-        password: encryptPwd
+        password: this.encryptPwd()
       } ).then( ( res = {} ) => {
         let { cd, rt } = res
         if ( cd == 1 ) {
           this.setToken( rt.accessToken )
-          this.setUserId( rt.userId )
-          this.setUserName( rt.userName )
           localStorage.setItem( 'refresh_token', rt.refreshToken )
+          this.setUserMsg( Object.assign(
+            rt,
+            {
+              accessToken: undefined,
+              refreshToken: undefined
+            }
+          ) )
           this.$router.push( '/home' )
         } else {
           this.formatError( res.msg )
         }
-      } ).catch( err => {
+      } ).catch( () => {
         this.formatError()
       } )
     },
     encryptPwd() {
-      encryptPwd = encryptByMd5( this.password )
+      return encryptByMd5( this.password )
     },
     formatError( msg ) {
       this.$toast( {
@@ -61,7 +66,7 @@ export default {
       } )
       this.setToken( undefined )
       this.setUserId( undefined )
-      this.setUserName( undefined )
+      this.setUserNickname( undefined )
     }
   }
 }
