@@ -1,18 +1,26 @@
-const { findUserById } = require('./utils')
+const { findUserById } = require('../utils')
 const { formatResponse } = require("../../../utils");
+const { decodedToken } = require("../../../utils/token");
 
 // 查询用户详情
-module.exports = async function detailUser(req, res, next) {
-    let query = req.query
-    try {
-        const result = await findUserById(query)
-        if (result.id && result.id.length > 0) {
-            res.send(formatResponse(1, result.dataValues))
-        } else {
-            res.send(formatResponse(0, '未找到相关用户，请检查'))
-        }
-    } catch (error) {
-        console.log('查看用户详情 ： err', err)
-        res.send(formatResponse(0, '查询错误'))
+module.exports = async function detailSelf(req, res, next) {
+  const authorization = req.headers.authorization
+  if ( !authorization ) {
+    res.send(formatResponse(0, '用户未登陆'))
+    return 
+  }
+  const token = decodedToken( authorization )
+  try {
+    const result = await findUserById(
+      token.userId || ''
+    )
+    if (result.id ) {
+        res.send(formatResponse(1, result.dataValues))
+    } else {
+        res.send(formatResponse(0, '未找到相关用户，请检查'))
     }
+  } catch (error) {
+    console.log('查看用户详情 ： err', error)
+    res.send(formatResponse(0, error.message || '查询错误'))
+  }
 }

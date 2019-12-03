@@ -1,4 +1,4 @@
-const userModel = require('/Dao').Users
+const userModel = require("../../../../Dao").Users
 
 export const findUserById = async ( query = {} ) => {
   if ( query ) {

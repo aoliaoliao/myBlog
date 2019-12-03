@@ -11,12 +11,12 @@
 <script>
 // import '@/assets/styles/github.css'
 // import { updateRefreshToken } from './utils/token'
-import { mapActions, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'App',
   created () {
-    const notUpdateRoute = [ '/', '/login' ]
+    const notUpdateRoute = [ '/login' ]
     if ( !notUpdateRoute.includes( this.$route.path ) ) {
       // updateRefreshToken()
       // 获取登陆用户信息

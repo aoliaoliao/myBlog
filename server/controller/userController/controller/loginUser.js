@@ -55,6 +55,7 @@ module.exports = async function loginUser(req, res, next) {
                     formatResponse(1, {
                         userId: user.id,
                         nickName: user.nickName,
+                        
                         accessToken,
                         refreshToken
                     })
