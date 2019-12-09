@@ -1,46 +1,42 @@
-const fs = require("fs");
+const fs = require('fs')
 const path = require('path')
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const { validateAccessToken } = require('../utils/token')
 
 let routerMap = new Map()
 let allFiles = fs.readdirSync(__dirname)
 allFiles.forEach(file => {
-    if (file !== 'index.js') {
-        const model = require(path.posix.join(__dirname, file))
-        const name = file.slice(0, -3)
+  if (file !== 'index.js') {
+    const model = require(path.posix.join(__dirname, file))
+    const name = file.slice(0, -3)
 
-        model.forEach(v => {
-            const key = path.posix.join('/', name, v.path)
-            routerMap.set(key, v)
-        })
-    }
+    model.forEach(v => {
+      const key = path.posix.join('/', name, v.path)
+      routerMap.set(key, v)
+    })
+  }
 })
 
-
 router.use('*', function(req, res, next) {
-    const path = req.baseUrl
-    if (routerMap.has(path)) {
-        const { meta = {} } = routerMap.get(path)
-        if (meta.token) {
-            validateAccessToken(req, res, next)
-        } else {
-            next()
-        }
+  const path = req.baseUrl
+  if (routerMap.has(path)) {
+    const { meta = {} } = routerMap.get(path)
+    if (meta.token) {
+      validateAccessToken(req, res, next)
     } else {
-        res.status(404).send('404 not found')
+      next()
     }
+  } else {
+    res.status(404).send('404 not found')
+  }
 })
 
 routerMap.forEach((value, key, map) => {
-    router[value.method](key, value.handler)
+  router[value.method](key, value.handler)
 })
 
 module.exports = router
-
-
-
 
 // module.exports = app => {
 //     // app.use( '/', ( req, res, next ) => {

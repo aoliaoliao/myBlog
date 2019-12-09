@@ -8,7 +8,9 @@
         "product": "set NODE_ENV=production&&node ./bin/www",
         "pm2": "pm2 start pm2.json",
         "pm2:dev": "pm2 start pm2.json --env dev",
-        "syncdb": "node ./syncDataBase.js "
+        "syncdb": "node ./syncDataBase.js ",
+        "lint": "eslint utils/** --fix",
+        "format": "onchange 'utils/index.js' -- prettier --write {{changed}}"
     },
     "dependencies": {
         "body-parser": "^1.18.3",
@@ -28,9 +30,17 @@
         "uuid": "^3.3.2"
     },
     "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.10.0",
+        "@typescript-eslint/parser": "^2.10.0",
+        "babel-eslint": "^10.0.3",
+        "eslint": "^6.7.2",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-prettier": "^6.7.0",
+        "eslint-plugin-prettier": "^3.1.1",
         "file-stream-rotator": "^0.3.1",
         "minimist": "^1.2.0",
         "mysql": "^2.16.0",
+        "prettier": "^1.19.1",
         "validator": "^10.10.0"
     }
 }
