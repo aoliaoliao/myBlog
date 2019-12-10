@@ -6,5 +6,4 @@ const user = {
   self: 'user/self'
 }
 
-
 export default user

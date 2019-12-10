@@ -1,22 +1,21 @@
 import { getUserInfo } from '@/API'
 
 let state = {
-  user: {
-  }
+  user: {}
 }
 
 let mutations = {
-  setUserMsg( state, msg = {} ) {
-    state.user = Object.assign( state.user, msg )
+  setUserMsg(state, msg = {}) {
+    state.user = Object.assign(state.user, msg)
   }
 }
 
 let actions = {
-  getUserInfo( { commit }, param ) {
-    getUserInfo( param ).then( res => {
+  getUserInfo({ commit }, param) {
+    getUserInfo(param).then(res => {
       let { rt } = res
-      commit( 'setUserMsg', rt )
-    } )
+      commit('setUserMsg', rt)
+    })
   }
 }
 

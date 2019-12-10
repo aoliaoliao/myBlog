@@ -16,24 +16,24 @@ import '@/assets/styles/globalStyles.styl'
 import TheScroll from './components/TheScroll.vue'
 import errorImg from './assets/images/blog_default.jpg'
 
-Vue.component( TheScroll.name, TheScroll )
+Vue.component(TheScroll.name, TheScroll)
 Vue.prototype.$http = http
 Vue.prototype.$API = API
 
-Vue.use( vueLazy, {
+Vue.use(vueLazy, {
   preLoad: 1.1, // 预加载的宽高比
   error: errorImg, // 图片加载失败时使用的图片源
   loading: errorImg, // 图片加载的路径
-  attempt: 1, // 尝试加载次数
-} )
+  attempt: 1 // 尝试加载次数
+})
 
 /* eslint-disable no-new */
-new Vue( {
+new Vue({
   el: '#app',
   router,
   store,
   components: {
-    App,
+    App
   },
-  template: '<App/>',
-} )
+  template: '<App/>'
+})

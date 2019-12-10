@@ -20,52 +20,48 @@ import { addUser } from '@/API'
 import { encryptByMd5 } from '@/utils/tool'
 
 export default {
-  name: 'register',
-  data() {
-    return {
-      nickName: '',
-      password: '',
-      linkedEMail: '',
-      rules: {
-        nickName: [
-          { required: true, message: '请输入账号', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
-        ]
-
-      }
-    }
-  },
-  methods: {
-    register() {
-      addUser( {
-        nickName: this.nickName,
-        linkedEMail: this.linkedEMail,
-        password: encryptByMd5( this.password )
-      } ).then( ( { rt } ) => {
-        if ( rt.cd ) {
-          this.$router.push( '/home' )
-        }
-      } ).catch( _ => {
-        this.$notify( {
-          type: 'error',
-          message: '注册失败'
-        } )
-      } )
-    },
-    validatePsd2( rule, value, callback ) {
-      if ( value === '' ) {
-        callback( new Error( '请再次输入密码' ) )
-      } else if ( this.password !== value ) {
-        callback( new Error( '两次输入密码不一致' ) )
-      } else {
-        callback()
-      }
-    }
-  }
+	name: 'register',
+	data() {
+		return {
+			nickName: '',
+			password: '',
+			linkedEMail: '',
+			rules: {
+				nickName: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+				password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+			}
+		}
+	},
+	methods: {
+		register() {
+			addUser({
+				nickName: this.nickName,
+				linkedEMail: this.linkedEMail,
+				password: encryptByMd5(this.password)
+			})
+				.then(({ rt }) => {
+					if (rt.cd) {
+						this.$router.push('/home')
+					}
+				})
+				.catch(_ => {
+					this.$notify({
+						type: 'error',
+						message: '注册失败'
+					})
+				})
+		},
+		validatePsd2(rule, value, callback) {
+			if (value === '') {
+				callback(new Error('请再次输入密码'))
+			} else if (this.password !== value) {
+				callback(new Error('两次输入密码不一致'))
+			} else {
+				callback()
+			}
+		}
+	}
 }
 </script>
 
-<style lang="stylus" scoped>
-</style>
+<style lang="stylus" scoped></style>

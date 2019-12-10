@@ -1,28 +1,28 @@
 import { replaceRefreshToken } from '@/API'
 
 export const updateRefreshToken = () => {
-  const lastedLogin = localStorage.getItem( 'lasted_login' )
+  const lastedLogin = localStorage.getItem('lasted_login')
   let isUpdate = false
 
-  if ( lastedLogin ) {
-    const lastedLoginTimestamp = new Date( lastedLogin ).setHours( 0, 0, 0, 0 )
-    const now = new Date().setHours( 0, 0, 0, 0 )
+  if (lastedLogin) {
+    const lastedLoginTimestamp = new Date(lastedLogin).setHours(0, 0, 0, 0)
+    const now = new Date().setHours(0, 0, 0, 0)
     isUpdate = now - lastedLoginTimestamp > 0
   } else {
     isUpdate = true
   }
 
-  if ( isUpdate ) {
-    const token = localStorage.getItem( 'refresh_token' )
-    replaceRefreshToken( {
+  if (isUpdate) {
+    const token = localStorage.getItem('refresh_token')
+    replaceRefreshToken({
       refreshToken: token
-    } ).then( ( res = {} ) => {
+    }).then((res = {}) => {
       const { cd } = res
-      if ( cd === 1 ) {
-        localStorage.setItem( 'refresh_token', res.rt )
-        localStorage.setItem( 'lasted_login', Date.now() )
+      if (cd === 1) {
+        localStorage.setItem('refresh_token', res.rt)
+        localStorage.setItem('lasted_login', Date.now())
       }
-    } )
+    })
   }
 }
 

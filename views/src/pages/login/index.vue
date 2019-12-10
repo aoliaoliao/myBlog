@@ -9,29 +9,29 @@
 import AppLogin from './AppLogin'
 
 export default {
-  name: 'login-index',
-  components: {
-    AppLogin
-  }
+	name: 'login-index',
+	components: {
+		AppLogin
+	}
 }
 </script>
 
 <style lang="stylus" scoped>
-@import '~styles/variable'
+@import '~styles/variable';
 
-.login-index
-  height 100%
-  background $white
-  .title
-    margin 100px 0 20px
-    font-size 24px
-    text-align center
-  .login-wrap
-    width 80%
-    margin-left 10%
+.login-index {
+	height: 100%;
+	background: $white;
 
+	.title {
+		margin: 100px 0 20px;
+		font-size: 24px;
+		text-align: center;
+	}
 
-
-
-
+	.login-wrap {
+		width: 80%;
+		margin-left: 10%;
+	}
+}
 </style>
