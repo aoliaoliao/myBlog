@@ -41,7 +41,7 @@ const routes = [
         meta: {
           keepAlive: true
         },
-        component: () => import('../pages/my/Index')
+        component: () => import('../pages/my/index')
       }
     ]
   },
