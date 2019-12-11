@@ -10,21 +10,21 @@ export default {
       default: 0
     }
   },
-  data () {
+  data() {
     return {
       width: 50,
       height: 80
     }
   },
   computed: {
-    distance () {
+    distance() {
       return Math.max(0, Math.min(this.y * this.ratio, this.maxDistance))
     },
-    style () {
+    style() {
       return `width:${this.width / this.ratio}px;height:${this.height / this.ratio}px`
     }
   },
-  created () {
+  created() {
     this.ratio = window.devicePixelRatio
     this.width *= this.ratio
     this.height *= this.ratio
@@ -42,11 +42,11 @@ export default {
       y: this.initCenterY
     }
   },
-  mounted () {
+  mounted() {
     this._draw()
   },
   methods: {
-    _draw () {
+    _draw() {
       const bubble = this.$refs.bubble
       let ctx = bubble.getContext('2d')
       ctx.clearRect(0, 0, bubble.width, bubble.height)
@@ -55,7 +55,7 @@ export default {
 
       this._drawArrow(ctx)
     },
-    _drawBubble (ctx) {
+    _drawBubble(ctx) {
       ctx.save()
       ctx.beginPath()
 
@@ -105,7 +105,7 @@ export default {
       ctx.stroke()
       ctx.restore()
     },
-    _drawArrow (ctx) {
+    _drawArrow(ctx) {
       ctx.save()
       ctx.beginPath()
 
@@ -113,15 +113,28 @@ export default {
       const arrowRadius = this.initArrowRadius - (this.initArrowRadius - this.minArrowRadius) * rate
 
       // 画内圆
-      ctx.arc(this.headCenter.x, this.headCenter.y, arrowRadius - (this.arrowWidth - rate), -Math.PI / 2, 0, true)
+      ctx.arc(
+        this.headCenter.x,
+        this.headCenter.y,
+        arrowRadius - (this.arrowWidth - rate),
+        -Math.PI / 2,
+        0,
+        true
+      )
 
       // 画外圆
-      ctx.arc(this.headCenter.x, this.headCenter.y, arrowRadius, 0, Math.PI * 3 / 2, false)
+      ctx.arc(this.headCenter.x, this.headCenter.y, arrowRadius, 0, (Math.PI * 3) / 2, false)
 
       ctx.lineTo(this.headCenter.x, this.headCenter.y - arrowRadius - this.arrowWidth / 2 + rate)
-      ctx.lineTo(this.headCenter.x + this.arrowWidth * 2 - rate * 2, this.headCenter.y - arrowRadius + this.arrowWidth / 2)
+      ctx.lineTo(
+        this.headCenter.x + this.arrowWidth * 2 - rate * 2,
+        this.headCenter.y - arrowRadius + this.arrowWidth / 2
+      )
 
-      ctx.lineTo(this.headCenter.x, this.headCenter.y - arrowRadius + this.arrowWidth * 3 / 2 - rate)
+      ctx.lineTo(
+        this.headCenter.x,
+        this.headCenter.y - arrowRadius + (this.arrowWidth * 3) / 2 - rate
+      )
 
       ctx.fillStyle = 'rgb(255,255,255)'
       ctx.fill()
@@ -131,7 +144,7 @@ export default {
     }
   },
   watch: {
-    y () {
+    y() {
       this._draw()
     }
   }

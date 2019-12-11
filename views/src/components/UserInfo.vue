@@ -18,28 +18,28 @@ import TheHeader from './TheHeader'
 const { mapState, mapActions } = createNamespacedHelpers('user')
 
 export default {
-	name: 'user-info',
-	data() {
-		return {}
-	},
-	components: {
-		TheHeader
-	},
-	computed: {
-		...mapState({
-			avatar: state => state.avatar,
-			signature: state => state.signature
-		}),
-		userAvatar() {
-			return this.avatar || '/static/images/user_avatar.jpg'
-		}
-	},
-	created() {
-		this.getUserInfo()
-	},
-	methods: {
-		...mapActions(['getUserInfo'])
-	}
+  name: 'user-info',
+  data() {
+    return {}
+  },
+  components: {
+    TheHeader
+  },
+  computed: {
+    ...mapState({
+      avatar: state => state.avatar,
+      signature: state => state.signature
+    }),
+    userAvatar() {
+      return this.avatar || '/static/images/user_avatar.jpg'
+    }
+  },
+  created() {
+    this.getUserInfo()
+  },
+  methods: {
+    ...mapActions(['getUserInfo'])
+  }
 }
 </script>
 

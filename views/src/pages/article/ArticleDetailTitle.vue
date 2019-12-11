@@ -10,25 +10,25 @@
 
 <script>
 export default {
-	name: 'article-detail-title',
-	props: {
-		title: {
-			type: Object,
-			default: {
-				articleTitle: '',
-				articleAuthor: '',
-				articleDate: ''
-			},
-			descript: '文章标题的各种信息'
-		}
-	},
-	components: {},
-	data() {
-		return {}
-	},
-	computed: {},
-	created() {},
-	methods: {}
+  name: 'article-detail-title',
+  props: {
+    title: {
+      type: Object,
+      default: () => ({
+        articleTitle: '',
+        articleAuthor: '',
+        articleDate: ''
+      }),
+      descript: '文章标题的各种信息'
+    }
+  },
+  components: {},
+  data() {
+    return {}
+  },
+  computed: {},
+  created() {},
+  methods: {}
 }
 </script>
 

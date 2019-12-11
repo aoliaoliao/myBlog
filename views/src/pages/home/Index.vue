@@ -52,76 +52,76 @@
 import ThePageTitle from '@/components/ThePageTitle'
 
 export default {
-	name: 'home',
-	components: {
-		ThePageTitle
-	},
-	computed: {
-		routerPath() {
-			return this.$route.path
-		},
-		hasHeader() {
-			if (['/home/my'].includes(this.routerPath)) {
-				return false
-			}
-			return true
-		},
-		hasCreateMoment() {
-			if (['/home/moments'].includes(this.routerPath)) {
-				return true
-			}
-			return false
-		},
-		title() {
-			let title = ''
-			this.tabPanes.some(v => {
-				let equire = v.link === this.routerPath
-				equire ? (title = v.label) : ''
-				return equire
-			})
-			return title
-		}
-	},
-	data() {
-		return {
-			transtionName: 'slide-left',
-			tabPanes: [
-				{
-					icon: 'article',
-					label: '文章',
-					link: '/home/articles'
-				},
-				{
-					icon: 'moment',
-					label: '动态',
-					link: '/home/moments'
-				},
-				{
-					icon: 'my',
-					label: '我的',
-					link: '/home/my'
-				}
-			]
-		}
-	},
-	beforeRouteUpdate(to, from, next) {
-		let paths = this.tabPanes.map(v => v.link)
-		let toIndex = paths.indexOf(to.path)
-		let fromIndex = paths.indexOf(from.path)
-		if (toIndex < fromIndex) {
-			this.transtionName = 'slide-right'
-		} else if (toIndex > fromIndex) {
-			this.transtionName = 'slide-left'
-		} else {
-			this.transtionName = ''
-		}
-		next()
-	},
-	methods: {
-		goCreateMoment() {
-			this.$router.push('/publish/moment')
-		}
-	}
+  name: 'home',
+  components: {
+    ThePageTitle
+  },
+  computed: {
+    routerPath() {
+      return this.$route.path
+    },
+    hasHeader() {
+      if (['/home/my'].includes(this.routerPath)) {
+        return false
+      }
+      return true
+    },
+    hasCreateMoment() {
+      if (['/home/moments'].includes(this.routerPath)) {
+        return true
+      }
+      return false
+    },
+    title() {
+      let title = ''
+      this.tabPanes.some(v => {
+        let equire = v.link === this.routerPath
+        equire ? (title = v.label) : ''
+        return equire
+      })
+      return title
+    }
+  },
+  data() {
+    return {
+      transtionName: 'slide-left',
+      tabPanes: [
+        {
+          icon: 'article',
+          label: '文章',
+          link: '/home/articles'
+        },
+        {
+          icon: 'moment',
+          label: '动态',
+          link: '/home/moments'
+        },
+        {
+          icon: 'my',
+          label: '我的',
+          link: '/home/my'
+        }
+      ]
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    let paths = this.tabPanes.map(v => v.link)
+    let toIndex = paths.indexOf(to.path)
+    let fromIndex = paths.indexOf(from.path)
+    if (toIndex < fromIndex) {
+      this.transtionName = 'slide-right'
+    } else if (toIndex > fromIndex) {
+      this.transtionName = 'slide-left'
+    } else {
+      this.transtionName = ''
+    }
+    next()
+  },
+  methods: {
+    goCreateMoment() {
+      this.$router.push('/publish/moment')
+    }
+  }
 }
 </script>
 

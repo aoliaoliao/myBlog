@@ -26,94 +26,94 @@ import { createComments } from '@/API'
 import CommentInput from '@/components/comments/commentInput'
 
 export default {
-	name: 'comment-create',
-	props: {
-		articleId: {
-			type: String,
-			default: '',
-			descipe: '评论所属的文章ID'
-		},
-		parent: {
-			type: Object,
-			default: () => {},
-			descipe: '评论的父级评论'
-		}
-	},
-	data() {
-		return {
-			text: '',
-			isShowInput: false,
-			likeCount: 0,
-			commentCount: 0
-		}
-	},
-	created() {},
-	components: {
-		CommentInput
-	},
-	methods: {
-		formatParam() {
-			const param = {}
-			param.text = this.text
-			this.articleId ? (param.articleId = this.articleId) : ''
-			this.parent && this.parent.id ? (param.parentCommentId = this.parent.id) : ''
-			return param
-		},
-		submit(text) {
-			this.text = text
-			if (this.text === '') {
-				return
-			}
-			let o = this.formatParam()
+  name: 'comment-create',
+  props: {
+    articleId: {
+      type: String,
+      default: '',
+      descipe: '评论所属的文章ID'
+    },
+    parent: {
+      type: Object,
+      default: () => {},
+      descipe: '评论的父级评论'
+    }
+  },
+  data() {
+    return {
+      text: '',
+      isShowInput: false,
+      likeCount: 0,
+      commentCount: 0
+    }
+  },
+  created() {},
+  components: {
+    CommentInput
+  },
+  methods: {
+    formatParam() {
+      const param = {}
+      param.text = this.text
+      this.articleId ? (param.articleId = this.articleId) : ''
+      this.parent && this.parent.id ? (param.parentCommentId = this.parent.id) : ''
+      return param
+    },
+    submit(text) {
+      this.text = text
+      if (this.text === '') {
+        return
+      }
+      let o = this.formatParam()
 
-			createComments(o)
-				.then(res => {
-					if (res.cd) {
-						this.showToast('发表成功')
-						this.isShowInput = false
-						this.$emit('submit', this.formatCurrentParam(this.text))
-					} else {
-						this.showToast('发表失败')
-					}
-				})
-				.catch(err => {
-					this.showToast('发表失败')
-				})
-		},
+      createComments(o)
+        .then(res => {
+          if (res.cd) {
+            this.showToast('发表成功')
+            this.isShowInput = false
+            this.$emit('submit', this.formatCurrentParam(this.text))
+          } else {
+            this.showToast('发表失败')
+          }
+        })
+        .catch(err => {
+          this.showToast('发表失败')
+        })
+    },
 
-		formatCurrentParam(text) {
-			const comment = {
-				text,
-				userName: this.$store.state.userName,
-				createdAt: Date.now()
-			}
-			if (Object.keys(this.parent).length > 0) {
-				const { userId, userName } = this.parent
-				Object.assign(comment, { parentCommentUserId: userId, parentCommentUserName: userName })
-			}
-			return comment
-		},
+    formatCurrentParam(text) {
+      const comment = {
+        text,
+        userName: this.$store.state.userName,
+        createdAt: Date.now()
+      }
+      if (Object.keys(this.parent).length > 0) {
+        const { userId, userName } = this.parent
+        Object.assign(comment, { parentCommentUserId: userId, parentCommentUserName: userName })
+      }
+      return comment
+    },
 
-		showToast(message) {
-			this.$toast({
-				message,
-				position: 'middle',
-				duration: 1000
-			})
-		},
-		showCommentInput() {
-			this.isShowInput = true
-		},
-		// 获取文章被点赞和评论的数量
-		getSocialStatus() {
-			if (!this.articleId) {
-				return
-			}
-			// TODO:
-		},
-		// 对文章点赞
-		addLikes() {}
-	}
+    showToast(message) {
+      this.$toast({
+        message,
+        position: 'middle',
+        duration: 1000
+      })
+    },
+    showCommentInput() {
+      this.isShowInput = true
+    },
+    // 获取文章被点赞和评论的数量
+    getSocialStatus() {
+      if (!this.articleId) {
+        return
+      }
+      // TODO:
+    },
+    // 对文章点赞
+    addLikes() {}
+  }
 }
 </script>
 
@@ -168,4 +168,3 @@ export default {
 	height: 25px;
 }
 </style>
-

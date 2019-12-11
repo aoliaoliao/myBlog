@@ -14,29 +14,29 @@
 
 <script>
 export default {
-	name: 'the-file-btn',
-	props: {
-		accept: {
-			type: String,
-			default: '',
-			descript: '上传文件的限制类型, 逗号分隔的 MIME 类型字符串'
-		},
-		multiple: {
-			type: Boolean,
-			default: false,
-			descript: '是否允许多选'
-		}
-	},
-	data() {
-		return {}
-	},
-	created() {},
-	methods: {
-		selectedFile(ev) {
-			this.$emit('change', ev)
-			ev.target.value = ''
-		}
-	}
+  name: 'the-file-btn',
+  props: {
+    accept: {
+      type: String,
+      default: '',
+      descript: '上传文件的限制类型, 逗号分隔的 MIME 类型字符串'
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
+      descript: '是否允许多选'
+    }
+  },
+  data() {
+    return {}
+  },
+  created() {},
+  methods: {
+    selectedFile(ev) {
+      this.$emit('change', ev)
+      ev.target.value = ''
+    }
+  }
 }
 </script>
 
@@ -55,4 +55,3 @@ export default {
 	}
 }
 </style>
-

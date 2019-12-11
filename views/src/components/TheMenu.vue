@@ -14,28 +14,33 @@
 
 <script>
 export default {
-	name: 'TheMenu',
-	data() {
-		return {
-			isShowItems: false,
-			menus: [{ name: '主页', path: '' }, { name: '关于', path: '' }, { name: '标签', path: '' }, { name: '登录', path: '/login' }]
-		}
-	},
-	created() {
-		document.removeEventListener('click', this.hideItems)
-		document.addEventListener('click', this.hideItems)
-	},
-	methods: {
-		changeItems() {
-			this.isShowItems = !this.isShowItems
-		},
-		showItems() {
-			this.isShowItems = true
-		},
-		hideItems() {
-			this.isShowItems = false
-		}
-	}
+  name: 'TheMenu',
+  data() {
+    return {
+      isShowItems: false,
+      menus: [
+        { name: '主页', path: '' },
+        { name: '关于', path: '' },
+        { name: '标签', path: '' },
+        { name: '登录', path: '/login' }
+      ]
+    }
+  },
+  created() {
+    document.removeEventListener('click', this.hideItems)
+    document.addEventListener('click', this.hideItems)
+  },
+  methods: {
+    changeItems() {
+      this.isShowItems = !this.isShowItems
+    },
+    showItems() {
+      this.isShowItems = true
+    },
+    hideItems() {
+      this.isShowItems = false
+    }
+  }
 }
 </script>
 

@@ -14,32 +14,32 @@
 import { mapMutations } from 'vuex'
 
 export default {
-	name: 'App',
-	created() {
-		const notUpdateRoute = ['/login']
-		if (!notUpdateRoute.includes(this.$route.path)) {
-			// updateRefreshToken()
-			// 获取登陆用户信息
-			this.$http.get(this.$API.user.self).then(res => {
-				if (res.cd) {
-					this.setUserMsg(res.rt)
-				}
-			})
-		}
-	},
-	methods: {
-		...mapMutations('user', ['setUserMsg'])
-	}
+  name: 'App',
+  created() {
+    const notUpdateRoute = ['/login']
+    if (!notUpdateRoute.includes(this.$route.path)) {
+      // updateRefreshToken()
+      // 获取登陆用户信息
+      this.$http.get(this.$API.user.self).then(res => {
+        if (res.cd) {
+          this.setUserMsg(res.rt)
+        }
+      })
+    }
+  },
+  methods: {
+    ...mapMutations('user', ['setUserMsg'])
+  }
 }
 </script>
 
 <style>
 #app {
-	height: 100%;
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	color: #2c3e50;
-	background-color: #fff;
+  height: 100%;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  background-color: #fff;
 }
 </style>

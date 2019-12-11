@@ -11,18 +11,18 @@
 
 <script>
 export default {
-	name: 'comment-item',
-	props: {
-		comment: {
-			type: Object,
-			descript: '评论的内容'
-		}
-	},
-	data() {
-		return {}
-	},
-	components: {},
-	methods: {}
+  name: 'comment-item',
+  props: {
+    comment: {
+      type: Object,
+      descript: '评论的内容'
+    }
+  },
+  data() {
+    return {}
+  },
+  components: {},
+  methods: {}
 }
 </script>
 
@@ -49,4 +49,3 @@ export default {
 	}
 }
 </style>
-

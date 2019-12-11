@@ -38,42 +38,42 @@
 import ThePageTitle from '@/components/ThePageTitle'
 
 export default {
-	name: 'the-tab-page-frame',
-	props: {
-		hasHeader: {
-			type: Boolean,
-			default: true
-		}
-	},
-	components: {
-		ThePageTitle
-	},
-	computed: {
-		routerPath() {
-			return this.$route.path
-		}
-	},
-	data() {
-		return {
-			tabPanes: [
-				{
-					icon: 'article',
-					label: '文章',
-					link: '/articles'
-				},
-				{
-					icon: 'moment',
-					label: '动态',
-					link: '/moments'
-				},
-				{
-					icon: 'my',
-					label: '我的',
-					link: '/my'
-				}
-			]
-		}
-	}
+  name: 'the-tab-page-frame',
+  props: {
+    hasHeader: {
+      type: Boolean,
+      default: true
+    }
+  },
+  components: {
+    ThePageTitle
+  },
+  computed: {
+    routerPath() {
+      return this.$route.path
+    }
+  },
+  data() {
+    return {
+      tabPanes: [
+        {
+          icon: 'article',
+          label: '文章',
+          link: '/articles'
+        },
+        {
+          icon: 'moment',
+          label: '动态',
+          link: '/moments'
+        },
+        {
+          icon: 'my',
+          label: '我的',
+          link: '/my'
+        }
+      ]
+    }
+  }
 }
 </script>
 

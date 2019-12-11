@@ -9,10 +9,10 @@
 import AppLogin from './AppLogin'
 
 export default {
-	name: 'login-index',
-	components: {
-		AppLogin
-	}
+  name: 'login-index',
+  components: {
+    AppLogin
+  }
 }
 </script>
 

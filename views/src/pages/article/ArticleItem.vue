@@ -20,27 +20,27 @@
 import { formatMyDate } from '@/utils/tool'
 
 export default {
-	props: {
-		item: {
-			type: Object,
-			default: () => {}
-		}
-	},
-	data() {
-		return {}
-	},
-	computed: {
-		updateTime() {
-			let { updatedAt } = this.item
-			return formatMyDate(updatedAt)
-		}
-	},
-	methods: {
-		goDetail() {
-			// this.$router.push()
-			this.$router.push(`/article/${this.item.id}`)
-		}
-	}
+  props: {
+    item: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data() {
+    return {}
+  },
+  computed: {
+    updateTime() {
+      let { updatedAt } = this.item
+      return formatMyDate(updatedAt)
+    }
+  },
+  methods: {
+    goDetail() {
+      // this.$router.push()
+      this.$router.push(`/article/${this.item.id}`)
+    }
+  }
 }
 </script>
 

@@ -5,15 +5,16 @@
 </template>
 <script type="text/ecmascript-6">
 import Loading from '@/assets/images/loading.gif'
+
 const COMPONENT_NAME = 'loading'
 
 export default {
-	name: COMPONENT_NAME,
-	data() {
-		return {
-			Loading
-		}
-	}
+  name: COMPONENT_NAME,
+  data() {
+    return {
+      Loading
+    }
+  }
 }
 </script>
 <style lang="stylus" scoped >

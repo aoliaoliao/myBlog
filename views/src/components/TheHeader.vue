@@ -44,17 +44,17 @@
 
 <script>
 export default {
-	name: 'the-header',
-	props: {
-		title: {
-			type: String,
-			default: ''
-		}
-	},
-	methods: {
-		back() {
-			this.$router.back()
-		}
-	}
+  name: 'the-header',
+  props: {
+    title: {
+      type: String,
+      default: ''
+    }
+  },
+  methods: {
+    back() {
+      this.$router.back()
+    }
+  }
 }
 </script>

@@ -11,7 +11,7 @@ import App from './App'
 
 import './libs/vuxUI'
 import './libs/elementUI'
-import '@/assets/font/iconfont.js'
+import '@/assets/font/iconfont'
 import '@/assets/styles/globalStyles.styl'
 import TheScroll from './components/TheScroll.vue'
 import errorImg from './assets/images/blog_default.jpg'

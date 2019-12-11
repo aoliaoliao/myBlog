@@ -13,56 +13,56 @@
 </template>
 
 <script>
-const maxImgCount = 9
-const maxImgSize = 3 * 1024 * 1024
-
 import TheFileBtn from '@/components/TheFileBtn'
 
+const maxImgCount = 9
+// const maxImgSize = 3 * 1024 * 1024
+
 export default {
-	name: 'create-moment',
-	components: {
-		TheFileBtn
-	},
-	data() {
-		return {
-			momentText: '',
-			imgList: [],
-			fileTypes: ['image/jpeg', 'image/pjpeg', 'image/png']
-		}
-	},
-	computed: {
-		showImgBtn() {
-			return this.imgList.length < maxImgCount
-		}
-	},
-	created() {},
-	methods: {
-		formatImg(img) {
-			return ''
-		},
-		validateFile(type) {
-			return this.fileTypes.includes(type)
-		},
-		changeImageList(ev) {
-			let inValidate = []
-			let files = ev.target.files
-			files.forEach(file => {
-				if (this.validateFile(file.type)) {
-					let img = this.formatImg(file)
-				} else {
-					inValidate.push(file.name)
-				}
-			})
-			if (this.inValidate.length > 0) {
-				this.$toast({
-					message: `${this.inValidate.join(',')}不符合格式`,
-					position: 'bottom',
-					duration: 5000
-				})
-			}
-		},
-		publish() {}
-	}
+  name: 'create-moment',
+  components: {
+    TheFileBtn
+  },
+  data() {
+    return {
+      momentText: '',
+      imgList: [],
+      fileTypes: ['image/jpeg', 'image/pjpeg', 'image/png']
+    }
+  },
+  computed: {
+    showImgBtn() {
+      return this.imgList.length < maxImgCount
+    }
+  },
+  created() {},
+  methods: {
+    formatImg(img) {
+      return ''
+    },
+    validateFile(type) {
+      return this.fileTypes.includes(type)
+    },
+    changeImageList(ev) {
+      let inValidate = []
+      let files = ev.target.files
+      files.forEach(file => {
+        if (this.validateFile(file.type)) {
+          this.formatImg(file)
+        } else {
+          inValidate.push(file.name)
+        }
+      })
+      if (this.inValidate.length > 0) {
+        this.$toast({
+          message: `${this.inValidate.join(',')}不符合格式`,
+          position: 'bottom',
+          duration: 5000
+        })
+      }
+    },
+    publish() {}
+  }
 }
 </script>
 

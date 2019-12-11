@@ -56,123 +56,117 @@ import { createMoment } from '@/API'
 import { maxImgCount, maxMomentTextLength } from './const'
 
 export default {
-	name: 'create-moment',
-	components: {
-		TheFileBtn,
-		TheHeader
-	},
-	data() {
-		return {
-			moment: {
-				text: '',
-				imgs: [],
-				isPrivate: false
-			},
-			showImgs: [],
-			componentName: '',
-			maxTextLength: maxMomentTextLength,
-			fileTypes: 'image/jpeg,image/pjpeg,image/png'
-		}
-	},
-	computed: {
-		...mapState({
-			userId: state => state.userId
-		}),
-		showImgBtn() {
-			return this.moment.imgs.length < maxImgCount
-		},
-		previewImages() {
-			return this.showImgs.map(src => {
-				return {
-					src
-				}
-			})
-		}
-	},
-	created() {
-		console.log('createMoment created')
-	},
-	activated() {
-		console.log('createMoment activated')
-	},
-	methods: {
-		formatImg(img) {
-			// if ( img.size > maxImgSize ) return
+  name: 'create-moment',
+  components: {
+    TheFileBtn,
+    TheHeader
+  },
+  data() {
+    return {
+      moment: {
+        text: '',
+        imgs: [],
+        isPrivate: false
+      },
+      showImgs: [],
+      componentName: '',
+      maxTextLength: maxMomentTextLength,
+      fileTypes: 'image/jpeg,image/pjpeg,image/png'
+    }
+  },
+  computed: {
+    ...mapState({
+      userId: state => state.userId
+    }),
+    showImgBtn() {
+      return this.moment.imgs.length < maxImgCount
+    },
+    previewImages() {
+      return this.showImgs.map(src => {
+        return {
+          src
+        }
+      })
+    }
+  },
+  methods: {
+    formatImg(img) {
+      // if ( img.size > maxImgSize ) return
 
-			return new Promise(function(resolve, reject) {
-				var reader = new FileReader()
-				// reader.readAsDataURL( img )
-				reader.readAsBinaryString(img)
-				reader.onloadend = e => {
-					resolve(e.target.result)
-				}
-			})
-		},
-		changeImageList(ev) {
-			const files = Array.from(ev.target.files)
-			if (files.length > maxImgCount) {
-				this.$toast({
-					message: `最多允许上传${maxImgCount}张图片`,
-					position: 'bottom',
-					duration: 2000
-				})
-				return
-			}
-			let inValidate = []
-			for (let i = 0, len = files.length; i < len; i++) {
-				let v = files[i]
-				if (this.fileTypes.split(',').indexOf(v.type) === -1) {
-					let name = v.name
-					inValidate.push(name)
-					continue
-				}
-				this.moment.imgs.push(v)
-				this.showImgs.push(URL.createObjectURL(v))
-			}
-			if (inValidate.length > 0) {
-				this.$toast({
-					message: `${inValidate.join(' ')}不符合格式`,
-					position: 'bottom',
-					duration: 5000
-				})
-			}
-		},
-		showImg(index) {
-			this.$refs.previewer.show(index)
-		},
-		publish() {
-			let param = new FormData()
-			for (const [key, value] of Object.entries(this.moment)) {
-				if (Array.isArray(value)) {
-					value.forEach(v => {
-						param.append(key, v)
-					})
-				} else {
-					param.append(key, value)
-				}
-			}
-			param.append('userId', this.userId)
-			createMoment(param)
-				.then(res => {
-					if (res.cd) {
-						this.$router.back()
-					} else {
-						this.$vux.toast.show({
-							text: res.rt || '发表失败，请重试',
-							type: 'warn',
-							time: 2000
-						})
-					}
-				})
-				.catch(err => {
-					this.$vux.toast.show({
-						text: res.rt || '发表失败，请重试',
-						type: 'warn',
-						time: 2000
-					})
-				})
-		}
-	}
+      return new Promise(function(resolve, reject) {
+        var reader = new FileReader()
+        // reader.readAsDataURL( img )
+        reader.readAsBinaryString(img)
+        reader.onloadend = e => {
+          resolve(e.target.result)
+        }
+      })
+    },
+    changeImageList(ev) {
+      const files = Array.from(ev.target.files)
+      if (files.length > maxImgCount) {
+        this.$toast({
+          message: `最多允许上传${maxImgCount}张图片`,
+          position: 'bottom',
+          duration: 2000
+        })
+        return
+      }
+      let inValidate = []
+      for (let i = 0, len = files.length; i < len; i++) {
+        let v = files[i]
+        if (this.fileTypes.split(',').indexOf(v.type) === -1) {
+          let name = v.name
+          inValidate.push(name)
+          continue
+        }
+        this.moment.imgs.push(v)
+        this.showImgs.push(URL.createObjectURL(v))
+      }
+      if (inValidate.length > 0) {
+        this.$toast({
+          message: `${inValidate.join(' ')}不符合格式`,
+          position: 'bottom',
+          duration: 5000
+        })
+      }
+    },
+    showImg(index) {
+      this.$refs.previewer.show(index)
+    },
+    publish() {
+      let param = new FormData()
+      for (const [key, value] of Object.entries(this.moment)) {
+        if (Array.isArray(value)) {
+          value.forEach(v => {
+            param.append(key, v)
+          })
+        } else {
+          param.append(key, value)
+        }
+      }
+      param.append('userId', this.userId)
+      createMoment(param)
+        .then(res => {
+          if (res.cd) {
+            this.$router.back()
+          } else {
+            this.$vux.toast.show({
+              text: res.rt || '发表失败，请重试',
+              type: 'warn',
+              time: 2000
+            })
+          }
+        })
+        .catch(err => {
+          this.$vux.toast.show({
+            text: err.rt || '发表失败，请重试',
+            type: 'warn',
+            time: 2000
+          })
+        })
+    }
+  }
 }
 </script>
 
@@ -246,4 +240,3 @@ imgSize = 115px;
 	}
 }
 </style>
-

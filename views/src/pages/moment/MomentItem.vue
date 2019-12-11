@@ -63,103 +63,103 @@ import { likeMoment } from '@/API'
 import { formatMyDate } from '@/utils/tool'
 
 export default {
-	name: 'moment-item',
-	props: {
-		moment: {
-			type: Object,
-			default: () => ({})
-		}
-	},
-	components: {},
-	data() {
-		return {
-			item: this.moment,
-			previewImages: []
-		}
-	},
-	computed: {
-		user() {
-			return this.item.momentAuthor || {}
-		},
-		content() {
-			let { text = '', imgs = [], video = '' } = this.item
-			return {
-				text,
-				imgs,
-				video
-			}
-		},
+  name: 'moment-item',
+  props: {
+    moment: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  components: {},
+  data() {
+    return {
+      item: this.moment,
+      previewImages: []
+    }
+  },
+  computed: {
+    user() {
+      return this.item.momentAuthor || {}
+    },
+    content() {
+      let { text = '', imgs = [], video = '' } = this.item
+      return {
+        text,
+        imgs,
+        video
+      }
+    },
 
-		comments() {
-			return this.item.momentComments || []
-		},
-		createDate() {
-			let createDate = this.item.updatedAt
-			let date = new Date(createDate).getTime()
-			let now = Date.now()
-			const period = now - date
+    comments() {
+      return this.item.momentComments || []
+    },
+    createDate() {
+      let createDate = this.item.updatedAt
+      let date = new Date(createDate).getTime()
+      let now = Date.now()
+      const period = now - date
 
-			if (period < 1000 * 60 * 3) {
-				return '刚刚'
-			} else if (period < 1000 * 60 * 60) {
-				return Math.floor(period / 1000 / 60) + '分钟前'
-			} else if (period < 1000 * 60 * 60 * 24) {
-				return Math.floor(period / 1000 / 60 / 60) + '小时前'
-			} else if (period < 1000 * 60 * 60 * 24 * 30) {
-				return Math.floor(period / 1000 / 60 / 60 / 24) + '天前'
-			} else {
-				return formatMyDate(date)
-			}
-		},
-		commentCount() {
-			return this.comments.length || 0
-		},
-		likeCount() {
-			const { momentLikes = {} } = this.item
-			return momentLikes.likes || 0
-		},
-		isMyLike() {
-			const { momentLikes = {} } = this.item
-			return !!momentLikes.myLike
-		}
-	},
-	created() {},
-	methods: {
-		toggleMomentLike() {
-			this.likeOneMoment()
-		},
-		likeOneMoment() {
-			likeMoment({
-				momentId: this.item.id
-			}).then(res => {})
-		},
-		unlikeOneMoment() {},
-		showPreviewImg(ev) {
-			let imgs = []
-			let index = 0
-			const { target = {} } = ev
-			const lazy = target.getAttribute('lazy')
+      if (period < 1000 * 60 * 3) {
+        return '刚刚'
+      } else if (period < 1000 * 60 * 60) {
+        return Math.floor(period / 1000 / 60) + '分钟前'
+      } else if (period < 1000 * 60 * 60 * 24) {
+        return Math.floor(period / 1000 / 60 / 60) + '小时前'
+      } else if (period < 1000 * 60 * 60 * 24 * 30) {
+        return Math.floor(period / 1000 / 60 / 60 / 24) + '天前'
+      } else {
+        return formatMyDate(date)
+      }
+    },
+    commentCount() {
+      return this.comments.length || 0
+    },
+    likeCount() {
+      const { momentLikes = {} } = this.item
+      return momentLikes.likes || 0
+    },
+    isMyLike() {
+      const { momentLikes = {} } = this.item
+      return !!momentLikes.myLike
+    }
+  },
+  created() {},
+  methods: {
+    toggleMomentLike() {
+      this.likeOneMoment()
+    },
+    likeOneMoment() {
+      likeMoment({
+        momentId: this.item.id
+      }).then(res => {})
+    },
+    unlikeOneMoment() {},
+    showPreviewImg(ev) {
+      let imgs = []
+      let index = 0
+      const { target = {} } = ev
+      const lazy = target.getAttribute('lazy')
 
-			if (lazy === 'error') {
-				imgs = [target.src]
-			} else {
-				imgs = this.content.imgs
-				index = parseInt(target.dataset.index)
-			}
+      if (lazy === 'error') {
+        imgs = [target.src]
+      } else {
+        imgs = this.content.imgs
+        index = parseInt(target.dataset.index)
+      }
 
-			this.previewImages = imgs.map(item => {
-				return {
-					src: item
-				}
-			})
-			this.$nextTick().then(res => {
-				this.$refs.previewer.show(index)
-			})
-		},
-		closePreivewer() {
-			this.previewImages = []
-		}
-	}
+      this.previewImages = imgs.map(item => {
+        return {
+          src: item
+        }
+      })
+      this.$nextTick().then(res => {
+        this.$refs.previewer.show(index)
+      })
+    },
+    closePreivewer() {
+      this.previewImages = []
+    }
+  }
 }
 </script>
 
@@ -299,4 +299,3 @@ export default {
 	}
 }
 </style>
-

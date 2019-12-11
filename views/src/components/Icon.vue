@@ -8,23 +8,23 @@
 
 <script>
 export default {
-	name: 'icon',
-	props: {
-		icon: {
-			type: String,
-			default: ''
-		}
-	},
-	computed: {
-		theIcon() {
-			return `#icon-${this.icon}`
-		}
-	},
-	methods: {
-		handleClick(evt) {
-			this.$emit('click', evt)
-		}
-	}
+  name: 'icon',
+  props: {
+    icon: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    theIcon() {
+      return `#icon-${this.icon}`
+    }
+  },
+  methods: {
+    handleClick(evt) {
+      this.$emit('click', evt)
+    }
+  }
 }
 </script>
 

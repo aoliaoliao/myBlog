@@ -96,175 +96,176 @@ import { mapState } from 'vuex'
 import { maxArticleSummaryLength, maxArticleTitleLength } from './const'
 
 export default {
-	name: 'create-article',
-	components: {
-		TheFileBtn,
-		TheHeader
-	},
-	data() {
-		return {
-			formData: {
-				name: '',
-				summary: '',
-				isPrivate: true,
-				isComment: true,
-				articleAddress: null,
-				summaryImage: null
-			},
-			articleMIME: '.md, .html, .htm',
-			imageMIME: 'image/jpeg,image/pjpeg,image/png',
-			fileName: '',
-			maxArticleSummaryLength: maxArticleSummaryLength,
-			maxArticleTitleLength: maxArticleTitleLength
-		}
-	},
-	computed: {
-		...mapState({
-			author: state => state.userId
-		}),
-		summaryImages() {
-			let img = this.formData.summaryImage
-			if (!img) {
-				return [{ src: '' }]
-			}
-			return [
-				{
-					src: URL.createObjectURL(img)
-				}
-			]
-		},
-		hasShowTable() {
-			return this.formData.summaryImage || this.formData.articleAddress
-		}
-	},
-	methods: {
-		togglePrivate() {
-			this.formData.isPrivate = !this.formData.isPrivate
-		},
-		toggleComment() {
-			this.formData.isComment = !this.formData.isComment
-		},
-		selectedArticle(ev) {
-			const file = Array.from(ev.target.files)[0]
-			if (!this.validateArticle(file)) {
-				this.formData.articleAddress = null
-				return
-			}
-			this.fileName = file.name
-			this.formData.articleAddress = file
-		},
-		selectedImage(ev) {
-			const file = Array.from(ev.target.files)[0]
-			if (!this.validateImage(file)) {
-				this.formData.summaryImage = null
-				return
-			}
-			this.formData.summaryImage = file
-		},
-		validateArticle(file = {}) {
-			let msg = ''
+  name: 'create-article',
+  components: {
+    TheFileBtn,
+    TheHeader
+  },
+  data() {
+    return {
+      formData: {
+        name: '',
+        summary: '',
+        isPrivate: true,
+        isComment: true,
+        articleAddress: null,
+        summaryImage: null
+      },
+      articleMIME: '.md, .html, .htm',
+      imageMIME: 'image/jpeg,image/pjpeg,image/png',
+      fileName: '',
+      maxArticleSummaryLength: maxArticleSummaryLength,
+      maxArticleTitleLength: maxArticleTitleLength
+    }
+  },
+  computed: {
+    ...mapState({
+      author: state => state.userId
+    }),
+    summaryImages() {
+      let img = this.formData.summaryImage
+      if (!img) {
+        return [{ src: '' }]
+      }
+      return [
+        {
+          src: URL.createObjectURL(img)
+        }
+      ]
+    },
+    hasShowTable() {
+      return this.formData.summaryImage || this.formData.articleAddress
+    }
+  },
+  methods: {
+    togglePrivate() {
+      this.formData.isPrivate = !this.formData.isPrivate
+    },
+    toggleComment() {
+      this.formData.isComment = !this.formData.isComment
+    },
+    selectedArticle(ev) {
+      const file = Array.from(ev.target.files)[0]
+      if (!this.validateArticle(file)) {
+        this.formData.articleAddress = null
+        return
+      }
+      this.fileName = file.name
+      this.formData.articleAddress = file
+    },
+    selectedImage(ev) {
+      const file = Array.from(ev.target.files)[0]
+      if (!this.validateImage(file)) {
+        this.formData.summaryImage = null
+        return
+      }
+      this.formData.summaryImage = file
+    },
+    validateArticle(file = {}) {
+      let msg = ''
 
-			if (!file) {
-				msg = '请选择要上传的文章'
-			} else if (!('text/html'.includes(file.type || 'none') || /\.*\.md$/gi.test(file.name))) {
-				msg = '仅支持HTML和MD文件'
-			} else {
-			}
-			if (msg.length) {
-				this.$toast({
-					message: msg,
-					position: 'center',
-					duration: 2000
-				})
-			}
+      if (!file) {
+        msg = '请选择要上传的文章'
+      } else if (!('text/html'.includes(file.type || 'none') || /\.*\.md$/gi.test(file.name))) {
+        msg = '仅支持HTML和MD文件'
+      }
+      if (msg.length) {
+        this.$toast({
+          message: msg,
+          position: 'center',
+          duration: 2000
+        })
+      }
 
-			return !msg.length
-		},
-		validateImage(file = {}) {
-			let msg = ''
-			const maxImage = 3 * 1024 * 1024
-			if (!file) {
-				msg = '请选择要上传的图片'
-			} else if (!this.imageMIME.includes(file.type)) {
-				msg = '请上传PNG，JPG或JPEG格式的图片'
-			} else if (file.size > maxImage) {
-				msg = '图片最大为10000'
-			} else {
-			}
-			if (msg.length > 0) {
-				this.$toast({
-					message: msg,
-					position: 'center',
-					duration: 2000
-				})
-			}
-			return !msg.length
-		},
-		validateName(name) {
-			let msg = ''
-			const maxName = maxArticleTitleLength
-			if (!name) {
-				msg = '文章标题不可为空'
-			} else if (name.length > maxName) {
-				msg = `文章标题最多为${maxName}字`
-			}
-			if (msg.length > 0) {
-				this.$toast({
-					message: msg,
-					position: 'center',
-					duration: 2000
-				})
-			}
-			return !msg.length
-		},
-		removeArticle() {
-			this.formData.articleAddress = null
-		},
-		removeImg() {
-			this.formData.summaryImage = null
-		},
-		publish() {
-			const { name, articleAddress, summaryImage } = this.formData
-			if (!(this.validateName(name) && this.validateArticle(articleAddress) && this.validateImage(summaryImage))) {
-				return
-			}
-			let param = new FormData()
-			param.append('author', this.author)
-			for (let [key, value] of Object.entries(this.formData)) {
-				if (['isPrivate', 'isComment'].includes(key)) {
-					value = +value
-				}
-				param.append(key, value)
-			}
+      return !msg.length
+    },
+    validateImage(file = {}) {
+      let msg = ''
+      const maxImage = 3 * 1024 * 1024
+      if (!file) {
+        msg = '请选择要上传的图片'
+      } else if (!this.imageMIME.includes(file.type)) {
+        msg = '请上传PNG，JPG或JPEG格式的图片'
+      } else if (file.size > maxImage) {
+        msg = '图片最大为10000'
+      }
+      if (msg.length > 0) {
+        this.$toast({
+          message: msg,
+          position: 'center',
+          duration: 2000
+        })
+      }
+      return !msg.length
+    },
+    validateName(name) {
+      let msg = ''
+      const maxName = maxArticleTitleLength
+      if (!name) {
+        msg = '文章标题不可为空'
+      } else if (name.length > maxName) {
+        msg = `文章标题最多为${maxName}字`
+      }
+      if (msg.length > 0) {
+        this.$toast({
+          message: msg,
+          position: 'center',
+          duration: 2000
+        })
+      }
+      return !msg.length
+    },
+    removeArticle() {
+      this.formData.articleAddress = null
+    },
+    removeImg() {
+      this.formData.summaryImage = null
+    },
+    publish() {
+      const { name, articleAddress, summaryImage } = this.formData
+      if (
+        !(
+          this.validateName(name) &&
+          this.validateArticle(articleAddress) &&
+          this.validateImage(summaryImage)
+        )
+      ) {
+        return
+      }
+      let param = new FormData()
+      param.append('author', this.author)
+      for (let [key, value] of Object.entries(this.formData)) {
+        if (['isPrivate', 'isComment'].includes(key)) {
+          value = +value
+        }
+        param.append(key, value)
+      }
 
-			createNewArticle(param)
-				.then(res => {
-					if (res.cd) {
-						this.$vux.toast.show({
-							text: res.rt || '新建成功',
-							time: 1000
-						})
-						this.$router.replace('/home/articles')
-					} else {
-						this.$vux.toast.show({
-							text: res.msg || '发表失败，请重试',
-							type: 'warn',
-							time: 1500
-						})
-					}
-
-					if (res.cd) {
-					}
-				})
-				.catch(err => {
-					this.$vux.toast.show({
-						text: '发表失败，请重试',
-						type: 'warn',
-						time: 1500
-					})
-				})
-		}
-	}
+      createNewArticle(param)
+        .then(res => {
+          if (res.cd) {
+            this.$vux.toast.show({
+              text: res.rt || '新建成功',
+              time: 1000
+            })
+            this.$router.replace('/home/articles')
+          } else {
+            this.$vux.toast.show({
+              text: res.msg || '发表失败，请重试',
+              type: 'warn',
+              time: 1500
+            })
+          }
+        })
+        .catch(err => {
+          this.$vux.toast.show({
+            text: '发表失败，请重试',
+            type: 'warn',
+            time: 1500
+          })
+        })
+    }
+  }
 }
 </script>
 
@@ -386,4 +387,3 @@ export default {
 	}
 }
 </style>
-

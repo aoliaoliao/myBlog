@@ -27,77 +27,77 @@ import MomentItem from './MomentItem'
 const refreshRouter = ['createMoment']
 
 export default {
-	name: 'moment-list',
-	components: {
-		MomentItem
-	},
-	data() {
-		return {
-			isOver: false,
-			list: [],
-			page: {
-				num: 10,
-				cur: 1
-			}
-		}
-	},
-	created() {
-		this.loadTop()
-	},
-	activated() {},
-	beforeRouteEnter(to, from, next) {
-		// 上一个路由如果是指定路由，则刷新滚动列表
-		next(vm => {
-			if (refreshRouter.includes(from.name)) {
-				vm.autoPullDownRefresh()
-			}
-		})
-	},
-	methods: {
-		autoPullDownRefresh() {
-			const theScroll = this.$refs['theScroll']
-			theScroll.autoPullDownRefresh()
-		},
-		loadBottom() {
-			if (this.isOver) {
-				return
-			}
-			this.page.cur = this.page.cur + 1
-			this.getData().then(res => {
-				this.list = [...this.list, ...res]
-			})
-		},
-		loadTop() {
-			this.page.cur = 1
-			this.getData().then(res => {
-				this.list = [...res]
-			})
-		},
-		getData() {
-			return getMomentList(this.formatParam())
-				.then(res => {
-					if (res.cd === 1) {
-						const { rt } = res
-						this.isOver = rt.end
-						return rt.list
-					} else {
-						this.isOver = true
-						return []
-					}
-				})
-				.catch(res => {
-					this.isOver = true
-					return []
-				})
-		},
-		formatParam() {
-			let { cur, num } = this.page
-			return {
-				num,
-				start: (cur - 1) * num
-			}
-		}
-	}
+  name: 'moment-list',
+  components: {
+    MomentItem
+  },
+  data() {
+    return {
+      isOver: false,
+      list: [],
+      page: {
+        num: 10,
+        cur: 1
+      }
+    }
+  },
+  created() {
+    this.loadTop()
+  },
+  activated() {},
+  beforeRouteEnter(to, from, next) {
+    // 上一个路由如果是指定路由，则刷新滚动列表
+    next(vm => {
+      if (refreshRouter.includes(from.name)) {
+        vm.autoPullDownRefresh()
+      }
+    })
+  },
+  methods: {
+    autoPullDownRefresh() {
+      const theScroll = this.$refs['theScroll']
+      theScroll.autoPullDownRefresh()
+    },
+    loadBottom() {
+      if (this.isOver) {
+        return
+      }
+      this.page.cur = this.page.cur + 1
+      this.getData().then(res => {
+        this.list = [...this.list, ...res]
+      })
+    },
+    loadTop() {
+      this.page.cur = 1
+      this.getData().then(res => {
+        this.list = [...res]
+      })
+    },
+    getData() {
+      return getMomentList(this.formatParam())
+        .then(res => {
+          if (res.cd === 1) {
+            const { rt } = res
+            this.isOver = rt.end
+            return rt.list
+          } else {
+            this.isOver = true
+            return []
+          }
+        })
+        .catch(res => {
+          this.isOver = true
+          return []
+        })
+    },
+    formatParam() {
+      let { cur, num } = this.page
+      return {
+        num,
+        start: (cur - 1) * num
+      }
+    }
+  }
 }
 </script>
 

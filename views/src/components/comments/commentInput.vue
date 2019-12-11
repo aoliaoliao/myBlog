@@ -13,46 +13,46 @@
 
 <script>
 export default {
-	props: {
-		value: {
-			type: Boolean,
-			default: false
-		}
-	},
-	data() {
-		return {
-			text: ''
-		}
-	},
-	computed: {
-		isShowInput: {
-			get() {
-				return this.value
-			},
-			set(v) {
-				this.$emit('input', v)
-			}
-		}
-	},
-	watch: {
-		isShowInput(nv) {
-			if (nv) {
-				this.$nextTick().then(() => {
-					let ref = this.$refs.textarea
-					let textarea = ref.$el.querySelector('textarea')
-					textarea.focus()
-				})
-			}
-		}
-	},
-	methods: {
-		submit() {
-			this.$emit('submit', this.text)
-		},
-		toggle() {
-			this.isShowInput = !this.isShowInput
-		}
-	}
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      text: ''
+    }
+  },
+  computed: {
+    isShowInput: {
+      get() {
+        return this.value
+      },
+      set(v) {
+        this.$emit('input', v)
+      }
+    }
+  },
+  watch: {
+    isShowInput(nv) {
+      if (nv) {
+        this.$nextTick().then(() => {
+          let ref = this.$refs.textarea
+          let textarea = ref.$el.querySelector('textarea')
+          textarea.focus()
+        })
+      }
+    }
+  },
+  methods: {
+    submit() {
+      this.$emit('submit', this.text)
+    },
+    toggle() {
+      this.isShowInput = !this.isShowInput
+    }
+  }
 }
 </script>
 
@@ -80,4 +80,3 @@ export default {
 	}
 }
 </style>
-

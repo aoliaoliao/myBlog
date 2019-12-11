@@ -18,54 +18,54 @@ import { loginUser } from '@/API'
 import { mapMutations } from 'vuex'
 
 export default {
-	name: 'LoginWrap',
-	data() {
-		return {
-			account: '',
-			password: ''
-		}
-	},
-	methods: {
-		...mapMutations(['setToken']),
-		...mapMutations('user', ['setUserMsg']),
-		login() {
-			loginUser({
-				account: this.account,
-				password: this.encryptPwd()
-			})
-				.then((res = {}) => {
-					let { cd, rt } = res
-					if (cd == 1) {
-						this.setToken(rt.accessToken)
-						localStorage.setItem('refresh_token', rt.refreshToken)
-						this.setUserMsg(
-							Object.assign(rt, {
-								accessToken: undefined,
-								refreshToken: undefined
-							})
-						)
-						this.$router.push('/home')
-					} else {
-						this.formatError(res.msg)
-					}
-				})
-				.catch(() => {
-					this.formatError()
-				})
-		},
-		encryptPwd() {
-			return encryptByMd5(this.password)
-		},
-		formatError(msg) {
-			this.$toast({
-				message: msg || '登录失败',
-				duration: 2000
-			})
-			this.setToken(undefined)
-			this.setUserId(undefined)
-			this.setUserNickname(undefined)
-		}
-	}
+  name: 'LoginWrap',
+  data() {
+    return {
+      account: '',
+      password: ''
+    }
+  },
+  methods: {
+    ...mapMutations(['setToken']),
+    ...mapMutations('user', ['setUserMsg']),
+    login() {
+      loginUser({
+        account: this.account,
+        password: this.encryptPwd()
+      })
+        .then((res = {}) => {
+          let { cd, rt } = res
+          if (cd == 1) {
+            this.setToken(rt.accessToken)
+            localStorage.setItem('refresh_token', rt.refreshToken)
+            this.setUserMsg(
+              Object.assign(rt, {
+                accessToken: undefined,
+                refreshToken: undefined
+              })
+            )
+            this.$router.push('/home')
+          } else {
+            this.formatError(res.msg)
+          }
+        })
+        .catch(() => {
+          this.formatError()
+        })
+    },
+    encryptPwd() {
+      return encryptByMd5(this.password)
+    },
+    formatError(msg) {
+      this.$toast({
+        message: msg || '登录失败',
+        duration: 2000
+      })
+      this.setToken(undefined)
+      this.setUserId(undefined)
+      this.setUserNickname(undefined)
+    }
+  }
 }
 </script>
 
