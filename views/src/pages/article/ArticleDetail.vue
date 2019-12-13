@@ -7,7 +7,10 @@
         <article-detail-title :title="articleMsg"></article-detail-title>
         <article-detail-content :content="articleContent"></article-detail-content>
         <vux-divider>the end</vux-divider>
-        <article-detail-comments :article-id="articleId" class="comment-margin"></article-detail-comments>
+        <article-detail-comments
+          :article-id="articleId"
+          class="comment-margin"
+        ></article-detail-comments>
         <!-- <comment-create :article-id="articleId"></comment-create> -->
       </div>
     </div>

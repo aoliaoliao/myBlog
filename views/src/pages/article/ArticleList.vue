@@ -13,7 +13,7 @@
       >
         <template slot="pulldown"></template>
         <template slot="pullUp"></template>
-        <article-item v-for="(item,index) in list " :key="index" :item="item"></article-item>
+        <article-item v-for="(item, index) in list" :key="index" :item="item"></article-item>
         <div class="list-bottom" v-if="isOver">到底了哦~</div>
       </the-scroll>
     </template>

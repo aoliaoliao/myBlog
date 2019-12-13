@@ -1,7 +1,7 @@
 <template>
   <div class="comments">
-    <div v-if="list.length > 0 ">
-      <span v-for="( item, index ) in list " :key="index" @click="selectCurrComment( index )">
+    <div v-if="list.length > 0">
+      <span v-for="(item, index) in list" :key="index" @click="selectCurrComment(index)">
         <comment-item :comment="item"></comment-item>
       </span>
       <div v-if="end" class="null-comments">暂时就这些了哦</div>
