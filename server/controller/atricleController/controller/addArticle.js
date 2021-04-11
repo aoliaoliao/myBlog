@@ -1,4 +1,5 @@
 const fs = require('fs')
+
 const fsPromises = fs.promises
 const articleModel = require('../../../Dao').Articles
 const {
@@ -7,18 +8,18 @@ const {
   getFileExt,
   getFileDir
 } = require('../../../utils')
-const { articleConst } = require('../../../conf')['gloableConst']
+const { articleConst } = require('../../../conf').gloableConst
 
 function validateArticle(article) {
   let errMsg = ''
-  let { name, author, articleAddress, summary } = article
+  const { name, author, articleAddress, summary } = article
 
   if (!articleAddress) {
     errMsg = '请上传文章'
     return errMsg
   }
 
-  let ext = getFileExt(articleAddress.name)
+  const ext = getFileExt(articleAddress.name)
 
   if (articleConst.articleTypes.indexOf(ext) === -1) {
     errMsg = '暂时只接受 .md 或 .html 格式的文章'
@@ -36,15 +37,15 @@ function validateArticle(article) {
 }
 
 function formatRequest(req) {
-  let { fields, files } = req.formData
-  let {
+  const { fields, files } = req.formData
+  const {
     name = '',
     author = '',
     summary = '',
     isPrivate = 1,
     isComment = 1
   } = fields
-  let { articleAddress = {}, summaryImage = {} } = files
+  const { articleAddress = {}, summaryImage = {} } = files
 
   return {
     name,
@@ -64,14 +65,14 @@ async function formatModelData(article) {
   }
 
   if (article.summaryImage) {
-    const path = article.summaryImage.path
+    const { path } = article.summaryImage
     article.summaryImage = path
   } else {
     // TODO： 读取文章内容并选择第一张合规的图片（类似微信分享）
     article.summaryImage = ''
   }
   if (article.articleAddress) {
-    const path = article.articleAddress.path
+    const { path } = article.articleAddress
     article.articleAddress = path
   }
 
@@ -93,7 +94,7 @@ module.exports = async function(req, res, next) {
   let content = { name: '', articleAddress: '', author: '' }
   content = formatRequest(req)
 
-  let valid = validateArticle(content)
+  const valid = validateArticle(content)
   if (valid.length > 0) {
     res.send(formatResponse(0, valid))
     deleteLocalFile({

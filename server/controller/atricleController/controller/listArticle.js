@@ -4,7 +4,7 @@ const articleModel = require('../../../Dao').Articles
 const userModel = require('../../../Dao').Users
 const CommentModel = require('../../../Dao').Comments
 const { formatResponse } = require('../../../utils')
-const { staticNetPrefix } = require('../../../conf')['gloableConst']
+const { staticNetPrefix } = require('../../../conf').gloableConst
 
 const articleAttributes = [
   'id',
@@ -19,8 +19,8 @@ const userAttributes = ['nickName', 'avatar', 'signature']
 function createArticleOption(limit, offset) {
   return {
     attributes: articleAttributes,
-    limit: limit,
-    offset: offset,
+    limit,
+    offset,
     order: [['updatedAt', 'DESC']],
     include: [
       { model: userModel, as: 'articleAuthor', attributes: userAttributes }
@@ -34,7 +34,7 @@ async function listAllArticle(option) {
     .then(result => {
       let rows = result || []
       rows = rows.map(v => {
-        let row = v.dataValues
+        const row = v.dataValues
         // row.summaryImage = staticNetPrefix + row.summaryImage.split(path.sep).join('/')
         row.summaryImage = new URL(
           row.summaryImage.split(path.sep).join('/'),
@@ -64,7 +64,7 @@ function fixOffset(oldCount, newCount) {
   if (oldCount === 0) {
     return 0
   }
-  let offset = newCount - oldCount // 偏移量
+  const offset = newCount - oldCount // 偏移量
   return offset
 }
 
@@ -74,14 +74,14 @@ async function listArticleContent(limit = 10, offset = 0, count = 0) {
   offset = +offset
   count = +count
 
-  let total = await totalArticles()
+  const total = await totalArticles()
 
-  offset = offset + fixOffset(count, total)
+  offset += fixOffset(count, total)
 
-  let findOption = createArticleOption(limit, offset)
+  const findOption = createArticleOption(limit, offset)
 
   try {
-    let list = await listAllArticle(findOption)
+    const list = await listAllArticle(findOption)
 
     if (list === undefined) {
       return false
@@ -101,7 +101,7 @@ async function listArticleContent(limit = 10, offset = 0, count = 0) {
 
 module.exports = async function(req, res, next) {
   const { num, start } = req.query
-  let rt = await listArticleContent(num, start)
+  const rt = await listArticleContent(num, start)
   if (rt) {
     res.send(formatResponse(1, rt))
   } else {

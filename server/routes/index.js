@@ -12,7 +12,7 @@ allFiles.forEach(file => {
     const name = file.slice(0, -3)
 
     model.forEach(v => {
-      const key = path.posix.join('/', name, v.path)
+      const key = path.posix.join('/v1', name, v.path)
       routerMap.set(key, v)
     })
   }

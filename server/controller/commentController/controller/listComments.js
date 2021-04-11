@@ -33,8 +33,8 @@ function setFindWhere(articleId, momentId) {
 function createCommentOption(limit, offset, where) {
   return {
     attributes: commentAttributes,
-    limit: limit,
-    offset: offset,
+    limit,
+    offset,
     order: [['createdAt', 'DESC']],
     include: [
       {
@@ -55,7 +55,7 @@ function formatQueryResult(results) {
   // let commentUser = {}
   const comments = []
   results.forEach(result => {
-    let data = formatDBResult(result)
+    const data = formatDBResult(result)
 
     if (data && data.parentComment) {
       data.parentCommentUserName = data.parentComment.userName

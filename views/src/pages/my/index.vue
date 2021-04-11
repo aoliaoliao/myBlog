@@ -1,141 +1,92 @@
 <template>
-  <transition name="zoom">
-    <div class="index-article">
-      <div class="article-error" v-if="reqStatus === -1">暂无内容</div>
-      <div class="article-loading" v-else-if="reqStatus === 0">加载中。。。</div>
-      <div class="article-success" ref="article-success" v-else>
-        <article-detail-title :title="articleMsg"></article-detail-title>
-        <article-detail-content :content="articleContent"></article-detail-content>
-        <vux-divider>the end</vux-divider>
-        <article-detail-comments
-          :article-id="articleId"
-          class="comment-margin"
-        ></article-detail-comments>
-        <!-- <comment-create :article-id="articleId"></comment-create> -->
+  <div class="my">
+    <user-info></user-info>
+    <div>
+      <mt-cell v-for="menu in menus " :key="menu.title" :title="menu.title" :is-link="!!menu.to" :to="menu.to">
+        <span v-if="menu.explain">{{menu.explain}}</span>
+        <b-icon class="icon" slot="icon" :icon="menu.icon"></b-icon>
+      </mt-cell>
+      <div class="app-logout">
+        <app-logout>
+          <mt-button type="danger" size="large">退出</mt-button>
+        </app-logout>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
-import { formatMyDate } from '@/utils/tool'
-import { getArticleDetail } from '@/API'
-import ArticleDetailContent from './ArticleDetailContent'
-import ArticleDetailTitle from './ArticleDetailTitle'
-import ArticleDetailComments from './ArticleDetailComments'
-import CommentCreate from './CommentCreate'
+import UserInfo from '@/components/UserInfo'
+import AppLogout from '@/pages/login/AppLogout'
 
 export default {
-  name: 'article-detail',
+  name: 'my',
   components: {
-    ArticleDetailTitle,
-    ArticleDetailContent,
-    ArticleDetailComments,
-    CommentCreate
+    UserInfo,
+    AppLogout
   },
   data() {
     return {
-      articleId: '',
-      reqStatus: 0,
-      articleMsg: {},
-      articleContent: ''
-    }
-  },
-  computed: {},
-  activated() {
-    this.articleId = this.$route.params.id || ''
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      const path = vm.$route.path
-      const top = sessionStorage.getItem(path)
-      if (top && +top > 0) {
-        window.scrollTo({
-          top,
-          behavior: 'smooth'
-        })
-        sessionStorage.removeItem(path)
-      }
-    })
-  },
-  beforeRouteLeave(to, from, next) {
-    let dom = this.$refs['article-success']
-    if (dom) {
-      const rect = dom.getClientRects()[0]
-      if (+rect.top < 0) {
-        sessionStorage.setItem(this.$route.path, Math.abs(rect.top))
-      }
-    }
-    next()
-  },
-  watch: {
-    articleId(newVal, oldVal) {
-      if (!newVal) {
-        this.reqStatus = -1
-        return
-      }
-      this.getArticle(newVal)
-    }
-  },
-  methods: {
-    getArticle(id) {
-      getArticleDetail({
-        id
-      }).then(res => {
-        if (res.cd === 1) {
-          this.reqStatus = 1
-          this.formatContent(res.rt)
-          this.formatArticle(res.rt.article)
-        } else {
-          this.reqStatus = -1
+      menus: [
+        {
+          title: '创建文章',
+          icon: 'xiewenzhang',
+          to: '/publish/article'
+        },
+        {
+          title: '我的文章',
+          explain: '投稿',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的动态',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的评论',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的点赞',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的动态1',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的动态2',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的动态3',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的动态4',
+          icon: 'xiewenzhang'
+        },
+        {
+          title: '我的动态5',
+          icon: 'xiewenzhang'
         }
-      })
-    },
-    formatContent(result = {}) {
-      this.$set(this.articleMsg, 'articleTitle', result.name)
-      this.$set(this.articleMsg, 'articleAuthor', result.articleAuthor.nickName)
-      this.$set(this.articleMsg, 'articleDate', formatMyDate(result.updatedAt, 'yyyy-MM-dd'))
-    },
-    formatArticle(content) {
-      this.articleContent = content
+      ]
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-@import '~styles/variable';
+@import '~styles/variable'
 
-.index-article {
-	background: $white;
-}
+.my
+  overflow auto
+  background $white
+  .app-logout
+    margin 10px 5px
+    border-top 1px solid #cccccc
+  .icon
+    width w = 14px
+    height w
 
-.article-success {
-	margin: 0 12px;
-}
-
-.comment-margin {
-	margin-bottom: 60px;
-}
-
-.zoom-enter-active, .zoom-leave-active {
-	animation-duration: 0.5s;
-	animation-fill-mode: both;
-	animation-name: zoom;
-}
-
-.zoom-leave-active {
-	animation-direction: reverse;
-}
-
-@keyframes zoom {
-	from {
-		opacity: 0;
-		transform: scale3d(0.3, 0.3, 0.3);
-	}
-
-	100% {
-		opacity: 1;
-	}
-}
 </style>

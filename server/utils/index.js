@@ -7,10 +7,10 @@ module.exports = {
    *   @result： 响应内容
    *  */
   formatResponse(status, result, ...otherRes) {
-    let response = {
+    const response = {
       cd: status
     }
-    let other = {}
+    const other = {}
 
     if (response.cd) {
       response.rt = result
@@ -36,7 +36,7 @@ module.exports = {
         let has = false
         if (value[key] && value[key].hasOwnProperty('dataValues')) {
           has = true
-          value[key] = value[key]['dataValues']
+          value[key] = value[key].dataValues
           getDataValues(value[key])
         }
         return has
@@ -54,7 +54,7 @@ module.exports = {
    *
    * */
   cryptoPasswordByMD5(password) {
-    let hash = crypto
+    const hash = crypto
       .createHash('md5')
       .update(password)
       .digest('hex')

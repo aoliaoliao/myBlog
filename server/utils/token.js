@@ -1,8 +1,8 @@
+const jwt = require('jsonwebtoken')
 const {
   refreshTokenPeriod,
   accessTokenPeriod
 } = require('../conf/gloableConst')
-const jwt = require('jsonwebtoken')
 const { formatResponse } = require('./index.js')
 
 const cert = '123456'
@@ -78,7 +78,7 @@ function validateRefreshToken(token) {
 
 // 验证access_token，为了处理并发请求有个10秒的缓存期
 function validateAccessToken(req, res, next) {
-  let token = getTokenBody(req.get('authorization'))
+  const token = getTokenBody(req.get('authorization'))
 
   if (!token) {
     setFailedResponse(res)
@@ -90,7 +90,7 @@ function validateAccessToken(req, res, next) {
     } else {
       // 查看 tokenList 是否含有已更新过的 token
       if (tokenList.has(token)) {
-        let newToken = tokenList.get(token)
+        const newToken = tokenList.get(token)
         const time_space = Date.now() - newToken.createToken
         if (time_space > 10 * 1000 && time_space < 0) {
           req.headers.authorization = newToken.value
@@ -106,7 +106,7 @@ function validateAccessToken(req, res, next) {
 // 解码token，获取其中的载荷信息
 function decodedToken(token) {
   token = getTokenBody(token)
-  let data = jwt.decode(token)
+  const data = jwt.decode(token)
   return data || {}
 }
 

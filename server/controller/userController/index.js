@@ -2,9 +2,9 @@ const fs = require('fs')
 const path = require('path')
 
 function createControllerModel() {
-  let controllerModel = {}
-  const controllerPath = __dirname + '/controller'
-  let allFiles = fs.readdirSync(controllerPath)
+  const controllerModel = {}
+  const controllerPath = `${__dirname}/controller`
+  const allFiles = fs.readdirSync(controllerPath)
 
   allFiles
     .filter(file => {

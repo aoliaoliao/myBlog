@@ -7,7 +7,7 @@ const momentModel = require('../../../Dao').Moments
 // const userModel = require("../../../Dao").Users;
 // const CommentModel = require("../../../Dao").Comments;
 // const LikeModel = require("../../../Dao").Votes;
-const { staticNetPrefix } = require('../../../conf')['gloableConst']
+const { staticNetPrefix } = require('../../../conf').gloableConst
 
 // const momentAttributes = ['id', 'userId', 'text', 'imgs', 'video', 'updatedAt']
 // const userAttributes = ['nickName', 'avatar', 'signature', 'id']
@@ -103,7 +103,7 @@ function fixOffset(oldCount, newCount) {
   if (oldCount === 0) {
     return 0
   }
-  let offset = newCount - oldCount // 偏移量
+  const offset = newCount - oldCount // 偏移量
   return offset
 }
 
@@ -114,8 +114,8 @@ async function findAllMoment(option) {
       nest: true
     })
     .then(result => {
-      let rows = result.map(v => {
-        let row = $blog.formatDBResult(v)
+      const rows = result.map(v => {
+        const row = $blog.formatDBResult(v)
         row.imgs =
           row.imgs.length > 0
             ? row.imgs
@@ -195,13 +195,13 @@ async function listMomentContent(
   count = +count
 
   try {
-    let total = await countMoment()
+    const total = await countMoment()
 
-    offset = offset + fixOffset(count, total)
+    offset += fixOffset(count, total)
 
-    let findOption = { limit, offset, userId }
+    const findOption = { limit, offset, userId }
 
-    let list = await findAllMoment(findOption)
+    const list = await findAllMoment(findOption)
 
     // let list = createTransaction( )
 
@@ -226,9 +226,9 @@ module.exports = async function(req, res, next) {
   const token = req.get('authorization')
 
   if (token) {
-    const userId = decodedToken(token).userId
+    const { userId } = decodedToken(token)
 
-    let rt = await listMomentContent(num, start, count, userId)
+    const rt = await listMomentContent(num, start, count, userId)
     if (rt) {
       res.send($blog.formatResponse(1, rt))
     } else {

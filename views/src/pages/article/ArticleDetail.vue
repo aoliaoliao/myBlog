@@ -97,6 +97,8 @@ export default {
       this.$set(this.articleMsg, 'articleDate', formatMyDate(result.updatedAt, 'yyyy-MM-dd'))
     },
     formatArticle(content) {
+      let a = '12'
+      console.log(a)
       this.articleContent = content
     }
   }

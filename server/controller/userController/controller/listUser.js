@@ -2,7 +2,7 @@ const userModel = require('"../../../Dao').Users
 const { formatResponse } = require('../../../utils')
 
 module.exports = async function listUser(req, res, next) {
-  let query = req.query
+  const { query } = req
   userModel
     .findAll({
       where: query

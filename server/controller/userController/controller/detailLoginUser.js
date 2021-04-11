@@ -4,7 +4,7 @@ const { decodedToken } = require('../../../utils/token')
 
 // 查询用户详情
 module.exports = async function detailSelf(req, res, next) {
-  const authorization = req.headers.authorization
+  const { authorization } = req.headers
   if (!authorization) {
     res.send(formatResponse(0, '用户未登陆'))
     return

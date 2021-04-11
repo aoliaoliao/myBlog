@@ -12,8 +12,7 @@ let curTryTokenRequest = 0
 // let baseURL = 'http://192.168.188.216:3000/'
 // let baseURL = 'http://47.101.150.40:3000/'
 
-let baseURL =
-  process.env.NODE_ENV === 'production' ? 'http://47.101.150.40:3000/' : 'http://localhost:3000/'
+let baseURL = '/v1'
 
 async function doRequest(error) {
   // await store.dispatch('replaceAccessToken')

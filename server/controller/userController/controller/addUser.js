@@ -18,7 +18,7 @@ function validateNickName(nickName) {
 
 function validatePwd(pwd) {
   let msg
-  let regex = /^.*(?=.{9,})(?=.*\d)(?=.*[a-z]).*$/
+  const regex = /^.*(?=.{9,})(?=.*\d)(?=.*[a-z]).*$/
 
   if (typeof pwd === 'undefined') {
     msg = '密码不可为空'
@@ -31,7 +31,7 @@ function validatePwd(pwd) {
 
 function validateEmail(email) {
   let msg
-  let regex = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+.)+[A-Za-z]{2,14}/g
+  const regex = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+.)+[A-Za-z]{2,14}/g
 
   if (typeof email === 'undefined') {
     msg = '邮箱不可为空'
@@ -42,7 +42,7 @@ function validateEmail(email) {
 }
 
 function validateUser(user) {
-  let validate =
+  const validate =
     validateNickName(user.nickName) ||
     validatePwd(user.password) ||
     validateEmail(user.linkedEMail)
@@ -51,8 +51,8 @@ function validateUser(user) {
 }
 
 module.exports = async function addUser(req, res, next) {
-  let body = req.body
-  let msg = validateUser(body)
+  const { body } = req
+  const msg = validateUser(body)
   if (!msg) {
     body.password = cryptoPasswordByMD5(body.password)
     body.id = createUUID()

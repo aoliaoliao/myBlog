@@ -1,23 +1,23 @@
-var express = require('express')
-var path = require('path')
-var cookieParser = require('cookie-parser')
-var logger = require('morgan')
-var FileStreamRotator = require('file-stream-rotator')
-var routers = require('./routes')
-const { staticPublicPath } = require('./conf')['gloableConst']
+const express = require('express')
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const logger = require('morgan')
+const FileStreamRotator = require('file-stream-rotator')
+const routers = require('./routes')
+const { staticPublicPath } = require('./conf').gloableConst
 const parseFormData = require('./middlewares/parseFormData')
 const globalFunction = require('./middlewares/globalFunction')
 const bodyParser = require('body-parser')
 
-var app = express()
+const app = express()
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
 // 将日志写入本地文件
-let logDirectory = path.join(__dirname, 'log')
-let accessLogStream = FileStreamRotator.getStream({
+const logDirectory = path.join(__dirname, 'log')
+const accessLogStream = FileStreamRotator.getStream({
   date_format: 'YYYYMMDD',
   filename: path.join(logDirectory, 'access-%DATE%.log'),
   frequency: 'daily',
@@ -47,22 +47,22 @@ app.use(
   express.static(path.join(__dirname, staticPublicPath))
 )
 
-app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Content-Type, Content-Length, Authorization, Accept, X-Requested-With '
-  )
-  res.header('Access-Control-Expose-Headers', '') // 因为CORS的限制，所以显示定义客户端可以访问的自定义header
-  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
+// app.all('*', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*')
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Content-Type, Content-Length, Authorization, Accept, X-Requested-With '
+//   )
+//   res.header('Access-Control-Expose-Headers', '') // 因为CORS的限制，所以显示定义客户端可以访问的自定义header
+//   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
 
-  if (req.method == 'OPTIONS') {
-    res.send(200)
-    // 让options请求快速返回
-  } else {
-    next()
-  }
-})
+//   if (req.method == 'OPTIONS') {
+//     res.send(200)
+//     // 让options请求快速返回
+//   } else {
+//     next()
+//   }
+// })
 
 // 格式化post请求参数(针对 ‘application/json’)
 app.use(
@@ -77,8 +77,8 @@ app.use(
 // 格式化post请求参数(针对 'application/x-www-form-urlencoded')
 app.use(
   bodyParser.urlencoded({
-    extended: false, //扩展模式
-    limit: 2 * 1024 * 1024 //限制-2M
+    extended: false, // 扩展模式
+    limit: 2 * 1024 * 1024 // 限制-2M
   })
 )
 

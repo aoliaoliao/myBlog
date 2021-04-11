@@ -1,4 +1,3 @@
-const path = require('path')
 const fs = require('fs')
 const articleModel = require('../../../Dao').Articles
 const userModel = require('../../../Dao').Users
@@ -14,10 +13,10 @@ const articleAttributes = [
 const userAttributes = ['nickName', 'avatar', 'signature']
 // const commentAttributes = ['userId', 'userName', 'parentCommentId', 'text', 'updatedAt']
 
-function readArticleStream(path, func, res) {
+function readArticleStream(src, func) {
   let content = ''
 
-  let fReadStream = fs.createReadStream(path, {
+  const fReadStream = fs.createReadStream(src, {
     encoding: 'utf8',
     start: 0
   })
@@ -59,18 +58,18 @@ function queryArticleById(id) {
     })
 }
 
-module.exports = async function(req, res, next) {
+module.exports = async function getArticleDetail(req, res, next) {
   const { id } = req.query
   if (!id) {
     res.send(formatResponse(0, '未获取到文章ID'))
     return
   }
 
-  let result = await queryArticleById(id)
+  const result = await queryArticleById(id)
   const articlePath = result.articleAddress || ''
 
   if (articlePath && fs.existsSync(articlePath)) {
-    function setResponse(rt) {
+    readArticleStream(articlePath, rt => {
       delete result.articleAddress
       if (rt === null) {
         res.send(formatResponse(0, '文章内容读取错误'))
@@ -78,8 +77,7 @@ module.exports = async function(req, res, next) {
         result.article = rt
         res.send(formatResponse(1, result))
       }
-    }
-    readArticleStream(articlePath, setResponse, res)
+    })
   } else {
     res.send(formatResponse(0, '未找到相关文章'))
   }

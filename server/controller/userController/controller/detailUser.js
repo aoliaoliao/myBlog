@@ -3,7 +3,7 @@ const { formatResponse } = require('../../../utils')
 
 // 查询用户详情
 module.exports = async function detailUser(req, res, next) {
-  let query = req.query || {}
+  const query = req.query || {}
   try {
     const result = await findUserById(query.id)
     if (result.id) {

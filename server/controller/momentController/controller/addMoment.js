@@ -2,14 +2,14 @@ const momentModel = require('../../../Dao').Moments
 const fs = require('fs')
 const util = require('util')
 const { formatResponse } = require('../../../utils')
-const { momentConst } = require('../../../conf')['gloableConst']
+const { momentConst } = require('../../../conf').gloableConst
 
 // 请求内容的验证
 function validateMoment(moment) {
   let message = ''
   const text = moment.text || ''
   const imgs = moment.imgs || []
-  const video = moment.video
+  const { video } = moment
 
   if (text.length === 0 && imgs.length === 0) {
     message = '动态内容不允许为空'
@@ -21,7 +21,7 @@ function validateMoment(moment) {
   }
 
   imgs.some(img => {
-    let right_mime = !momentConst.imgMIMeTypes.includes(img.type)
+    const right_mime = !momentConst.imgMIMeTypes.includes(img.type)
     if (right_mime) {
       message = `只接受${momentConst.imgMIMeTypes.join(' ')}类型的图片`
     }
@@ -33,7 +33,7 @@ function validateMoment(moment) {
 
 // 格式化新增moment的请求
 function formatRequest(req) {
-  let { fields, files } = req.formData
+  const { fields, files } = req.formData
   const { text, userId } = fields
   const imgs = Array.isArray(files.imgs)
     ? files.imgs
@@ -48,7 +48,7 @@ module.exports = async function(req, res, next) {
   content = formatRequest(req)
 
   const localImgs = content.imgs.map(img => img.path)
-  let valid = validateMoment(content)
+  const valid = validateMoment(content)
   if (valid.length > 0) {
     res.send(formatResponse(0, valid))
     // 删除已储存的图片

@@ -2,7 +2,7 @@ const CommentModel = require('../../../Dao').Comments
 const { formatResponse } = require('../../../utils')
 
 function validateParam(req, res) {
-  let { text, articleId, momentId, userId, userName } = req.body
+  const { text, articleId, momentId, userId, userName } = req.body
   let right = true
 
   if (!(userId || userName)) {

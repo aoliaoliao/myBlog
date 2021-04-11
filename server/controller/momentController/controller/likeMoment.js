@@ -1,7 +1,7 @@
 const likeModel = require('../../../Dao').Votes
 
 module.exports = async function(req, res, next) {
-  let { userId, momentId } = req.body
+  const { userId, momentId } = req.body
 
   if (!userId) {
     res.send($blog.formatResponse(0, '请先登录'))

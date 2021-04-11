@@ -4,7 +4,7 @@ module.exports = {
   semi: false,
   singleQuote: true,
   printWidth: 80, //一行的字符数，如果超过会进行换行，默认为80
-  trailingComma: "none"  //是否使用尾逗号，有三个可选值"<none|es5|all>"
+  trailingComma: 'none' //是否使用尾逗号，有三个可选值"<none|es5|all>"
 };
 
 // "printWidth": 80, //一行的字符数，如果超过会进行换行，默认为80

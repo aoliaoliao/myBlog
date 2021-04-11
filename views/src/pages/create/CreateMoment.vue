@@ -94,7 +94,7 @@ export default {
       // if ( img.size > maxImgSize ) return
 
       return new Promise(function(resolve, reject) {
-        var reader = new FileReader()
+        let reader = new FileReader()
         // reader.readAsDataURL( img )
         reader.readAsBinaryString(img)
         reader.onloadend = e => {

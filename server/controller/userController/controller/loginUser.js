@@ -9,7 +9,7 @@ const { createToken } = require('../../../utils/token')
 function setWhereOption(account) {
   const keys = ['linkedEMail', 'nickName']
 
-  let map = keys.map(v => {
+  const map = keys.map(v => {
     const one = {}
     one[v] = account
     return one
@@ -18,7 +18,7 @@ function setWhereOption(account) {
 }
 
 module.exports = async function loginUser(req, res, next) {
-  let body = req.body
+  const { body } = req
   const { account, password } = body
   const { hostname, ip } = req
 
@@ -27,7 +27,7 @@ module.exports = async function loginUser(req, res, next) {
     return
   }
 
-  let where = setWhereOption(account)
+  const where = setWhereOption(account)
 
   userModel
     .findAll({
